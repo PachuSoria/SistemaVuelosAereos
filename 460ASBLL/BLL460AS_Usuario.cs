@@ -1,0 +1,120 @@
+﻿using _460ASDAL;
+using _460ASServicios;
+using _460ASServicios.Singleton;
+using _460ASServicios;
+using Microsoft.VisualBasic.ApplicationServices;
+
+namespace _460ASBLL
+{
+    public class BLL460AS_Usuario
+    {
+        private DAL460AS_Usuario _usuarioDAL;
+        public BLL460AS_Usuario()
+        {
+            _usuarioDAL = new DAL460AS_Usuario();
+        }
+
+        public void GuardarUsuario_460AS(Usuario_460AS usuario)
+        {
+            usuario.Password_460AS = Hashing_460AS.HashearPasswordSHA256_460AS(usuario.Password_460AS);
+            _usuarioDAL.GuardarUsuario_460AS(usuario);
+        }
+
+        public LoginResult_460AS Login_460AS(string login, string password) 
+        {
+            if (SessionManager_460AS.Instancia.IsLogged_460AS()) throw new Exception("Ya se ha iniciado sesión");
+            var user = _usuarioDAL.ObtenerUsuarios_460AS().Where(u => u.Login_460AS.Equals(login)).FirstOrDefault();
+            if (user == null) throw new LoginException_460AS(LoginResult_460AS.InvalidUsername);           
+            if (user.Bloqueado_460AS == true)
+            {
+                TimeSpan tiempoTranscurrido = DateTime.Now - user.UltimoIntento_460AS;
+                double horasTranscurridas = tiempoTranscurrido.TotalHours;
+                if (horasTranscurridas >= 4)
+                {
+                    user.Bloqueado_460AS = false;
+                    user.Contador_460AS = 0;
+                    _usuarioDAL.ActualizarUsuario_460AS(user);
+                }
+                else
+                {
+                    string mensaje = "";
+                    double horasRestantes = 4 - horasTranscurridas;
+                    if (horasRestantes < 1) mensaje = $"Intente de nuevo en {(int)(horasRestantes * 60)} minutos";
+                    else mensaje = $"Intente de nuevo en {horasRestantes:F1} horas";
+                    throw new LoginException_460AS(LoginResult_460AS.UserBlocked, mensaje);
+                }
+            }
+            if (user.Activo_460AS == false) throw new LoginException_460AS(LoginResult_460AS.UserInactive);
+            
+
+            if (!Hashing_460AS.HashearPasswordSHA256_460AS(password).Equals(user.Password_460AS))
+            {
+                user.Contador_460AS++;
+                user.UltimoIntento_460AS = DateTime.Now;
+                _usuarioDAL.ActualizarUsuario_460AS(user);
+                if (user.Contador_460AS == 3)
+                {
+                    user.Bloqueado_460AS = true;
+                    _usuarioDAL.ActualizarUsuario_460AS(user);
+                    throw new LoginException_460AS(LoginResult_460AS.UserBlocked);
+                }
+                else throw new LoginException_460AS(LoginResult_460AS.InvalidPassword);
+            }
+            else
+            {
+                user.Contador_460AS = 0;
+                _usuarioDAL.ActualizarUsuario_460AS(user);
+                SessionManager_460AS.Instancia.Login_460AS(user);
+                return LoginResult_460AS.ValidUser;
+            }
+        }
+
+        public void Logout_460AS()
+        {
+            if (!SessionManager_460AS.Instancia.IsLogged_460AS())
+            {
+                throw new Exception("No hay sesion iniciada");
+            }
+            SessionManager_460AS.Instancia.Logout_460AS();
+        }
+
+        public void Actualizar_460AS(Usuario_460AS usuario)
+        {
+            _usuarioDAL.ActualizarUsuario_460AS(usuario);
+        }
+
+        public void Activar_460AS(Usuario_460AS usuario)
+        {
+            _usuarioDAL.ActivarUsuario_460AS(usuario);
+        }
+
+        public void Desactivar_460AS(Usuario_460AS usuario)
+        {
+            _usuarioDAL.DesactivarUsuario_460AS(usuario);
+        }
+
+        public void Desbloquear_460AS(Usuario_460AS usuario)
+        {
+            _usuarioDAL.DesbloquearUsuario_460AS(usuario);
+            usuario.Bloqueado_460AS = false;
+            string dni = usuario.DNI_460AS.ToString();
+            string apellido = usuario.Apellido_460AS.ToString();
+            string passwordOriginal = dni.Substring(0, 3) + apellido;
+            usuario.Password_460AS = Hashing_460AS.HashearPasswordSHA256_460AS(passwordOriginal);
+            usuario.Contador_460AS = 0;
+            _usuarioDAL.ActualizarUsuario_460AS(usuario);
+        }
+
+        public List<Usuario_460AS> ObtenerUsuarios460AS()
+        {
+            return _usuarioDAL.ObtenerUsuarios_460AS().ToList();
+        }
+
+        public bool CambiarPassword_460AS(string loginUsuario, string nuevaPassword)
+        {
+            string nuevaPasswordHasheada = Hashing_460AS.HashearPasswordSHA256_460AS(nuevaPassword);
+            _usuarioDAL.ActualizarPasswordUsuario_460AS(loginUsuario, nuevaPasswordHasheada);
+            return true;
+        }
+    }
+}
