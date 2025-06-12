@@ -1,5 +1,6 @@
 ﻿using _460ASBLL;
 using _460ASServicios;
+using _460ASServicios.Observer;
 using _460ASServicios.Singleton;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class CambiarContraseña_460AS : Form
+    public partial class CambiarContraseña_460AS : Form, IIdiomaObserver_460AS
     {
         BLL460AS_Usuario bllUsuario_460AS;
         private string _loginUsuarioActual;
@@ -27,7 +28,19 @@ namespace _460ASGUI
             textBox1.PasswordChar = '*';
             textBox2.PasswordChar = '*';
             textBox3.PasswordChar = '*';
-            label4.Text = $"Username: {_loginUsuarioActual}";
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            ActualizarIdioma();
+        }
+
+        public void ActualizarIdioma()
+        {
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_contraseña_actual");
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_nueva_contraseña");
+            label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_confirmar_contraseña");
+            label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_usuario") + $": {_loginUsuarioActual}";
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("btn_confirmar");
+            button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_cancelar");
+            checkBox1.Text = IdiomaManager_460AS.Instancia.Traducir("checkbox_mostrar");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,28 +53,30 @@ namespace _460ASGUI
 
                 if (string.IsNullOrWhiteSpace(passwordActual) || string.IsNullOrEmpty(passwordNueva) || string.IsNullOrEmpty(confirmar))
                 {
-                    MessageBox.Show("Debe completar todos los campos", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_completar_campos"),
+                                    IdiomaManager_460AS.Instancia.Traducir("titulo_confirmacion"),
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 if (passwordNueva != confirmar)
                 {
-                    MessageBox.Show("No se pudo confirmar la contraseña", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_no_confirmar_contraseña"), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 Usuario_460AS usuarioActual = SessionManager_460AS.Instancia.Usuario;
                 if (usuarioActual == null || Hashing_460AS.HashearPasswordSHA256_460AS(passwordActual) != usuarioActual.Password_460AS)
                 {
-                    throw new Exception("Contraseña actual incorrecta");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_contraseña_actual_incorrecta"));
                 }
                 string passwordHasheada = Hashing_460AS.HashearPasswordSHA256_460AS(passwordNueva);
                 if (Hashing_460AS.HashearPasswordSHA256_460AS(passwordNueva) == usuarioActual.Password_460AS)
                 {
-                    MessageBox.Show("No puede ingresar la contraseña actual", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_misma_contraseña"), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 if (bllUsuario_460AS.CambiarPassword_460AS(_loginUsuarioActual, passwordNueva))
                 {
-                    MessageBox.Show("Se cambió la contraseña correctamente");
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_contraseña_cambiada"));
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                     bllUsuario_460AS.Logout_460AS();
@@ -69,7 +84,7 @@ namespace _460ASGUI
                 }
                 else
                 {
-                    MessageBox.Show("Error al cambiar la contraseña. Intente nuevamente.");
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_error_cambiar_contraseña"));
                 }
             }
             catch (Exception ex)

@@ -91,11 +91,11 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(306, 168);
+            checkBox1.Location = new Point(269, 166);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(128, 19);
+            checkBox1.Size = new Size(67, 19);
             checkBox1.TabIndex = 6;
-            checkBox1.Text = "Mostrar contraseña";
+            checkBox1.Text = "Mostrar";
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
@@ -132,7 +132,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(486, 331);
+            ClientSize = new Size(400, 331);
             Controls.Add(label4);
             Controls.Add(button2);
             Controls.Add(button1);

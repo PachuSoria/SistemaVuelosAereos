@@ -9,7 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Observer\Idiomas\español.json" />
+    <None Remove="Observer\Idiomas\ingles.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Observer\Idiomas\español.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Observer\Idiomas\ingles.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>

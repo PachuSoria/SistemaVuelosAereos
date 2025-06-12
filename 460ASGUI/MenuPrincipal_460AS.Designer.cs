@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuPrincipal_460AS));
             menuStrip1 = new MenuStrip();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             iniciarSesiónToolStripMenuItem = new ToolStripMenuItem();
@@ -43,20 +42,21 @@
             registrarClienteToolStripMenuItem = new ToolStripMenuItem();
             registrarReservaToolStripMenuItem = new ToolStripMenuItem();
             reportesToolStripMenuItem = new ToolStripMenuItem();
+            idiomaToolStripMenuItem = new ToolStripMenuItem();
+            españolToolStripMenuItem = new ToolStripMenuItem();
+            inglesToolStripMenuItem = new ToolStripMenuItem();
             ayudaToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripStatusLabel2 = new ToolStripStatusLabel();
-            pictureBox1 = new PictureBox();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.BackColor = SystemColors.Menu;
-            menuStrip1.Items.AddRange(new ToolStripItem[] { usuarioToolStripMenuItem, administradorToolStripMenuItem, maestroToolStripMenuItem, vuelosToolStripMenuItem, reservasToolStripMenuItem, reportesToolStripMenuItem, ayudaToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { usuarioToolStripMenuItem, administradorToolStripMenuItem, maestroToolStripMenuItem, vuelosToolStripMenuItem, reservasToolStripMenuItem, reportesToolStripMenuItem, idiomaToolStripMenuItem, ayudaToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1184, 24);
@@ -150,6 +150,27 @@
             reportesToolStripMenuItem.Size = new Size(65, 20);
             reportesToolStripMenuItem.Text = "Reportes";
             // 
+            // idiomaToolStripMenuItem
+            // 
+            idiomaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { españolToolStripMenuItem, inglesToolStripMenuItem });
+            idiomaToolStripMenuItem.Name = "idiomaToolStripMenuItem";
+            idiomaToolStripMenuItem.Size = new Size(56, 20);
+            idiomaToolStripMenuItem.Text = "Idioma";
+            // 
+            // españolToolStripMenuItem
+            // 
+            españolToolStripMenuItem.Name = "españolToolStripMenuItem";
+            españolToolStripMenuItem.Size = new Size(115, 22);
+            españolToolStripMenuItem.Text = "Español";
+            españolToolStripMenuItem.Click += españolToolStripMenuItem_Click;
+            // 
+            // inglesToolStripMenuItem
+            // 
+            inglesToolStripMenuItem.Name = "inglesToolStripMenuItem";
+            inglesToolStripMenuItem.Size = new Size(115, 22);
+            inglesToolStripMenuItem.Text = "Ingles";
+            inglesToolStripMenuItem.Click += inglesToolStripMenuItem_Click;
+            // 
             // ayudaToolStripMenuItem
             // 
             ayudaToolStripMenuItem.Name = "ayudaToolStripMenuItem";
@@ -175,17 +196,6 @@
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             toolStripStatusLabel2.Size = new Size(0, 17);
             // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.LightSteelBlue;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(359, 135);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(437, 263);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 6;
-            pictureBox1.TabStop = false;
-            // 
             // MenuPrincipal_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -194,7 +204,6 @@
             ClientSize = new Size(1184, 581);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
-            Controls.Add(pictureBox1);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
             Name = "MenuPrincipal_460AS";
@@ -204,7 +213,6 @@
             menuStrip1.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -229,6 +237,8 @@
         private ToolStripMenuItem reservasToolStripMenuItem;
         private ToolStripMenuItem registrarClienteToolStripMenuItem;
         private ToolStripMenuItem registrarReservaToolStripMenuItem;
-        private PictureBox pictureBox1;
+        private ToolStripMenuItem idiomaToolStripMenuItem;
+        private ToolStripMenuItem españolToolStripMenuItem;
+        private ToolStripMenuItem inglesToolStripMenuItem;
     }
 }

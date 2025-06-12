@@ -1,0 +1,5 @@
+-Ver si las excepciones de gestionar usuarios se traducen
+-Traducir los Si/No de los messagebox
+-Programar los CUN
+-Criptografia reversible
+-Ordenar los json

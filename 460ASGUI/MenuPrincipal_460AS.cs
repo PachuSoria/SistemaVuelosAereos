@@ -1,6 +1,7 @@
 ﻿using _460ASBLL;
 using _460ASDAL;
 using _460ASServicios;
+using _460ASServicios.Observer;
 using _460ASServicios.Singleton;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,13 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class MenuPrincipal_460AS : Form
+    public partial class MenuPrincipal_460AS : Form, IIdiomaObserver_460AS
     {
         BLL460AS_Usuario bllUsuario_460AS;
         private MenuPrincipal_460AS _menu;
         public MenuPrincipal_460AS()
         {
             InitializeComponent();
-            ValidarMenuPrincipal_460AS();
             bllUsuario_460AS = new BLL460AS_Usuario();
             //bllUsuario_460AS.GuardarUsuario_460AS(new Usuario_460AS("12345678", "Agustin", "Soria", "123Agustin",
             //    "123Soria", "Admin", 42419672, false, true, 0, DateTime.Now));
@@ -37,14 +37,18 @@ namespace _460ASGUI
             menuStrip1.ForeColor = Color.White;
             statusStrip1.BackColor = Color.DimGray;
             statusStrip1.ForeColor = Color.WhiteSmoke;
+
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            IdiomaManager_460AS.Instancia.CargarIdioma("español");
+            ActualizarIdioma();
+            ValidarMenuPrincipal_460AS();
         }
 
         public void ValidarMenuPrincipal_460AS()
         {
             if (SessionManager_460AS.Instancia.IsLogged_460AS())
             {
-                this.toolStripStatusLabel1.Text = SessionManager_460AS.Instancia.Usuario.Rol_460AS;
-                this.toolStripStatusLabel2.Text = $"{SessionManager_460AS.Instancia.Usuario.Nombre_460AS} {SessionManager_460AS.Instancia.Usuario.Apellido_460AS}";
+                ActualizarEstadoSesion();
                 menuStrip1.Items[2].Visible = true;
                 menuStrip1.Items[3].Visible = true;
                 menuStrip1.Items[4].Visible = true;
@@ -58,7 +62,6 @@ namespace _460ASGUI
             }
             else
             {
-                this.toolStripStatusLabel1.Text = "[Sesión no iniciada]";
                 this.toolStripStatusLabel2.Text = "";
                 menuStrip1.Items[1].Visible = false;
                 menuStrip1.Items[2].Visible = false;
@@ -105,10 +108,13 @@ namespace _460ASGUI
 
         private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("¿Desea cerrar la sesión?", "Atención", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            string mensaje = IdiomaManager_460AS.Instancia.Traducir("confirmar_cierre_sesion");
+            string titulo = IdiomaManager_460AS.Instancia.Traducir("titulo_confirmacion");
+            if (MessageBox.Show(mensaje, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 bllUsuario_460AS.Logout_460AS();
                 ValidarMenuPrincipal_460AS();
+                ActualizarIdioma();
                 CerrarForm();
             }
         }
@@ -143,6 +149,58 @@ namespace _460ASGUI
         private void vuelosDisponiblesToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        public void ActualizarIdioma()
+        {
+            iniciarSesiónToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_usuario_iniciar");
+            cambiarContraseñaToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_usuario_cambiar");
+            cerrarSesiónToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_usuario_cerrar");
+            usuarioToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_usuario");
+            administradorToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_administrador");
+            gestionarUsuariosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_gestionar");
+            maestroToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_maestro");
+            vuelosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_vuelos");
+            reservasToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_reservas");
+            reportesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_reportes");
+            idiomaToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_idiomas");
+            ayudaToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_ayuda");
+            if (!SessionManager_460AS.Instancia.IsLogged_460AS())
+            {
+                toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("sesion_no_iniciada");
+                toolStripStatusLabel2.Text = "";
+            }
+            else
+            {
+                ActualizarEstadoSesion();
+            }
+        }
+
+        private void ActualizarEstadoSesion()
+        {
+            if (SessionManager_460AS.Instancia.IsLogged_460AS())
+            {
+                string rol = SessionManager_460AS.Instancia.Usuario.Rol_460AS;
+                string nombreCompleto = $"{SessionManager_460AS.Instancia.Usuario.Nombre_460AS} {SessionManager_460AS.Instancia.Usuario.Apellido_460AS}";
+                string rolTraducido = IdiomaManager_460AS.Instancia.Traducir(rol);
+                toolStripStatusLabel1.Text = rolTraducido;
+                toolStripStatusLabel2.Text = nombreCompleto;
+            }
+            else
+            {
+                toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("sesion_no_iniciada");
+                toolStripStatusLabel2.Text = "";
+            }
+        }
+
+        private void españolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IdiomaManager_460AS.Instancia.CargarIdioma("español");
+        }
+
+        private void inglesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IdiomaManager_460AS.Instancia.CargarIdioma("ingles");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using _460ASBLL;
+using _460ASServicios.Observer;
 using _460ASServicios.Singleton;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class Login_460AS : Form
+    public partial class Login_460AS : Form, IIdiomaObserver_460AS
     {
         BLL460AS_Usuario bllUsuario_460AS;
 
@@ -21,6 +22,8 @@ namespace _460ASGUI
             InitializeComponent();
             bllUsuario_460AS = new BLL460AS_Usuario();
             textBox2.PasswordChar = '*';
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            ActualizarIdioma();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -37,18 +40,19 @@ namespace _460ASGUI
                 switch (ex.Result)
                 {
                     case LoginResult_460AS.InvalidUsername:
-                        MessageBox.Show("Usuario incorrecto");
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_usuario_incorrecto"));
                         break;
                     case LoginResult_460AS.InvalidPassword:
-                        MessageBox.Show("Contraseña incorrecta");
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_contraseña_incorrecta"));
                         break;
                     case LoginResult_460AS.UserInactive:
-                        MessageBox.Show("El usuario está inactivo");
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_usuario_inactivo"));
                         break;
                     case LoginResult_460AS.UserBlocked:
-                        MessageBox.Show("El usuario está bloqueado");
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_usuario_bloqueado"));
                         break;
                     case LoginResult_460AS.UserAlreadyLoggedIn:
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_usuario_logueado"));
                         break;
                 }
             }
@@ -79,13 +83,11 @@ namespace _460ASGUI
             int newX = currentBounds.X;
             int newY = currentBounds.Y;
 
-            // Limitar horizontalmente
             if (currentBounds.Left < parentBounds.Left)
                 newX = parentBounds.Left;
             if (currentBounds.Right > parentBounds.Right)
                 newX = parentBounds.Right - this.Width;
 
-            // Limitar verticalmente
             if (currentBounds.Top < parentBounds.Top)
                 newY = parentBounds.Top;
             if (currentBounds.Bottom > parentBounds.Bottom)
@@ -97,6 +99,15 @@ namespace _460ASGUI
         private void Login_460AS_Load(object sender, EventArgs e)
         {
             this.LocationChanged += Login_460AS_LocationChanged;
+        }
+
+        public void ActualizarIdioma()
+        {
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_usuario");
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_contraseña");
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_ingresar");
+            button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_cancelar");
+            checkBox1.Text = IdiomaManager_460AS.Instancia.Traducir("checkbox_mostrar");
         }
     }
 }

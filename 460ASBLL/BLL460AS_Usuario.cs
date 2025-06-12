@@ -22,7 +22,7 @@ namespace _460ASBLL
 
         public LoginResult_460AS Login_460AS(string login, string password) 
         {
-            if (SessionManager_460AS.Instancia.IsLogged_460AS()) throw new Exception("Ya se ha iniciado sesión");
+            if (SessionManager_460AS.Instancia.IsLogged_460AS()) throw new LoginException_460AS(LoginResult_460AS.UserAlreadyLoggedIn);
             var user = _usuarioDAL.ObtenerUsuarios_460AS().Where(u => u.Login_460AS.Equals(login)).FirstOrDefault();
             if (user == null) throw new LoginException_460AS(LoginResult_460AS.InvalidUsername);           
             if (user.Bloqueado_460AS == true)
