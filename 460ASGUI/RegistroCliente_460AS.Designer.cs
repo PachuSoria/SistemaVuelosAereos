@@ -1,6 +1,6 @@
 ﻿namespace _460ASGUI
 {
-    partial class RegistroCliente_460AScs
+    partial class RegistroCliente_460AS
     {
         /// <summary>
         /// Required designer variable.
@@ -40,6 +40,8 @@
             label5 = new Label();
             label6 = new Label();
             button1 = new Button();
+            textBox5 = new TextBox();
+            label7 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -139,12 +141,31 @@
             button1.TabIndex = 12;
             button1.Text = "Registrar";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
-            // RegistroCliente_460AScs
+            // textBox5
+            // 
+            textBox5.Location = new Point(186, 69);
+            textBox5.Name = "textBox5";
+            textBox5.Size = new Size(111, 23);
+            textBox5.TabIndex = 13;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(186, 51);
+            label7.Name = "label7";
+            label7.Size = new Size(98, 15);
+            label7.TabIndex = 14;
+            label7.Text = "Nro de pasaporte";
+            // 
+            // RegistroCliente_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(412, 306);
+            ClientSize = new Size(429, 306);
+            Controls.Add(label7);
+            Controls.Add(textBox5);
             Controls.Add(button1);
             Controls.Add(label6);
             Controls.Add(label5);
@@ -157,7 +178,7 @@
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             Controls.Add(label1);
-            Name = "RegistroCliente_460AScs";
+            Name = "RegistroCliente_460AS";
             Text = "RegistroCliente_460AS";
             ResumeLayout(false);
             PerformLayout();
@@ -177,5 +198,7 @@
         private Label label5;
         private Label label6;
         private Button button1;
+        private TextBox textBox5;
+        private Label label7;
     }
 }

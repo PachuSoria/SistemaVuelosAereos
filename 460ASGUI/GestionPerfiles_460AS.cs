@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class RegistroCliente_460AScs : Form
+    public partial class GestionPerfiles_460AS : Form
     {
-        public RegistroCliente_460AScs()
+        public GestionPerfiles_460AS()
         {
             InitializeComponent();
         }

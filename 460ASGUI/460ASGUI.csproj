@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\460ASBE\460ASBE.csproj" />
     <ProjectReference Include="..\460ASBLL\460ASBLL.csproj" />
     <ProjectReference Include="..\460ASServicios\460ASServicios.csproj" />
   </ItemGroup>

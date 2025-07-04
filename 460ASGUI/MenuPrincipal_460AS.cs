@@ -34,7 +34,7 @@ namespace _460ASGUI
                 }
             }
             menuStrip1.BackColor = Color.SlateGray;
-            menuStrip1.ForeColor = Color.White;
+            //menuStrip1.ForeColor = Color.White;
             statusStrip1.BackColor = Color.DimGray;
             statusStrip1.ForeColor = Color.WhiteSmoke;
 
@@ -42,6 +42,7 @@ namespace _460ASGUI
             IdiomaManager_460AS.Instancia.CargarIdioma("español");
             ActualizarIdioma();
             ValidarMenuPrincipal_460AS();
+
         }
 
         public void ValidarMenuPrincipal_460AS()
@@ -160,7 +161,6 @@ namespace _460ASGUI
             administradorToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_administrador");
             gestionarUsuariosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_gestionar");
             maestroToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_maestro");
-            vuelosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_vuelos");
             reservasToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_reservas");
             reportesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_reportes");
             idiomaToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_idiomas");
@@ -201,6 +201,34 @@ namespace _460ASGUI
         private void inglesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IdiomaManager_460AS.Instancia.CargarIdioma("ingles");
+        }
+
+        private void registrarReservaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReservaVuelos_460AS formReservaVuelos = new ReservaVuelos_460AS();
+            formReservaVuelos.MdiParent = this;
+            formReservaVuelos.Show();
+        }
+
+        private void gestionarVuelosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionVuelos_460AS formGestionVuelos = new GestionVuelos_460AS();
+            formGestionVuelos.MdiParent = this;
+            formGestionVuelos.Show();
+        }
+
+        private void gestionarAsientosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionAsientos_460AS formGestionAsientos = new GestionAsientos_460AS();
+            formGestionAsientos.MdiParent = this;
+            formGestionAsientos.Show();
+        }
+
+        private void gestionarClientesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionClientes_460AS formGestionClientes = new GestionClientes_460AS();
+            formGestionClientes.MdiParent = this;
+            formGestionClientes.Show();
         }
     }
 }

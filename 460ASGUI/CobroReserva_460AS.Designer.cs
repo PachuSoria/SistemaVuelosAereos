@@ -1,6 +1,6 @@
 ﻿namespace _460ASGUI
 {
-    partial class PagoReserva_460AS
+    partial class CobroReserva_460AS
     {
         /// <summary>
         /// Required designer variable.
@@ -38,6 +38,8 @@
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
+            textBox5 = new TextBox();
+            label6 = new Label();
             button1 = new Button();
             SuspendLayout();
             // 
@@ -120,25 +122,44 @@
             label5.AutoSize = true;
             label5.Location = new Point(29, 169);
             label5.Name = "label5";
-            label5.Size = new Size(43, 15);
+            label5.Size = new Size(29, 15);
             label5.TabIndex = 9;
-            label5.Text = "Monto";
+            label5.Text = "CVV";
+            // 
+            // textBox5
+            // 
+            textBox5.Location = new Point(226, 187);
+            textBox5.Name = "textBox5";
+            textBox5.ReadOnly = true;
+            textBox5.Size = new Size(136, 23);
+            textBox5.TabIndex = 11;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(226, 169);
+            label6.Name = "label6";
+            label6.Size = new Size(70, 15);
+            label6.TabIndex = 12;
+            label6.Text = "Monto total";
             // 
             // button1
             // 
-            button1.Location = new Point(238, 186);
+            button1.Location = new Point(137, 249);
             button1.Name = "button1";
-            button1.Size = new Size(110, 23);
-            button1.TabIndex = 10;
+            button1.Size = new Size(116, 23);
+            button1.TabIndex = 0;
             button1.Text = "Confirmar pago";
-            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
-            // PagoReserva_460AS
+            // CobroReserva_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(417, 253);
+            ClientSize = new Size(412, 315);
             Controls.Add(button1);
+            Controls.Add(label6);
+            Controls.Add(textBox5);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -149,8 +170,8 @@
             Controls.Add(label1);
             Controls.Add(comboBox1);
             Controls.Add(textBox1);
-            Name = "PagoReserva_460AS";
-            Text = "PagoReserva_460AS";
+            Name = "CobroReserva_460AS";
+            Text = "CobroReserva_460AS";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -167,6 +188,8 @@
         private Label label3;
         private Label label4;
         private Label label5;
+        private TextBox textBox5;
+        private Label label6;
         private Button button1;
     }
 }
