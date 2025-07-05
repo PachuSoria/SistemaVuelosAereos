@@ -1,5 +1,6 @@
 ﻿using _460ASBE;
 using _460ASBLL;
+using _460ASServicios.Observer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +13,7 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class SeleccionAsiento_460AS : Form
+    public partial class SeleccionAsiento_460AS : Form, IIdiomaObserver_460AS
     {
         BLL460AS_Asiento bllAsiento_460AS;
         private string codVueloSeleccionado; 
@@ -26,17 +27,19 @@ namespace _460ASGUI
             codVueloSeleccionado = codVuelo;
             radioButton1.Checked = true;
             asientosSeleccionados = new List<Asiento_460AS>();
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            ActualizarIdioma();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                if (dataGridView1.Rows.Count == 0) throw new Exception("Debe seleccionar un asiento");
+                if (dataGridView1.Rows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_asiento_vacio"));
                 string numAsiento = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
                 var asiento = asientosDisponibles.FirstOrDefault(a => a.NumAsiento_460AS == numAsiento);
-                if (!asiento.Disponible_460AS) throw new Exception($"El asiento {numAsiento} esta ocupado");
-                if (asientosSeleccionados.Any(a => a.NumAsiento_460AS == numAsiento)) throw new Exception("Este asiento ya fue agregado");
+                if (!asiento.Disponible_460AS) throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_asiento_ocupado"), numAsiento));
+                if (asientosSeleccionados.Any(a => a.NumAsiento_460AS == numAsiento)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_asiento_agregado"));
                 asientosSeleccionados.Add(asiento);
                 if (!listBox1.Items.Contains(numAsiento)) listBox1.Items.Add(numAsiento);
             }
@@ -53,7 +56,9 @@ namespace _460ASGUI
             {
                 Numero = a.NumAsiento_460AS,
                 Tipo = a.Tipo_460AS.ToString(),
-                Estado = a.Disponible_460AS ? "Disponible" : "Ocupado"
+                Estado = a.Disponible_460AS 
+                ? IdiomaManager_460AS.Instancia.Traducir("Disponible") 
+                : IdiomaManager_460AS.Instancia.Traducir("Ocupado")
             }).ToList();
         }
 
@@ -71,8 +76,8 @@ namespace _460ASGUI
         {
             try
             {
-                if (asientosSeleccionados.Count == 0) throw new Exception("No se seleccionaron asientos");
-                MessageBox.Show("Asientos cargados correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (asientosSeleccionados.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_no_asientos"));
+                MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_asientos_cargados"), "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -85,6 +90,16 @@ namespace _460ASGUI
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        public void ActualizarIdioma()
+        {
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_asientos");
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_tipo");
+            label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_asientos_asignados");
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_agregar_asiento");
+            button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_confirmar_asiento");
+            button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_salir");
         }
     }
 }

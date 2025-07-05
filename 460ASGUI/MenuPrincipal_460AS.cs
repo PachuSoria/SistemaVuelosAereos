@@ -24,7 +24,7 @@ namespace _460ASGUI
             InitializeComponent();
             bllUsuario_460AS = new BLL460AS_Usuario();
             //bllUsuario_460AS.GuardarUsuario_460AS(new Usuario_460AS("12345678", "Agustin", "Soria", "123Agustin",
-            //    "123Soria", "Admin", 42419672, false, true, 0, DateTime.Now));
+            //    "123Soria", "Admin", 42419672, false, true, 0, DateTime.Now, "Español"));
             foreach (Control ctl in this.Controls)
             {
                 if (ctl is MdiClient)
@@ -196,11 +196,23 @@ namespace _460ASGUI
         private void españolToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IdiomaManager_460AS.Instancia.CargarIdioma("español");
+            if (SessionManager_460AS.Instancia.IsLogged_460AS())
+            {
+                var usuario = SessionManager_460AS.Instancia.Usuario;
+                usuario.Idioma_460AS = "Español";
+                bllUsuario_460AS.Actualizar_460AS(usuario);
+            }
         }
 
         private void inglesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IdiomaManager_460AS.Instancia.CargarIdioma("ingles");
+            if (SessionManager_460AS.Instancia.IsLogged_460AS())
+            {
+                var usuario = SessionManager_460AS.Instancia.Usuario;
+                usuario.Idioma_460AS = "Ingles";
+                bllUsuario_460AS.Actualizar_460AS(usuario);
+            }
         }
 
         private void registrarReservaToolStripMenuItem_Click(object sender, EventArgs e)

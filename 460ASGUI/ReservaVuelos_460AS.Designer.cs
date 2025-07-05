@@ -186,7 +186,6 @@
             // 
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Brasil", "España", "Estados Unidos", "Uruguay", "Todos" });
             comboBox1.Location = new Point(32, 304);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(142, 23);

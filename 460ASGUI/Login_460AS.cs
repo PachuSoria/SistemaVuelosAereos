@@ -31,6 +31,7 @@ namespace _460ASGUI
             try
             {
                 var respuesta = bllUsuario_460AS.Login_460AS(this.textBox1.Text, this.textBox2.Text);
+                IdiomaManager_460AS.Instancia.CargarIdioma(SessionManager_460AS.Instancia.Usuario.Idioma_460AS);
                 MenuPrincipal_460AS menu = (MenuPrincipal_460AS)this.MdiParent;
                 menu.ValidarMenuPrincipal_460AS();
                 this.Close();
@@ -40,19 +41,19 @@ namespace _460ASGUI
                 switch (ex.Result)
                 {
                     case LoginResult_460AS.InvalidUsername:
-                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_usuario_incorrecto"));
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_usuario_incorrecto"));
                         break;
                     case LoginResult_460AS.InvalidPassword:
-                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_contraseña_incorrecta"));
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_contraseña_incorrecta"));
                         break;
                     case LoginResult_460AS.UserInactive:
-                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_usuario_inactivo"));
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_usuario_inactivo"));
                         break;
                     case LoginResult_460AS.UserBlocked:
-                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_usuario_bloqueado"));
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_usuario_bloqueado"));
                         break;
                     case LoginResult_460AS.UserAlreadyLoggedIn:
-                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("mensaje_usuario_logueado"));
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_usuario_logueado"));
                         break;
                 }
             }

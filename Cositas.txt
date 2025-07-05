@@ -1,5 +1,7 @@
--Traducir los Si/No de los messagebox
+-Traducir bien todos los messagebox
 -Poner bien la imagen del menu
 -Agregar idioma en el usuario
 -En ingresar al cliente, uso nombre y apellido tambien o solo dni?
 -Probar abm clientes
+-Vencimiento de la tarjeta
+-Corregir las columnas de datagrid gestion usuarios español e ingles

@@ -54,7 +54,6 @@
             // 
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "TarjetaCredito", "TarjetaDebito" });
             comboBox1.Location = new Point(29, 61);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(136, 23);

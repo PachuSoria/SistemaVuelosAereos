@@ -19,8 +19,8 @@ namespace _460ASDAL
 
         public void GuardarUsuario_460AS(Usuario_460AS usuario)
         {
-            string consulta = "INSERT INTO USUARIO_460AS (DNI_460AS, Nombre_460AS, Apellido_460AS, Login_460AS, Password_460AS, Rol_460AS, Telefono_460AS, Bloqueado_460AS, Activo_460AS, Contador_460AS, UltimoIntento_460AS)" +
-                              "VALUES (@DNI_460AS, @Nombre_460AS, @Apellido_460AS, @Login_460AS, @Password_460AS, @Rol_460AS, @Telefono_460AS, @Bloqueado_460AS, @Activo_460AS, @Contador_460AS, @UltimoIntento_460AS)";
+            string consulta = "INSERT INTO USUARIO_460AS (DNI_460AS, Nombre_460AS, Apellido_460AS, Login_460AS, Password_460AS, Rol_460AS, Telefono_460AS, Bloqueado_460AS, Activo_460AS, Contador_460AS, UltimoIntento_460AS, Idioma_460AS)" +
+                              "VALUES (@DNI_460AS, @Nombre_460AS, @Apellido_460AS, @Login_460AS, @Password_460AS, @Rol_460AS, @Telefono_460AS, @Bloqueado_460AS, @Activo_460AS, @Contador_460AS, @UltimoIntento_460AS, @Idioma_460AS)";
             using (SqlConnection conexion = new SqlConnection(cx))
             {
                 conexion.Open();
@@ -37,6 +37,7 @@ namespace _460ASDAL
                     comando.Parameters.AddWithValue("@Activo_460AS", usuario.Activo_460AS);
                     comando.Parameters.AddWithValue("@Contador_460AS", usuario.Contador_460AS);
                     comando.Parameters.AddWithValue("@UltimoIntento_460AS", usuario.UltimoIntento_460AS);
+                    comando.Parameters.AddWithValue("@Idioma_460AS", usuario.Idioma_460AS);
 
                     comando.ExecuteNonQuery();
                 }
@@ -46,7 +47,7 @@ namespace _460ASDAL
         public void ActualizarUsuario_460AS(Usuario_460AS usuario)
         {
             string consulta = "UPDATE USUARIO_460AS SET Nombre_460AS = @Nombre_460AS, Apellido_460AS = @Apellido_460AS, Login_460AS = @Login_460AS, " +
-                     "Password_460AS = @Password_460AS, Rol_460AS = @Rol_460AS, Telefono_460AS = @Telefono_460AS, Bloqueado_460AS = @Bloqueado_460AS, Activo_460AS = @Activo_460AS, Contador_460AS = @Contador_460AS, UltimoIntento_460AS = @UltimoIntento_460AS " +
+                     "Password_460AS = @Password_460AS, Rol_460AS = @Rol_460AS, Telefono_460AS = @Telefono_460AS, Bloqueado_460AS = @Bloqueado_460AS, Activo_460AS = @Activo_460AS, Contador_460AS = @Contador_460AS, UltimoIntento_460AS = @UltimoIntento_460AS, Idioma_460AS = @Idioma_460AS " +
                      "WHERE DNI_460AS = @DNI_460AS";
             using (SqlConnection conexion = new SqlConnection(cx))
             {
@@ -64,6 +65,7 @@ namespace _460ASDAL
                     comando.Parameters.AddWithValue("@Activo_460AS", usuario.Activo_460AS);
                     comando.Parameters.AddWithValue("@Contador_460AS", usuario.Contador_460AS);
                     comando.Parameters.AddWithValue("@UltimoIntento_460AS", usuario.UltimoIntento_460AS);
+                    comando.Parameters.AddWithValue("@Idioma_460AS", usuario.Idioma_460AS);
 
                     comando.ExecuteNonQuery();
                 }
@@ -128,7 +130,8 @@ namespace _460ASDAL
                 while (reader.Read())
                 {
                     Usuario_460AS usuario = new Usuario_460AS(reader["DNI_460AS"].ToString(), reader["Nombre_460AS"].ToString(), reader["Apellido_460AS"].ToString(), reader["Login_460AS"].ToString(),
-                        reader["Password_460AS"].ToString(), reader["Rol_460AS"].ToString(), Convert.ToInt32(reader["Telefono_460AS"]), Convert.ToBoolean(reader["Bloqueado_460AS"]), Convert.ToBoolean(reader["Activo_460AS"].ToString()), Convert.ToInt32(reader["Contador_460AS"]), Convert.ToDateTime(reader["UltimoIntento_460AS"]));
+                        reader["Password_460AS"].ToString(), reader["Rol_460AS"].ToString(), Convert.ToInt32(reader["Telefono_460AS"]), Convert.ToBoolean(reader["Bloqueado_460AS"]), Convert.ToBoolean(reader["Activo_460AS"].ToString()), 
+                        Convert.ToInt32(reader["Contador_460AS"]), Convert.ToDateTime(reader["UltimoIntento_460AS"]), reader["Idioma_460AS"].ToString());
 
                     listaUsuarios.Add(usuario);
                 }

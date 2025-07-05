@@ -1,5 +1,7 @@
 ﻿using _460ASBE;
 using _460ASBLL;
+using _460ASServicios;
+using _460ASServicios.Observer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +15,7 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class GestionClientes_460AS : Form
+    public partial class GestionClientes_460AS : Form, IIdiomaObserver_460AS
     {
         private BLL460AS_Cliente bllCliente_460AS;
         private FormEstado estadoActual = FormEstado.Consulta;
@@ -24,7 +26,9 @@ namespace _460ASGUI
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
             label8.Text = "Modo Consulta";
-            dataGridView1.DataSource = bllCliente_460AS.ObtenerClientes_460AS();
+            ActualizarClientes();
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            ActualizarIdioma();
         }
 
         private enum FormEstado
@@ -58,6 +62,15 @@ namespace _460ASGUI
             textBox4.Clear();
             textBox5.Clear();
             dateTimePicker1.Value = DateTime.Today;
+            button1.Enabled = true;
+            button2.Enabled = true;
+            button3.Enabled = true;
+            button4.Enabled = false;
+            button5.Enabled = false;
+        }
+
+        private void RestaurarBotonesModoConsulta()
+        {
             button1.Enabled = true;
             button2.Enabled = true;
             button3.Enabled = true;
@@ -137,7 +150,7 @@ namespace _460ASGUI
                     var dni = dataGridView1.SelectedRows[0].Cells[0].ToString();
                     bllCliente_460AS.EliminarCliente(dni);
                 }
-                dataGridView1.DataSource = null; dataGridView1.DataSource = bllCliente_460AS.ObtenerClientes_460AS();
+                ActualizarClientes();
             }
             catch (Exception ex)
             {
@@ -151,6 +164,59 @@ namespace _460ASGUI
             estadoActual = FormEstado.Consulta;
             LimpiarCampos();
             HabilitarCampos(false);
+            RestaurarBotonesModoConsulta();
+        }
+
+        public void ActualizarClientes()
+        {
+            dataGridView1.DataSource = bllCliente_460AS.ObtenerClientes_460AS().Select(c => new
+            {
+                DNI = c.DNI_460AS,
+                Nombre = c.Nombre_460AS,
+                Apellido = c.Apellido_460AS,
+                FechaNacimiento = c.FechaNacimiento_460AS.ToShortDateString(),
+                Telefono = c.Telefono_460AS,
+                Pasaporte = Cifrado_460AS.DesencriptarPasaporteAES_460AS(c.NroPasaporte_460AS)
+            }).ToList();
+
+            dataGridView1.Columns[0].HeaderText = IdiomaManager_460AS.Instancia.Traducir("DNI");
+            dataGridView1.Columns[1].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Nombre");
+            dataGridView1.Columns[2].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Apellido");
+            dataGridView1.Columns[3].HeaderText = IdiomaManager_460AS.Instancia.Traducir("FechaNacimiento");
+            dataGridView1.Columns[4].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Telefono");
+            dataGridView1.Columns[5].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Pasaporte");
+        }
+
+        public void ActualizarIdioma()
+        {
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_dni");
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_nombre");
+            label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_apellido");
+            label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_telefono");
+            label5.Text = IdiomaManager_460AS.Instancia.Traducir("label_pasaporte");
+            label6.Text = IdiomaManager_460AS.Instancia.Traducir("label_nacimiento");
+            label7.Text = IdiomaManager_460AS.Instancia.Traducir("label_clientes");
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_añadir");
+            button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_modificar");
+            button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_eliminar");
+            button4.Text = IdiomaManager_460AS.Instancia.Traducir("boton_guardar");
+            button5.Text = IdiomaManager_460AS.Instancia.Traducir("boton_cancelar");
+            switch(estadoActual)
+            {
+                case FormEstado.Consulta:
+                    label8.Text = IdiomaManager_460AS.Instancia.Traducir("modo_consulta");
+                    break;
+                case FormEstado.Agregar:
+                    label8.Text = IdiomaManager_460AS.Instancia.Traducir("modo_añadir");
+                    break;
+                case FormEstado.Modificar:
+                    label8.Text = IdiomaManager_460AS.Instancia.Traducir("modo_modificar");
+                    break;
+                case FormEstado.Eliminar:
+                    label8.Text = IdiomaManager_460AS.Instancia.Traducir("modo_eliminar");
+                    break;
+            }
+            ActualizarClientes();
         }
     }
 }

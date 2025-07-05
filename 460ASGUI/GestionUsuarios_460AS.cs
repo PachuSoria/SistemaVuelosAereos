@@ -79,14 +79,8 @@ namespace _460ASGUI
                                Telefono = x.Telefono_460AS
                            };
                 dataGridView1.DataSource = linq.ToList();
-
-                dataGridView1.Columns[0].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_dni");
-                dataGridView1.Columns[1].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_nombre");
-                dataGridView1.Columns[2].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_apellido");
-                dataGridView1.Columns[3].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_usuario");
-                dataGridView1.Columns[4].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_rol");
-                dataGridView1.Columns[5].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_tel");
             }
+            TraducirEncabezadosGrilla();
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 string dni = row.Cells[0].Value.ToString();
@@ -147,70 +141,66 @@ namespace _460ASGUI
             {
                 if (estadoActual == FormEstado_460AS.Añadir)
                 {
-                    if (textBox1.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_dni_vacio"));
+                    if (textBox1.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_dni_vacio"));
                     string dni = textBox1.Text;
-                    if (!Regex.IsMatch(dni, @"^[0-9]{8}$")) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_dni_invalido"));
-                    if (bllUsuario_460AS.ObtenerUsuarios460AS().Any(x => x.DNI_460AS == dni)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_dni_repetido"));
-                    if (textBox2.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_nombre_vacio"));
+                    if (!Regex.IsMatch(dni, @"^[0-9]{8}$")) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_dni_invalido"));
+                    if (bllUsuario_460AS.ObtenerUsuarios460AS().Any(x => x.DNI_460AS == dni)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_dni_repetido"));
+                    if (textBox2.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_nombre_vacio"));
                     string nombre = textBox2.Text;
-                    if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_apellido_vacio"));
+                    if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_apellido_vacio"));
                     string apellido = textBox3.Text;
-                    if (textBox4.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_telefono_vacio"));
+                    if (textBox4.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_vacio"));
                     string tel = Regex.Replace(textBox4.Text, @"\D", "");
                     if (tel.Length > 8 || tel.Length < 8 || !int.TryParse(tel, out int telefono))
-                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_telefono_invalido"));
+                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_invalido"));
                     if (string.IsNullOrWhiteSpace(comboBox1.Text))
-                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_rol_no_seleccionado"));
+                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_rol_no_seleccionado"));
 
                     string rol = comboBox1.Text;
                     string dniPrefijo = dni.Substring(0, 3);
                     string login = $"{dniPrefijo}{nombre}";
                     string password = $"{dniPrefijo}{apellido}";
-                    bllUsuario_460AS.GuardarUsuario_460AS(new Usuario_460AS(dni, nombre, apellido, login, password, rol, telefono, false, true, 0, DateTime.Now));
+                    bllUsuario_460AS.GuardarUsuario_460AS(new Usuario_460AS(dni, nombre, apellido, login, password, rol, telefono, false, true, 0, DateTime.Now, "Español"));
                     textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear();
                 }
                 else if (estadoActual == FormEstado_460AS.Modificar)
                 {
-                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_usuario_no_seleccionado"));
+                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_usuario_no_seleccionado"));
                     var user = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
                     Usuario_460AS u = bllUsuario_460AS.ObtenerUsuarios460AS().FirstOrDefault(u => u.DNI_460AS == user);
-                    if (textBox2.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_nombre_vacio"));
+                    if (textBox2.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_nombre_vacio"));
                     u.Nombre_460AS = textBox2.Text;
-                    if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_apellido_vacio"));
+                    if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_apellido_vacio"));
                     u.Apellido_460AS = textBox3.Text;
-                    if (textBox4.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_telefono_vacio"));
+                    if (textBox4.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_vacio"));
                     string tel = Regex.Replace(textBox4.Text, @"\D", "");
                     if (tel.Length > 8 || tel.Length < 8 || !int.TryParse(tel, out int telefono))
-                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_telefono_invalido"));
+                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_invalido"));
                     u.Telefono_460AS = telefono;
                     if (string.IsNullOrWhiteSpace(comboBox1.Text))
-                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_rol_no_seleccionado"));
+                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_rol_no_seleccionado"));
                     u.Rol_460AS = comboBox1.Text;
                     bllUsuario_460AS.Actualizar_460AS(u);
                     textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear();
                 }
                 else if (estadoActual == FormEstado_460AS.Desbloquear)
                 {
-                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_usuario_no_seleccionado"));
+                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_usuario_no_seleccionado"));
                     Usuario_460AS user = bllUsuario_460AS.ObtenerUsuarios460AS().FirstOrDefault(u => u.DNI_460AS == dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
-                    if (user.Bloqueado_460AS)
-                        bllUsuario_460AS.Desbloquear_460AS(user);
-                    else
-                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_usuario_no_bloqueado"));
+                    if (user.Bloqueado_460AS) bllUsuario_460AS.Desbloquear_460AS(user);
+                    else throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_usuario_no_bloqueado"));
                 }
                 else if (estadoActual == FormEstado_460AS.Activado)
                 {
-                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("ex_usuario_no_seleccionado"));
+                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_usuario_no_seleccionado"));
                     Usuario_460AS user = bllUsuario_460AS.ObtenerUsuarios460AS().FirstOrDefault(u => u.DNI_460AS == dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
                     if (user.Activo_460AS)
                     {
-                        string mensaje = string.Format(IdiomaManager_460AS.Instancia.Traducir("ex_confirmar_desactivacion"), user.Nombre_460AS, user.Apellido_460AS);
-                        string titulo = IdiomaManager_460AS.Instancia.Traducir("titulo_confirmacion_desactivacion");
+                        string mensaje = string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_ex_confirmar_desactivacion"), user.Nombre_460AS, user.Apellido_460AS);
+                        string titulo = IdiomaManager_460AS.Instancia.Traducir("msg_titulo_confirmacion_desactivacion");
                         DialogResult resultado = MessageBox.Show(mensaje, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (resultado == DialogResult.Yes)
-                            bllUsuario_460AS.Desactivar_460AS(user);
-                        else
-                            return;
+                        if (resultado == DialogResult.Yes) bllUsuario_460AS.Desactivar_460AS(user);
+                        else return;
                     }
                     else
                     {
@@ -221,21 +211,7 @@ namespace _460ASGUI
             }
             catch (Exception ex) 
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    );
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -348,6 +324,20 @@ namespace _460ASGUI
                 case FormEstado_460AS.Activado:
                     label6.Text = IdiomaManager_460AS.Instancia.Traducir("modo_activar");
                     break;
+            }
+            TraducirEncabezadosGrilla();
+        }
+
+        private void TraducirEncabezadosGrilla()
+        {
+            if (dataGridView1.Columns.Count >= 6)
+            {
+                dataGridView1.Columns[0].HeaderText = IdiomaManager_460AS.Instancia.Traducir("DNI");
+                dataGridView1.Columns[1].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Nombre");
+                dataGridView1.Columns[2].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Apellido");
+                dataGridView1.Columns[3].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Username");
+                dataGridView1.Columns[4].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Rol");
+                dataGridView1.Columns[5].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Telefono");
             }
         }
     }

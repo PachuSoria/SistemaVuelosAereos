@@ -19,8 +19,8 @@ namespace _460ASServicios
         public bool Activo_460AS { get; set; }
         public int Contador_460AS { get; set; }
         public DateTime UltimoIntento_460AS { get; set; }
-        //public string Idioma_460AS { get; set; }
-        public Usuario_460AS(string dni_460AS, string nombre_460AS, string apellido_460AS, string login_460AS, string password_460AS, string rol_460AS, int telefono_460AS, bool bloqueado_460AS, bool activo_460AS, int Contador_460AS, DateTime ultimoIntento_460AS /*string idioma_460AS*/)
+        public string Idioma_460AS { get; set; }
+        public Usuario_460AS(string dni_460AS, string nombre_460AS, string apellido_460AS, string login_460AS, string password_460AS, string rol_460AS, int telefono_460AS, bool bloqueado_460AS, bool activo_460AS, int Contador_460AS, DateTime ultimoIntento_460AS, string idioma_460AS)
         {
             DNI_460AS = dni_460AS;
             this.Nombre_460AS = nombre_460AS;
@@ -33,7 +33,7 @@ namespace _460ASServicios
             this.Activo_460AS = activo_460AS;
             this.Contador_460AS = Contador_460AS;
             this.UltimoIntento_460AS = ultimoIntento_460AS;
-            //this.Idioma_460AS = idioma_460AS;
+            this.Idioma_460AS = idioma_460AS;
         }
     }
 }
