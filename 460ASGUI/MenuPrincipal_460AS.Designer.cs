@@ -38,6 +38,7 @@
             maestroToolStripMenuItem = new ToolStripMenuItem();
             gestionarVuelosToolStripMenuItem = new ToolStripMenuItem();
             gestionarAsientosToolStripMenuItem = new ToolStripMenuItem();
+            gestionarClientesToolStripMenuItem = new ToolStripMenuItem();
             reservasToolStripMenuItem = new ToolStripMenuItem();
             registrarReservaToolStripMenuItem = new ToolStripMenuItem();
             reportesToolStripMenuItem = new ToolStripMenuItem();
@@ -48,7 +49,8 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripStatusLabel2 = new ToolStripStatusLabel();
-            gestionarClientesToolStripMenuItem = new ToolStripMenuItem();
+            gestionarPerfilesToolStripMenuItem = new ToolStripMenuItem();
+            gestionarFamiliasToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -93,7 +95,7 @@
             // 
             // administradorToolStripMenuItem
             // 
-            administradorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { gestionarUsuariosToolStripMenuItem });
+            administradorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { gestionarUsuariosToolStripMenuItem, gestionarPerfilesToolStripMenuItem, gestionarFamiliasToolStripMenuItem });
             administradorToolStripMenuItem.Name = "administradorToolStripMenuItem";
             administradorToolStripMenuItem.Size = new Size(95, 20);
             administradorToolStripMenuItem.Text = "Administrador";
@@ -101,7 +103,7 @@
             // gestionarUsuariosToolStripMenuItem
             // 
             gestionarUsuariosToolStripMenuItem.Name = "gestionarUsuariosToolStripMenuItem";
-            gestionarUsuariosToolStripMenuItem.Size = new Size(171, 22);
+            gestionarUsuariosToolStripMenuItem.Size = new Size(180, 22);
             gestionarUsuariosToolStripMenuItem.Text = "Gestionar usuarios";
             gestionarUsuariosToolStripMenuItem.Click += gestionarUsuariosToolStripMenuItem_Click;
             // 
@@ -115,16 +117,23 @@
             // gestionarVuelosToolStripMenuItem
             // 
             gestionarVuelosToolStripMenuItem.Name = "gestionarVuelosToolStripMenuItem";
-            gestionarVuelosToolStripMenuItem.Size = new Size(180, 22);
+            gestionarVuelosToolStripMenuItem.Size = new Size(170, 22);
             gestionarVuelosToolStripMenuItem.Text = "Gestionar vuelos";
             gestionarVuelosToolStripMenuItem.Click += gestionarVuelosToolStripMenuItem_Click;
             // 
             // gestionarAsientosToolStripMenuItem
             // 
             gestionarAsientosToolStripMenuItem.Name = "gestionarAsientosToolStripMenuItem";
-            gestionarAsientosToolStripMenuItem.Size = new Size(180, 22);
+            gestionarAsientosToolStripMenuItem.Size = new Size(170, 22);
             gestionarAsientosToolStripMenuItem.Text = "Gestionar asientos";
             gestionarAsientosToolStripMenuItem.Click += gestionarAsientosToolStripMenuItem_Click;
+            // 
+            // gestionarClientesToolStripMenuItem
+            // 
+            gestionarClientesToolStripMenuItem.Name = "gestionarClientesToolStripMenuItem";
+            gestionarClientesToolStripMenuItem.Size = new Size(170, 22);
+            gestionarClientesToolStripMenuItem.Text = "Gestionar clientes";
+            gestionarClientesToolStripMenuItem.Click += gestionarClientesToolStripMenuItem_Click;
             // 
             // reservasToolStripMenuItem
             // 
@@ -192,12 +201,19 @@
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             toolStripStatusLabel2.Size = new Size(0, 17);
             // 
-            // gestionarClientesToolStripMenuItem
+            // gestionarPerfilesToolStripMenuItem
             // 
-            gestionarClientesToolStripMenuItem.Name = "gestionarClientesToolStripMenuItem";
-            gestionarClientesToolStripMenuItem.Size = new Size(180, 22);
-            gestionarClientesToolStripMenuItem.Text = "Gestionar clientes";
-            gestionarClientesToolStripMenuItem.Click += gestionarClientesToolStripMenuItem_Click;
+            gestionarPerfilesToolStripMenuItem.Name = "gestionarPerfilesToolStripMenuItem";
+            gestionarPerfilesToolStripMenuItem.Size = new Size(180, 22);
+            gestionarPerfilesToolStripMenuItem.Text = "Gestionar perfiles";
+            gestionarPerfilesToolStripMenuItem.Click += gestionarPerfilesToolStripMenuItem_Click;
+            // 
+            // gestionarFamiliasToolStripMenuItem
+            // 
+            gestionarFamiliasToolStripMenuItem.Name = "gestionarFamiliasToolStripMenuItem";
+            gestionarFamiliasToolStripMenuItem.Size = new Size(180, 22);
+            gestionarFamiliasToolStripMenuItem.Text = "Gestionar familias";
+            gestionarFamiliasToolStripMenuItem.Click += gestionarFamiliasToolStripMenuItem_Click;
             // 
             // MenuPrincipal_460AS
             // 
@@ -243,5 +259,7 @@
         private ToolStripMenuItem gestionarVuelosToolStripMenuItem;
         private ToolStripMenuItem gestionarAsientosToolStripMenuItem;
         private ToolStripMenuItem gestionarClientesToolStripMenuItem;
+        private ToolStripMenuItem gestionarPerfilesToolStripMenuItem;
+        private ToolStripMenuItem gestionarFamiliasToolStripMenuItem;
     }
 }

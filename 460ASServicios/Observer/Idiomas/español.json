@@ -12,6 +12,12 @@
   "menu_reportes": "Reportes",
   "menu_idiomas": "Idiomas",
   "menu_ayuda": "Ayuda",
+  "menu_abm_vuelos": "Gestionar vuelos",
+  "menu_abm_asientos": "Gestionar asientos",
+  "menu_abm_clientes": "Gestionar clientes",
+  "menu_registrar_reserva": "Registrar reserva",
+  "menu_español": "Español",
+  "menu_ingles" :  "Ingles",
 
   //LABELS
   "label_usuario": "Nombre de usuario",

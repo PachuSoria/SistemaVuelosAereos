@@ -12,33 +12,31 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class GestionPerfiles_460AS : Form
+    public partial class GestionFamilias_460AS : Form
     {
-        private BLL460AS_Perfil _bllPerfil = new BLL460AS_Perfil();
-        private BLL460AS_Permiso _bllPermiso = new BLL460AS_Permiso();
         private BLL460AS_Familia _bllFamilia = new BLL460AS_Familia();
-        private List<Perfil_460AS> _perfiles;
-        public GestionPerfiles_460AS()
+        private BLL460AS_Permiso _bllPermiso = new BLL460AS_Permiso();
+        private List<Familia_460AS> _familias;
+        public GestionFamilias_460AS()
         {
             InitializeComponent();
-            CargarPerfiles();
-            CargarPermisos();
+            CargarFamilias();
+            CargarComponentes();
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
-
         }
 
-        private void CargarPerfiles()
+        private void CargarFamilias()
         {
             listBox1.Items.Clear();
-            _perfiles = _bllPerfil.ObtenerTodosLosPerfiles().ToList();
+            _familias = _bllFamilia.ObtenerTodasLasFamilias().ToList();
 
-            foreach (var perfil in _perfiles)
+            foreach (var familia in _familias)
             {
-                listBox1.Items.Add(perfil);
+                listBox1.Items.Add(familia);
             }
         }
 
-        private void CargarPermisos()
+        private void CargarComponentes()
         {
             treeView1.Nodes.Clear();
 
@@ -73,13 +71,11 @@ namespace _460ASGUI
         {
             textBox1.Clear();
             textBox2.Clear();
-            treeView1.Enabled = true;
-
             foreach (TreeNode nodoRaiz in treeView1.Nodes)
             {
-                foreach (TreeNode hijo in nodoRaiz.Nodes)
+                foreach (TreeNode nodo in nodoRaiz.Nodes)
                 {
-                    hijo.Checked = false;
+                    nodo.Checked = false;
                 }
             }
         }
@@ -89,11 +85,10 @@ namespace _460ASGUI
             try
             {
                 LimpiarCampos();
-                treeView1.Enabled = true;
             }
-            catch
+            catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -103,7 +98,7 @@ namespace _460ASGUI
             {
                 string codigo = textBox1.Text;
                 string nombre = textBox2.Text;
-                Perfil_460AS perfil = new Perfil_460AS(codigo, nombre);
+                Familia_460AS familia = new Familia_460AS(codigo, nombre);
 
                 foreach (TreeNode nodoRaiz in treeView1.Nodes)
                 {
@@ -112,17 +107,16 @@ namespace _460ASGUI
                         if (nodo.Checked)
                         {
                             if (nodo.Tag is Permiso_460AS permiso)
-                                perfil.AgregarHijo(permiso);
-
-                            if (nodo.Tag is Familia_460AS familia)
-                                perfil.AgregarHijo(familia);
+                                familia.AgregarHijo(permiso);
+                            else if (nodo.Tag is Familia_460AS familiaHija)
+                                familia.AgregarHijo(familiaHija);
                         }
                     }
                 }
 
-                _bllPerfil.RegistrarPerfil_460AS(perfil);
-                MessageBox.Show("Perfil guardado correctamente");
-                CargarPerfiles();
+                _bllFamilia.RegistrarFamilia(familia);
+                MessageBox.Show("Familia guardada correctamente");
+                CargarFamilias();
                 LimpiarCampos();
             }
             catch (Exception ex)
@@ -137,7 +131,7 @@ namespace _460ASGUI
             {
                 string codigo = textBox1.Text;
                 string nombre = textBox2.Text;
-                Perfil_460AS perfil = new Perfil_460AS(codigo, nombre);
+                Familia_460AS familia = new Familia_460AS(codigo, nombre);
 
                 foreach (TreeNode nodoRaiz in treeView1.Nodes)
                 {
@@ -146,17 +140,16 @@ namespace _460ASGUI
                         if (nodo.Checked)
                         {
                             if (nodo.Tag is Permiso_460AS permiso)
-                                perfil.AgregarHijo(permiso);
-
-                            if (nodo.Tag is Familia_460AS familia)
-                                perfil.AgregarHijo(familia);
+                                familia.AgregarHijo(permiso);
+                            else if (nodo.Tag is Familia_460AS familiaHija)
+                                familia.AgregarHijo(familiaHija);
                         }
                     }
                 }
 
-                _bllPerfil.ModificarPerfil_460AS(perfil);
-                MessageBox.Show("Perfil modificado correctamente");
-                CargarPerfiles();
+                _bllFamilia.ModificarFamilia(familia);
+                MessageBox.Show("Familia modificada correctamente");
+                CargarFamilias();
                 LimpiarCampos();
             }
             catch (Exception ex)
@@ -169,15 +162,15 @@ namespace _460ASGUI
         {
             try
             {
-                if (listBox1.SelectedItem is Perfil_460AS perfil)
+                if (listBox1.SelectedItem is Familia_460AS familia)
                 {
-                    if (MessageBox.Show("¿Está seguro de eliminar este perfil?", "Confirmación", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("¿Está seguro de eliminar esta familia?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         try
                         {
-                            _bllPerfil.EliminarPerfil_460AS(perfil.Codigo_460AS);
-                            MessageBox.Show("Perfil eliminado correctamente");
-                            CargarPerfiles();
+                            _bllFamilia.EliminarFamilia(familia.Codigo_460AS);
+                            MessageBox.Show("Familia eliminada correctamente");
+                            CargarFamilias();
                             LimpiarCampos();
                         }
                         catch (Exception ex)
@@ -195,10 +188,10 @@ namespace _460ASGUI
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBox1.SelectedItem is Perfil_460AS perfilSeleccionado)
+            if (listBox1.SelectedItem is Familia_460AS familiaSeleccionada)
             {
-                textBox1.Text = perfilSeleccionado.Codigo_460AS;
-                textBox2.Text = perfilSeleccionado.Nombre_460AS;
+                textBox1.Text = familiaSeleccionada.Codigo_460AS;
+                textBox2.Text = familiaSeleccionada.Nombre_460AS;
 
                 foreach (TreeNode nodoRaiz in treeView1.Nodes)
                 {
@@ -208,7 +201,7 @@ namespace _460ASGUI
                     }
                 }
 
-                var hijos = perfilSeleccionado.ObtenerHijos();
+                var hijos = familiaSeleccionada.ObtenerHijos();
 
                 foreach (var hijo in hijos)
                 {
@@ -216,25 +209,19 @@ namespace _460ASGUI
                     {
                         foreach (TreeNode nodo in nodoRaiz.Nodes)
                         {
-                            if (nodo.Tag is Permiso_460AS permisoNodo && hijo is Permiso_460AS permisoPerfil)
+                            if (nodo.Tag is Permiso_460AS permisoNodo && hijo is Permiso_460AS permiso)
                             {
-                                if (permisoNodo.Codigo_460AS == permisoPerfil.Codigo_460AS)
-                                {
+                                if (permisoNodo.Codigo_460AS == permiso.Codigo_460AS)
                                     nodo.Checked = true;
-                                }
                             }
-                            else if (nodo.Tag is Familia_460AS familiaNodo && hijo is Familia_460AS familiaPerfil)
+                            else if (nodo.Tag is Familia_460AS familiaNodo && hijo is Familia_460AS familia)
                             {
-                                if (familiaNodo.Codigo_460AS == familiaPerfil.Codigo_460AS)
-                                {
+                                if (familiaNodo.Codigo_460AS == familia.Codigo_460AS)
                                     nodo.Checked = true;
-                                }
                             }
                         }
                     }
                 }
-
-                treeView1.Enabled = true;
             }
         }
     }

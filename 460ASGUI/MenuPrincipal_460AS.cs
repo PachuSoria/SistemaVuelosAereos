@@ -165,6 +165,12 @@ namespace _460ASGUI
             reportesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_reportes");
             idiomaToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_idiomas");
             ayudaToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_ayuda");
+            gestionarVuelosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_abm_vuelos");
+            gestionarAsientosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_abm_asientos");
+            gestionarClientesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_abm_clientes");
+            registrarReservaToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_registrar_reserva");
+            españolToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_español");
+            inglesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_ingles");
             if (!SessionManager_460AS.Instancia.IsLogged_460AS())
             {
                 toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("sesion_no_iniciada");
@@ -241,6 +247,20 @@ namespace _460ASGUI
             GestionClientes_460AS formGestionClientes = new GestionClientes_460AS();
             formGestionClientes.MdiParent = this;
             formGestionClientes.Show();
+        }
+
+        private void gestionarPerfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionPerfiles_460AS formGestionPerfiles = new GestionPerfiles_460AS();
+            formGestionPerfiles.MdiParent = this;
+            formGestionPerfiles.Show();
+        }
+
+        private void gestionarFamiliasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionFamilias_460AS formGestionFamilias = new GestionFamilias_460AS();
+            formGestionFamilias.MdiParent = this;
+            formGestionFamilias.Show();
         }
     }
 }

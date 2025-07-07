@@ -12,6 +12,12 @@
   "menu_reportes": "Reports",
   "menu_idiomas": "Languages",
   "menu_ayuda": "Help",
+  "menu_abm_vuelos": "Manage Flights",
+  "menu_abm_asientos": "Manage Seats",
+  "menu_abm_clientes": "Manage Clients",
+  "menu_registrar_reserva": "Register Booking",
+  "menu_español": "Spanish",
+  "menu_ingles": "English",
 
   //LABELS
   "label_usuario": "Username",
@@ -47,7 +53,7 @@
   "label_precio": "Price",
   "label_salida": "Departure Date",
   "label_llegada": "Arrival Date",
-  "label_clientes" :  "Clients",
+  "label_clientes": "Clients",
 
   //BOTONES
   "boton_ingresar": "Login",
@@ -182,5 +188,5 @@
   "Telefono": "Phone",
   "Pasaporte": "Passport Number",
   "Rol": "Role",
-  "Username" :  "Username"
+  "Username": "Username"
 }
