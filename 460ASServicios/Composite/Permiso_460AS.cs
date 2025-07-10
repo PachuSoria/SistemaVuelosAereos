@@ -11,27 +11,43 @@ namespace _460ASServicios.Composite
         public string Codigo_460AS { get; set; }
         public string Nombre_460AS { get; set; }
         public string Descripcion_460AS { get; set; }
-        public Permiso_460AS(string codigo, string nombre) 
+        public Permiso_460AS(string codigo, string nombre, string descripcion = null)
         {
             Codigo_460AS = codigo;
             Nombre_460AS = nombre;
+            Descripcion_460AS = descripcion;
         }
 
-        public void AgregarHijo(IComponentePermiso_460AS hijo)
+        public Permiso_460AS() { }
+
+        public void AgregarHijo(IComponentePermiso_460AS componente)
         {
-            throw new InvalidOperationException("Un permiso no puede tener hijos");
+            throw new NotImplementedException("No se pueden agregar hijos a un permiso simple.");
         }
 
-        public void EliminarHijo(IComponentePermiso_460AS hijo)
+        public void EliminarHijo(IComponentePermiso_460AS componente)
         {
-            throw new InvalidOperationException("Un permiso no puede eliminar hijos");
+            throw new NotImplementedException("No se pueden eliminar hijos de un permiso simple.");
         }
 
-        public bool EsIgual(IComponentePermiso_460AS otro) =>
-            otro != null && otro.Codigo_460AS == this.Codigo_460AS;
+        public IComponentePermiso_460AS ObtenerHijo(IComponentePermiso_460AS componente)
+        {
+            return null;
+        }
 
-        public List<IComponentePermiso_460AS> ObtenerHijos() => new List<IComponentePermiso_460AS>();
+        public List<IComponentePermiso_460AS> ObtenerHijos()
+        {
+            return new List<IComponentePermiso_460AS>();
+        }
 
-        public List<Permiso_460AS> ObtenerPermisos() => new List<Permiso_460AS> { this };
+        public List<Permiso_460AS> ObtenerPermisosSimples()
+        {
+            return new List<Permiso_460AS> { this };
+        }
+
+        public override string ToString()
+        {
+            return $"{Nombre_460AS} ({Codigo_460AS})";
+        }
     }
 }

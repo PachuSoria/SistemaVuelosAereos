@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace _460ASBLL
 {
@@ -14,6 +15,11 @@ namespace _460ASBLL
         public BLL460AS_Comprobante()
         {
             _comprobanteDAL = new DAL460AS_Comprobante();
+        }
+
+        public List<Comprobante_460AS> ObtenerComprobantes_460AS()
+        {
+            return _comprobanteDAL.ObtenerTodos_460AS();
         }
 
         public void GuardarComprobante_460AS(Comprobante_460AS comprobante)

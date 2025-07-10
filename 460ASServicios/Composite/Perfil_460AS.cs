@@ -8,48 +8,42 @@ namespace _460ASServicios.Composite
 {
     public class Perfil_460AS : IComponentePermiso_460AS
     {
-        public string Codigo_460AS { get; set; }
-        public string Nombre_460AS { get; set; }
-        private List<IComponentePermiso_460AS> _hijos;
+        public string Codigo_460AS {  get; set; }
+        public string Nombre_460AS { get; set;  }
+        private List<IComponentePermiso_460AS> _hijos = new();
+        public Perfil_460AS () { }
+
         public Perfil_460AS(string codigo, string nombre)
         {
             Codigo_460AS = codigo;
             Nombre_460AS = nombre;
-            _hijos = new List<IComponentePermiso_460AS>();
         }
 
-        public void AgregarHijo(IComponentePermiso_460AS hijo)
+        public void AgregarHijo(IComponentePermiso_460AS componente)
         {
-            _hijos.Add(hijo);
+            _hijos.Add(componente);
         }
 
-        public void EliminarHijo(IComponentePermiso_460AS hijo)
+        public void EliminarHijo(IComponentePermiso_460AS componente)
         {
-            _hijos.Remove(hijo);
+            _hijos.Remove(componente);
         }
 
-        public bool EsIgual(IComponentePermiso_460AS otro)
+        public IComponentePermiso_460AS ObtenerHijo(IComponentePermiso_460AS componente)
         {
-            if (otro is Perfil_460AS otroPerfil)
-            {
-                return this.Codigo_460AS == otroPerfil.Codigo_460AS;
-            }
-            return false;
-        }
-
-        public List<Permiso_460AS> ObtenerPermisos()
-        {
-            List<Permiso_460AS> todosLosPermisos = new List<Permiso_460AS>();
-            foreach (var hijo in _hijos)
-            {
-                todosLosPermisos.AddRange(hijo.ObtenerPermisos());
-            }
-            return todosLosPermisos;
+            return _hijos.FirstOrDefault(h => h.Codigo_460AS == componente.Codigo_460AS);
         }
 
         public List<IComponentePermiso_460AS> ObtenerHijos()
         {
-            return new List<IComponentePermiso_460AS>(_hijos); 
+            return new List<IComponentePermiso_460AS>(_hijos);
+        }
+
+        public List<Permiso_460AS> ObtenerPermisosSimples()
+        {
+            var permisos = new List<Permiso_460AS>();
+            foreach (var hijo in _hijos) permisos.AddRange(hijo.ObtenerPermisosSimples());
+            return permisos;
         }
 
         public override string ToString()

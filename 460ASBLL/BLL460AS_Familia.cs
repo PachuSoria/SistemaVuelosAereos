@@ -1,5 +1,6 @@
 ﻿using _460ASDAL;
 using _460ASServicios.Composite;
+using _460ASServicios.Observer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,173 +9,292 @@ using System.Threading.Tasks;
 
 namespace _460ASBLL
 {
-    public class BLL460AS_Familia
+    public class BLL460AS_Familia : IIdiomaObserver_460AS
     {
-        private DAL460AS_Familia _dalFamilia;
-        private DAL460AS_Permiso _dalPermiso; 
+        private DAL460AS_Familia dalFamilia_460AS;
+        private DAL460AS_Permiso dalPermiso_460AS;
 
         public BLL460AS_Familia()
         {
-            _dalFamilia = new DAL460AS_Familia();
-            _dalPermiso = new DAL460AS_Permiso();
+            dalFamilia_460AS = new DAL460AS_Familia();
+            dalPermiso_460AS = new DAL460AS_Permiso();
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            ActualizarIdioma();
         }
 
-        public void RegistrarFamilia(Familia_460AS familia)
+
+        public bool FamiliaEnUso_460AS(string codFamilia)
         {
-            if (familia == null)
+            var permisos = dalFamilia_460AS.ObtenerPermisosDeFamilia_460AS(codFamilia);
+            if (permisos.Count > 0)
+                return true;
+
+            var familiasHijas = dalFamilia_460AS.ObtenerFamiliasHijas_460AS(new Familia_460AS { Codigo_460AS = codFamilia });
+            if (familiasHijas.Count > 0)
+                return true;
+
+            return false; 
+        }
+
+        public void ValidarNoCicloInvertido_460AS(Familia_460AS padre, Familia_460AS hija)
+        {
+            var descendientesDeHija = ObtenerFamiliasHijasRecursivas_460AS(hija);
+            if (descendientesDeHija.Any(f => f.Codigo_460AS == padre.Codigo_460AS))
             {
-                throw new ArgumentNullException(nameof(familia));
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ciclo_invertido")
+                .Replace("{hija}", hija.Codigo_460AS)
+                .Replace("{padre}", padre.Codigo_460AS));
             }
-            if (string.IsNullOrWhiteSpace(familia.Codigo_460AS))
-            {
-                throw new ArgumentException("El código de la familia es obligatorio.");
-            }
+        }
+
+        public void EliminarFamilia_460AS(Familia_460AS familia)
+        {
+            if (FamiliaEnUso_460AS(familia.Codigo_460AS))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_eliminar_familia_en_uso"));
+            var bllPerfil = new BLL460AS_Perfil();
+            if (bllPerfil.FamiliaAsignadaAPerfil_460AS(familia.Codigo_460AS))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_eliminar_familia_asignada_perfil"));
+
+            var familiasPadres = dalFamilia_460AS.ObtenerFamiliasPadres_460AS(familia);
+            if (familiasPadres.Count > 0)
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_eliminar_familia_asignada_hija"));
+
+            dalFamilia_460AS.EliminarTodasRelacionesFamilia_460AS(familia);
+
+            dalFamilia_460AS.Eliminar_460AS(familia);
+        }
+
+        public void EliminarRelacionFamilia_460AS(Familia_460AS familiaPadre, Familia_460AS familiaHijo)
+        {
+            if (familiaPadre == null || familiaHijo == null)
+                throw new ArgumentNullException(IdiomaManager_460AS.Instancia.Traducir("msg_argumento_nulo_familia_padre_hija"));
+
+            if (familiaPadre.Codigo_460AS == familiaHijo.Codigo_460AS)
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_relacion_con_sigo_misma"));
+
+            dalFamilia_460AS.EliminarRelacionFamilia_460AS(familiaPadre, familiaHijo);
+        }
+
+        private void ValidarFamiliaUnica_460AS(string codigo)
+        {
+            var familias = dalFamilia_460AS.ObtenerTodas_460AS();
+            if (familias.Any(f => f.Codigo_460AS == codigo))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_codigo_repetido").Replace("{codigo}", codigo));
+        }
+
+        public void GuardarFamilia_460AS(Familia_460AS familia)
+        {
+            ValidarFamiliaUnica_460AS(familia.Codigo_460AS);
+
             if (string.IsNullOrWhiteSpace(familia.Nombre_460AS))
-            {
-                throw new ArgumentException("El nombre de la familia es obligatorio.");
-            }
-
-            if (_dalFamilia.ObtenerPorCodigo_460AS(familia.Codigo_460AS) != null)
-            {
-                throw new InvalidOperationException($"Ya existe una familia con el código '{familia.Codigo_460AS}'.");
-            }
-
-            foreach (var hijo in familia.ObtenerHijos())
-            {
-                if (hijo is Permiso_460AS permiso)
-                {
-                    if (_dalPermiso.ObtenerPorCodigo_460AS(permiso.Codigo_460AS) == null)
-                    {
-                        throw new InvalidOperationException($"El permiso con código '{permiso.Codigo_460AS}' no existe y no puede ser asignado a la familia.");
-                    }
-                }
-                else if (hijo is Familia_460AS familiaHija) // Familia anidada
-                {
-                    // Para familias anidadas:
-                    // 1. La familia hija debe existir en la base de datos (o se debería registrar primero).
-                    // 2. Se deben evitar ciclos recursivos (una familia no puede contenerse a sí misma directa o indirectamente).
-                    // La DAL ya maneja la prevención de ciclos en la carga con 'loadedComponents'.
-                    // Aquí solo validamos que la familia hija, si ya existe en la DB, pueda ser asignada.
-                    // Si la familiaHija aún no existe en la DB, se esperaría que se registre por separado.
-                    if (familiaHija.Codigo_460AS == familia.Codigo_460AS)
-                    {
-                        throw new InvalidOperationException("Una familia no puede contenerse a sí misma");
-                    }
-                    if (_dalFamilia.ObtenerPorCodigo_460AS(familiaHija.Codigo_460AS) == null)
-                    {
-                        throw new InvalidOperationException($"La familia hija con código '{familiaHija.Codigo_460AS}' no existe y no puede ser asignada.");
-                    }
-                }
-            }
-
-            try
-            {
-                _dalFamilia.Guardar_460AS(familia);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al registrar la familia.", ex);
-            }
-        }
-
-        public void ModificarFamilia(Familia_460AS familia)
-        {
-            if (familia == null)
-            {
-                throw new ArgumentNullException(nameof(familia));
-            }
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_nombre_familia_vacio"));
             if (string.IsNullOrWhiteSpace(familia.Codigo_460AS))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_codigo_familia_vacio"));
+
+            dalFamilia_460AS.GuardarFamilia_460AS(familia);
+        }
+
+        public void AgregarPermisoAFamilia_460AS(string codFamilia, string codPermiso)
+        {
+            var familias = dalFamilia_460AS.ObtenerTodas_460AS();
+            if (!familias.Any(f => f.Codigo_460AS == codFamilia))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_existe").Replace("{codigo}", codFamilia));
+
+            var permisos = dalPermiso_460AS.ObtenerTodos_460AS();
+            if (!permisos.Any(p => p.Codigo_460AS == codPermiso))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_no_existe").Replace("{codigo}", codPermiso));
+
+            var permisosFamilia = dalFamilia_460AS.ObtenerPermisosDeFamilia_460AS(codFamilia);
+            if (permisosFamilia.Any(p => p.Codigo_460AS == codPermiso))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_ya_asignado_a_familia"));
+
+            var padres = ObtenerFamiliasPadre_460AS(new Familia_460AS { Codigo_460AS = codFamilia });
+            foreach (var padre in padres)
             {
-                throw new ArgumentException("El código de la familia es obligatorio para la modificación.");
-            }
-            if (string.IsNullOrWhiteSpace(familia.Nombre_460AS))
-            {
-                throw new ArgumentException("El nombre de la familia es obligatorio.");
+                var permisosPadre = ObtenerPermisosHeredados_460AS(padre.Codigo_460AS);
+                if (permisosPadre.Any(p => p.Codigo_460AS == codPermiso))
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_heredado_no_asignar"));
             }
 
-            if (_dalFamilia.ObtenerPorCodigo_460AS(familia.Codigo_460AS) == null)
+            dalFamilia_460AS.AgregarPermisoAFamilia_460AS(codFamilia, codPermiso);
+        }
+
+        public List<Familia_460AS> ObtenerFamiliasPadre_460AS(Familia_460AS familiaHija)
+        {
+            if (familiaHija == null || string.IsNullOrWhiteSpace(familiaHija.Codigo_460AS))
+                throw new ArgumentException(IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_invalida"));
+
+            return dalFamilia_460AS.ObtenerFamiliasPadres_460AS(familiaHija);
+        }
+
+        public void EliminarPermisoDeFamilia_460AS(string codFamilia, string codPermiso)
+        {
+            var familias = dalFamilia_460AS.ObtenerTodas_460AS();
+            if (!familias.Any(f => f.Codigo_460AS == codFamilia))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_existe").Replace("{codigo}", codFamilia));
+
+            var permisos = dalPermiso_460AS.ObtenerTodos_460AS();
+            if (!permisos.Any(p => p.Codigo_460AS == codPermiso))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_no_existe").Replace("{codigo}", codPermiso));
+
+            dalFamilia_460AS.EliminarPermisoDeFamilia_460AS(codFamilia, codPermiso);
+        }
+
+        public List<Permiso_460AS> ObtenerPermisosDeFamilia_460AS(string codFamilia)
+        {
+            return dalFamilia_460AS.ObtenerPermisosDeFamilia_460AS(codFamilia);
+        }
+
+
+        public List<Familia_460AS> ObtenerTodas_460AS()
+        {
+            return dalFamilia_460AS.ObtenerTodas_460AS();
+        }
+
+        public List<Familia_460AS> ObtenerFamiliasHijas_460AS(Familia_460AS familia)
+        {
+            if (familia == null || string.IsNullOrWhiteSpace(familia.Codigo_460AS))
+                throw new ArgumentException(IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_invalida"));
+
+            return dalFamilia_460AS.ObtenerFamiliasHijas_460AS(familia);
+        }
+
+        public Familia_460AS ObtenerFamiliaPorCodigo_460AS(string codigo)
+        {
+            return dalFamilia_460AS.ObtenerTodas_460AS().FirstOrDefault(f => f.Codigo_460AS == codigo);
+        }
+
+        public void EliminarHijo_460AS(Familia_460AS familiaPadre, object hijo)
+        {
+            if (familiaPadre == null)
+                throw new ArgumentNullException(IdiomaManager_460AS.Instancia.Traducir("msg_familia_padre_nulo"));
+
+            if (hijo == null)
+                throw new ArgumentNullException(IdiomaManager_460AS.Instancia.Traducir("msg_hijo_nulo"));
+
+            var permisosDirectos = ObtenerPermisosDeFamilia_460AS(familiaPadre.Codigo_460AS);
+            var familiasHijasDirectas = ObtenerFamiliasHijas_460AS(familiaPadre);
+
+            if (hijo is Permiso_460AS permiso)
             {
-                throw new InvalidOperationException($"La familia con código '{familia.Codigo_460AS}' no existe y no puede ser modificada.");
+                bool perteneceDirectamente = permisosDirectos.Any(p => p.Codigo_460AS == permiso.Codigo_460AS);
+                if (!perteneceDirectamente)
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_no_hijo_directo"));
+
+                EliminarPermisoDeFamilia_460AS(familiaPadre.Codigo_460AS, permiso.Codigo_460AS);
+            }
+            else if (hijo is Familia_460AS hija)
+            {
+                bool perteneceDirectamente = familiasHijasDirectas.Any(f => f.Codigo_460AS == hija.Codigo_460AS);
+                if (!perteneceDirectamente)
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_hija_directa"));
+
+                EliminarRelacionFamilia_460AS(familiaPadre, hija);
+            }
+            else
+            {
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_tipo_hijo_no_reconocido"));
+
+            }
+        }
+
+        public void AsignarFamiliaHija_460AS(Familia_460AS padre, Familia_460AS hija)
+        {
+            if (padre.Codigo_460AS == hija.Codigo_460AS)
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_igual_a_su_misma"));
+
+            if (ExisteCicloFamilia_460AS(hija, padre))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_jerarquia_rota"));
+
+            var descendientesDePadre = ObtenerFamiliasHijasRecursivas_460AS(padre);
+            if (descendientesDePadre.Any(f => f.Codigo_460AS == hija.Codigo_460AS))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_ya_asignada_indirectamente"));
+
+            var familiasHijasDirectas = ObtenerFamiliasHijas_460AS(padre);
+            if (familiasHijasDirectas.Any(f => f.Codigo_460AS == hija.Codigo_460AS))
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_ya_asignada_directamente")
+                    .Replace("{hija}", hija.Codigo_460AS).Replace("{padre}", padre.Codigo_460AS));
+
+            var permisosHija = ObtenerPermisosDeFamilia_460AS(hija.Codigo_460AS);
+            if (permisosHija == null || permisosHija.Count == 0)
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_sin_permisos"));
+
+            ValidarNoCicloInvertido_460AS(padre, hija);
+            ValidarPermisosDuplicados_460AS(padre, hija);
+            dalFamilia_460AS.GuardarFamiliaFamilia_460AS(padre, hija);
+        }
+
+        private bool ExisteCicloFamilia_460AS(Familia_460AS padre, Familia_460AS hija)
+        {
+            if (padre.Codigo_460AS == hija.Codigo_460AS)
+                return true;
+
+            var familiasHijas = ObtenerFamiliasHijas_460AS(hija);
+
+            foreach (var famHija in familiasHijas)
+            {
+                if (ExisteCicloFamilia_460AS(padre, famHija))
+                    return true;
             }
 
-            foreach (var hijo in familia.ObtenerHijos())
+            return false;
+        }
+
+        public List<Permiso_460AS> ObtenerPermisosHeredados_460AS(string codFamilia)
+        {
+            var resultado = new List<Permiso_460AS>();
+
+            var permisosDirectos = ObtenerPermisosDeFamilia_460AS(codFamilia);
+            resultado.AddRange(permisosDirectos);
+
+            var familiaPadre = ObtenerFamiliaPorCodigo_460AS(codFamilia);
+            var hijas = ObtenerFamiliasHijas_460AS(familiaPadre);
+
+            foreach (var hija in hijas)
             {
-                if (hijo is Permiso_460AS permiso)
+                var permisosHijas = ObtenerPermisosHeredados_460AS(hija.Codigo_460AS);
+
+                foreach (var permiso in permisosHijas)
                 {
-                    if (_dalPermiso.ObtenerPorCodigo_460AS(permiso.Codigo_460AS) == null)
-                    {
-                        throw new InvalidOperationException($"El permiso con código '{permiso.Codigo_460AS}' no existe y no puede ser asignado a la familia.");
-                    }
-                }
-                else if (hijo is Familia_460AS familiaHija)
-                {
-                    if (familiaHija.Codigo_460AS == familia.Codigo_460AS)
-                    {
-                        throw new InvalidOperationException("Una familia no puede contenerse a sí misma");
-                    }
-                    if (_dalFamilia.ObtenerPorCodigo_460AS(familiaHija.Codigo_460AS) == null)
-                    {
-                        throw new InvalidOperationException($"La familia hija con código '{familiaHija.Codigo_460AS}' no existe y no puede ser asignada.");
-                    }
+                    if (!resultado.Any(p => p.Codigo_460AS == permiso.Codigo_460AS))
+                        resultado.Add(permiso);
                 }
             }
 
-            try
+            return resultado;
+        }
+
+        public List<Familia_460AS> ObtenerFamiliasHijasRecursivas_460AS(Familia_460AS familia)
+        {
+            var resultado = new List<Familia_460AS>();
+            var hijas = dalFamilia_460AS.ObtenerFamiliasHijas_460AS(familia);
+            foreach (var hija in hijas)
             {
-                _dalFamilia.Actualizar_460AS(familia);
+                resultado.Add(hija);
+                resultado.AddRange(ObtenerFamiliasHijasRecursivas_460AS(hija));
             }
-            catch (Exception ex)
+            return resultado;
+        }
+
+        public void ValidarPermisosDuplicados_460AS(Familia_460AS padre, Familia_460AS hija)
+        {
+            var permisosPadre = ObtenerPermisosHeredados_460AS(padre.Codigo_460AS);
+            var permisosHija = ObtenerPermisosHeredados_460AS(hija.Codigo_460AS);
+
+            var permisosDuplicados = permisosPadre.Select(p => p.Codigo_460AS)
+                                                 .Intersect(permisosHija.Select(p => p.Codigo_460AS))
+                                                 .ToList();
+
+            if (permisosDuplicados.Any())
             {
-                throw new Exception("Error al modificar la familia.", ex);
+                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_duplicado_al_asignar_hija")
+                    .Replace("{hija}", hija.Codigo_460AS).Replace("{padre}", padre.Codigo_460AS));
             }
         }
 
-        public void EliminarFamilia(string codigoFamilia)
+        public void ActualizarIdioma()
         {
-            if (string.IsNullOrWhiteSpace(codigoFamilia))
-            {
-                throw new ArgumentException("El código de la familia es obligatorio para la eliminación.");
-            }
-
-            if (_dalFamilia.ObtenerPorCodigo_460AS(codigoFamilia) == null)
-            {
-                throw new InvalidOperationException($"La familia con código '{codigoFamilia}' no existe y no puede ser eliminada.");
-            }
-
-            // Reglas de negocio adicionales para eliminación de familias:
-            // - ¿Puede una familia ser eliminada si es "padre" de otras familias?
-            //   La DAL eliminará las relaciones FAMILIA_FAMILIA_460AS, pero la familia hija seguirá existiendo.
-            // - ¿Puede una familia ser eliminada si es "hija" de otra familia?
-            //   La DAL eliminará la referencia de la familia padre.
-            // - ¿Puede una familia ser eliminada si está asignada a un perfil (PERFIL_FAMILIA_460AS)?
-            //   Si un perfil tiene esta familia, la eliminación aquí fallaría si la FK está activa y no se gestiona con ON DELETE CASCADE.
-            //   Sería prudente verificar si la familia está asociada a algún perfil antes de eliminarla.
-            //   Esto requeriría una instancia de DAL460AS_Perfil y un método en ella para verificar la relación.
-            //   Ej: if (new DAL460AS_Perfil().FamiliaAsignada(codigoFamilia)) { throw ... }
-
-            try
-            {
-                _dalFamilia.EliminarPorCodigo_460AS(codigoFamilia);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al eliminar la familia.", ex);
-            }
-        }
-
-        public Familia_460AS ObtenerFamiliaPorCodigo(string codigoFamilia)
-        {
-            if (string.IsNullOrWhiteSpace(codigoFamilia))
-            {
-                throw new ArgumentException("El código de la familia no puede ser nulo o vacío.");
-            }
-
-            return _dalFamilia.ObtenerPorCodigo_460AS(codigoFamilia);
-        }
-
-        public IList<Familia_460AS> ObtenerTodasLasFamilias()
-        {
-            return _dalFamilia.ObtenerTodos_460AS();
+            
         }
     }
 }

@@ -41,6 +41,8 @@
             textBox5 = new TextBox();
             label6 = new Label();
             button1 = new Button();
+            dateTimePicker1 = new DateTimePicker();
+            label7 = new Label();
             SuspendLayout();
             // 
             // textBox1
@@ -144,18 +146,36 @@
             // 
             // button1
             // 
-            button1.Location = new Point(137, 249);
+            button1.Location = new Point(246, 249);
             button1.Name = "button1";
             button1.Size = new Size(116, 23);
             button1.TabIndex = 0;
             button1.Text = "Confirmar pago";
             button1.Click += button1_Click;
             // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Location = new Point(29, 249);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.TabIndex = 13;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(29, 231);
+            label7.Name = "label7";
+            label7.Size = new Size(107, 15);
+            label7.TabIndex = 14;
+            label7.Text = "Fecha vencimiento";
+            // 
             // CobroReserva_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(412, 315);
+            ClientSize = new Size(422, 315);
+            Controls.Add(label7);
+            Controls.Add(dateTimePicker1);
             Controls.Add(button1);
             Controls.Add(label6);
             Controls.Add(textBox5);
@@ -190,5 +210,7 @@
         private TextBox textBox5;
         private Label label6;
         private Button button1;
+        private DateTimePicker dateTimePicker1;
+        private Label label7;
     }
 }

@@ -35,6 +35,8 @@
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
             administradorToolStripMenuItem = new ToolStripMenuItem();
             gestionarUsuariosToolStripMenuItem = new ToolStripMenuItem();
+            gestionarPerfilesToolStripMenuItem = new ToolStripMenuItem();
+            gestionarFamiliasToolStripMenuItem = new ToolStripMenuItem();
             maestroToolStripMenuItem = new ToolStripMenuItem();
             gestionarVuelosToolStripMenuItem = new ToolStripMenuItem();
             gestionarAsientosToolStripMenuItem = new ToolStripMenuItem();
@@ -49,8 +51,7 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripStatusLabel2 = new ToolStripStatusLabel();
-            gestionarPerfilesToolStripMenuItem = new ToolStripMenuItem();
-            gestionarFamiliasToolStripMenuItem = new ToolStripMenuItem();
+            verComprobantesToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -103,9 +104,23 @@
             // gestionarUsuariosToolStripMenuItem
             // 
             gestionarUsuariosToolStripMenuItem.Name = "gestionarUsuariosToolStripMenuItem";
-            gestionarUsuariosToolStripMenuItem.Size = new Size(180, 22);
+            gestionarUsuariosToolStripMenuItem.Size = new Size(171, 22);
             gestionarUsuariosToolStripMenuItem.Text = "Gestionar usuarios";
             gestionarUsuariosToolStripMenuItem.Click += gestionarUsuariosToolStripMenuItem_Click;
+            // 
+            // gestionarPerfilesToolStripMenuItem
+            // 
+            gestionarPerfilesToolStripMenuItem.Name = "gestionarPerfilesToolStripMenuItem";
+            gestionarPerfilesToolStripMenuItem.Size = new Size(171, 22);
+            gestionarPerfilesToolStripMenuItem.Text = "Gestionar perfiles";
+            gestionarPerfilesToolStripMenuItem.Click += gestionarPerfilesToolStripMenuItem_Click;
+            // 
+            // gestionarFamiliasToolStripMenuItem
+            // 
+            gestionarFamiliasToolStripMenuItem.Name = "gestionarFamiliasToolStripMenuItem";
+            gestionarFamiliasToolStripMenuItem.Size = new Size(171, 22);
+            gestionarFamiliasToolStripMenuItem.Text = "Gestionar familias";
+            gestionarFamiliasToolStripMenuItem.Click += gestionarFamiliasToolStripMenuItem_Click;
             // 
             // maestroToolStripMenuItem
             // 
@@ -151,6 +166,7 @@
             // 
             // reportesToolStripMenuItem
             // 
+            reportesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verComprobantesToolStripMenuItem });
             reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
             reportesToolStripMenuItem.Size = new Size(65, 20);
             reportesToolStripMenuItem.Text = "Reportes";
@@ -201,19 +217,12 @@
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             toolStripStatusLabel2.Size = new Size(0, 17);
             // 
-            // gestionarPerfilesToolStripMenuItem
+            // verComprobantesToolStripMenuItem
             // 
-            gestionarPerfilesToolStripMenuItem.Name = "gestionarPerfilesToolStripMenuItem";
-            gestionarPerfilesToolStripMenuItem.Size = new Size(180, 22);
-            gestionarPerfilesToolStripMenuItem.Text = "Gestionar perfiles";
-            gestionarPerfilesToolStripMenuItem.Click += gestionarPerfilesToolStripMenuItem_Click;
-            // 
-            // gestionarFamiliasToolStripMenuItem
-            // 
-            gestionarFamiliasToolStripMenuItem.Name = "gestionarFamiliasToolStripMenuItem";
-            gestionarFamiliasToolStripMenuItem.Size = new Size(180, 22);
-            gestionarFamiliasToolStripMenuItem.Text = "Gestionar familias";
-            gestionarFamiliasToolStripMenuItem.Click += gestionarFamiliasToolStripMenuItem_Click;
+            verComprobantesToolStripMenuItem.Name = "verComprobantesToolStripMenuItem";
+            verComprobantesToolStripMenuItem.Size = new Size(180, 22);
+            verComprobantesToolStripMenuItem.Text = "Ver comprobantes";
+            verComprobantesToolStripMenuItem.Click += verComprobantesToolStripMenuItem_Click;
             // 
             // MenuPrincipal_460AS
             // 
@@ -261,5 +270,6 @@
         private ToolStripMenuItem gestionarClientesToolStripMenuItem;
         private ToolStripMenuItem gestionarPerfilesToolStripMenuItem;
         private ToolStripMenuItem gestionarFamiliasToolStripMenuItem;
+        private ToolStripMenuItem verComprobantesToolStripMenuItem;
     }
 }

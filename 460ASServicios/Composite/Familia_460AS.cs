@@ -10,33 +10,38 @@ namespace _460ASServicios.Composite
     {
         public string Codigo_460AS { get; set; }
         public string Nombre_460AS { get; set; }
-
-        private List<IComponentePermiso_460AS> hijos = new List<IComponentePermiso_460AS>();
+        public Familia_460AS() { }
+        private List<IComponentePermiso_460AS> _hijos = new();
         public Familia_460AS(string codigo, string nombre)
         {
             Codigo_460AS = codigo;
             Nombre_460AS = nombre;
-            hijos = new List<IComponentePermiso_460AS>();
         }
 
-        public void AgregarHijo(IComponentePermiso_460AS hijo) => hijos.Add(hijo);
-
-        public void EliminarHijo(IComponentePermiso_460AS hijo) => hijos.Remove(hijo);
-
-        public bool EsIgual(IComponentePermiso_460AS otro) =>
-            otro != null && otro.Codigo_460AS == this.Codigo_460AS;
-
-        public List<IComponentePermiso_460AS> ObtenerHijos() => new List<IComponentePermiso_460AS>(hijos);
-
-        public List<Permiso_460AS> ObtenerPermisos()
+        public void AgregarHijo(IComponentePermiso_460AS componente)
         {
-            List<Permiso_460AS> permisos = new();
+            _hijos.Add(componente);
+        }
 
-            foreach (var hijo in hijos)
-            {
-                permisos.AddRange(hijo.ObtenerPermisos());
-            }
+        public void EliminarHijo(IComponentePermiso_460AS componente)
+        {
+            _hijos.Remove(componente);
+        }
 
+        public IComponentePermiso_460AS ObtenerHijo(IComponentePermiso_460AS componente)
+        {
+            return _hijos.FirstOrDefault(h => h.Codigo_460AS == componente.Codigo_460AS);
+        }
+
+        public List<IComponentePermiso_460AS> ObtenerHijos()
+        {
+            return new List<IComponentePermiso_460AS>(_hijos);
+        }
+
+        public List<Permiso_460AS> ObtenerPermisosSimples()
+        {
+            var permisos = new List<Permiso_460AS>();
+            foreach (var hijo in _hijos) permisos.AddRange(hijo.ObtenerPermisosSimples());
             return permisos;
         }
 

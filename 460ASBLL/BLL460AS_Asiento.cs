@@ -31,11 +31,6 @@ namespace _460ASBLL
             return ObtenerAsientos_460AS().Where(a => a.CodVuelo_460AS == codVuelo).ToList();
         }
 
-        public void ActualizarEstadoAsiento_460AS(string numAsiento, string codVuelo)
-        {
-            _asientoDAL.ActualizarEstadoAsiento_460AS(numAsiento, codVuelo);
-        }
-
         public void AsignarReservaAsiento_460AS(string numAsiento, string codVuelo, string codReserva)
         {
             _asientoDAL.AsignarReservaAsiento_460AS(numAsiento, codVuelo, codReserva);
@@ -46,10 +41,6 @@ namespace _460ASBLL
             _asientoDAL.AgregarAsiento_460AS(asiento);
         }
 
-        public void ActualizarAsiento(Asiento_460AS asiento)
-        {
-            _asientoDAL.ActualizarAsiento_460AS(asiento);
-        }
 
         public void EliminarAsiento(string numAsiento, string codVuelo)
         {

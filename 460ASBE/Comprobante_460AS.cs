@@ -21,5 +21,7 @@ namespace _460ASBE
             this.TipoPago_460AS = tipoPago_460AS;
             this.FechaPago_460AS = fechaPago_460AS;
         }
+
+        public Comprobante_460AS() { }
     }
 }

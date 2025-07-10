@@ -29,6 +29,8 @@ namespace _460ASGUI
             ActualizarClientes();
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
             ActualizarIdioma();
+            HabilitarCampos(false);
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
         }
 
         private enum FormEstado
@@ -47,11 +49,13 @@ namespace _460ASGUI
             textBox4.Enabled = habilitar;
             textBox5.Enabled = habilitar;
             dateTimePicker1.Enabled = habilitar;
+
             button4.Enabled = true;
             button5.Enabled = true;
-            button1.Enabled = false;
-            button2.Enabled = false;
-            button3.Enabled = false;
+
+            button1.Enabled = !habilitar;
+            button2.Enabled = !habilitar;
+            button3.Enabled = !habilitar;
         }
 
         private void LimpiarCampos()
@@ -80,25 +84,30 @@ namespace _460ASGUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            label8.Text = "Modo Agregar";
             estadoActual = FormEstado.Agregar;
+            ActualizarIdioma();
             HabilitarCampos(true);
             textBox1.Enabled = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            label8.Text = "Modo Modificar";
             estadoActual = FormEstado.Modificar;
+            ActualizarIdioma();
             HabilitarCampos(true);
             textBox1.Enabled = false;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            label8.Text = "Modo Eliminar";
             estadoActual = FormEstado.Eliminar;
+            ActualizarIdioma();
             HabilitarCampos(false);
+            button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = true;
+            button5.Enabled = true;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -107,47 +116,49 @@ namespace _460ASGUI
             {
                 if (estadoActual == FormEstado.Agregar)
                 {
-                    if (textBox1.Text.Length == 0) throw new Exception("Debe ingresar el DNI");
+                    if (textBox1.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_dni_vacio"));
                     string dni = textBox1.Text;
-                    if (!Regex.IsMatch(dni, @"^[0-9]{8}$")) throw new Exception("El DNI no es valido");
+                    if (!Regex.IsMatch(dni, @"^[0-9]{8}$")) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_dni_invalido"));
                     if (bllCliente_460AS.ObtenerClientes_460AS().Any(x => x.DNI_460AS == dni)) throw new Exception("El DNI esta repetido");
-                    if (textBox2.Text.Length == 0) throw new Exception("Debe ingresar el nombre");
+                    if (textBox2.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_nombre_vacio"));
                     string nombre = textBox2.Text;
-                    if (textBox3.Text.Length == 0) throw new Exception("Debe ingresar el apellido");
+                    if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_apellido_vacio"));
                     string apellido = textBox3.Text;
-                    if (textBox4.Text.Length == 0) throw new Exception("Debe ingresar el telefono");
+                    if (textBox4.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_vacio"));
                     string tel = Regex.Replace(textBox4.Text, @"\D", "");
-                    if (tel.Length > 8 || tel.Length < 8 || !int.TryParse(tel, out int telefono)) throw new Exception("El numero de telefono no es valido");
+                    if (tel.Length > 8 || tel.Length < 8 || !int.TryParse(tel, out int telefono)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_invalido"));
                     DateTime fechaNacimiento = dateTimePicker1.Value;
-                    if (textBox5.Text.Length == 0) throw new Exception("Debe ingresar el numero de pasaporte");
+                    if (textBox5.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_vacio"));
                     string nroPasaporte = textBox5.Text;
-                    if (!Regex.IsMatch(nroPasaporte, @"^[0-9]{10}$")) throw new Exception("El numero de pasaporte no es valido");
-                    if (fechaNacimiento > DateTime.Now) throw new Exception("La fecha de nacimiento no es valida");
+                    if (!Regex.IsMatch(nroPasaporte, @"^[0-9]{10}$")) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_invalido"));
+                    if (bllCliente_460AS.ObtenerClientes_460AS().Any(c => c.NroPasaporte_460AS == Cifrado_460AS.EncriptarPasaporteAES_460AS(nroPasaporte))) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_repetido"));
+                    if (fechaNacimiento > DateTime.Now) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_nacimiento_invalido"));
                     int edad = DateTime.Now.Year - fechaNacimiento.Year;
                     if (fechaNacimiento.Date > DateTime.Now.AddYears(-edad)) edad--;
-                    if (edad < 18) throw new Exception("El cliente debe ser mayor de 18 años");
+                    if (edad < 18) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_mas18"));
                     bllCliente_460AS.GuardarCliente_460AS(new Cliente_460AS(dni, nombre, apellido, fechaNacimiento, telefono, nroPasaporte));
-                    MessageBox.Show("Cliente registrado correctamente");
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_cliente_registrado"));
                 }
                 else if (estadoActual == FormEstado.Modificar)
                 {
-                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception("Debe seleccionar un cliente");
-                    var dni = dataGridView1.SelectedRows[0].Cells[0].ToString();
+                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_cliente_vacio"));
+                    var dni = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
                     Cliente_460AS c = bllCliente_460AS.ObtenerClientes_460AS().FirstOrDefault(c => c.DNI_460AS == dni);
-                    if (textBox2.Text.Length == 0) throw new Exception("Debe ingresar el nombre");
+                    if (textBox2.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_nombre_vacio"));
                     c.Nombre_460AS = textBox2.Text;
-                    if (textBox3.Text.Length == 0) throw new Exception("Debe ingresar el apellido");
+                    if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_apellido_vacio"));
                     c.Apellido_460AS = textBox3.Text;
-                    if (textBox4.Text.Length == 0) throw new Exception("Debe ingresar el telefono");
+                    if (textBox4.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_vacio"));
                     string tel = Regex.Replace(textBox4.Text, @"\\D", "");
-                    if (tel.Length != 8 || !int.TryParse(tel, out int telefono)) throw new Exception("El número de teléfono no es válido");
+                    if (tel.Length != 8 || !int.TryParse(tel, out int telefono)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_invalido"));
                     c.Telefono_460AS = telefono;
                     c.FechaNacimiento_460AS = dateTimePicker1.Value;
+                    bllCliente_460AS.ActualizarCliente_460AS(c);
                 }
                 else if (estadoActual == FormEstado.Eliminar)
                 {
-                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception("Debe seleccionar un cliente");
-                    var dni = dataGridView1.SelectedRows[0].Cells[0].ToString();
+                    if (dataGridView1.SelectedRows.Count == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_cliente_vacio"));
+                    var dni = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
                     bllCliente_460AS.EliminarCliente(dni);
                 }
                 ActualizarClientes();
@@ -169,6 +180,7 @@ namespace _460ASGUI
 
         public void ActualizarClientes()
         {
+            bool mostrarEncriptado = checkBox1.Checked;
             dataGridView1.DataSource = bllCliente_460AS.ObtenerClientes_460AS().Select(c => new
             {
                 DNI = c.DNI_460AS,
@@ -176,7 +188,9 @@ namespace _460ASGUI
                 Apellido = c.Apellido_460AS,
                 FechaNacimiento = c.FechaNacimiento_460AS.ToShortDateString(),
                 Telefono = c.Telefono_460AS,
-                Pasaporte = Cifrado_460AS.DesencriptarPasaporteAES_460AS(c.NroPasaporte_460AS)
+                Pasaporte = mostrarEncriptado
+                ?c.NroPasaporte_460AS
+                : Cifrado_460AS.DesencriptarPasaporteAES_460AS(c.NroPasaporte_460AS)
             }).ToList();
 
             dataGridView1.Columns[0].HeaderText = IdiomaManager_460AS.Instancia.Traducir("DNI");
@@ -201,7 +215,8 @@ namespace _460ASGUI
             button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_eliminar");
             button4.Text = IdiomaManager_460AS.Instancia.Traducir("boton_guardar");
             button5.Text = IdiomaManager_460AS.Instancia.Traducir("boton_cancelar");
-            switch(estadoActual)
+            checkBox1.Text = IdiomaManager_460AS.Instancia.Traducir("checkbox_encriptado");
+            switch (estadoActual)
             {
                 case FormEstado.Consulta:
                     label8.Text = IdiomaManager_460AS.Instancia.Traducir("modo_consulta");
@@ -216,6 +231,11 @@ namespace _460ASGUI
                     label8.Text = IdiomaManager_460AS.Instancia.Traducir("modo_eliminar");
                     break;
             }
+            ActualizarClientes();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
             ActualizarClientes();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using _460ASBLL;
 using _460ASDAL;
 using _460ASServicios;
+using _460ASServicios.Composite;
 using _460ASServicios.Observer;
 using _460ASServicios.Singleton;
 using System;
@@ -23,8 +24,9 @@ namespace _460ASGUI
         {
             InitializeComponent();
             bllUsuario_460AS = new BLL460AS_Usuario();
+            //var rol = new Perfil_460AS("SUPERADMIN", "SuperAdmin");
             //bllUsuario_460AS.GuardarUsuario_460AS(new Usuario_460AS("12345678", "Agustin", "Soria", "123Agustin",
-            //    "123Soria", "Admin", 42419672, false, true, 0, DateTime.Now, "Español"));
+            //    "123Soria", rol, 42419672, false, true, 0, DateTime.Now, "Español"));
             foreach (Control ctl in this.Controls)
             {
                 if (ctl is MdiClient)
@@ -47,31 +49,65 @@ namespace _460ASGUI
 
         public void ValidarMenuPrincipal_460AS()
         {
+            usuarioToolStripMenuItem.Visible = true;
+            idiomaToolStripMenuItem.Visible = true;
+            ayudaToolStripMenuItem.Visible = true;
+
             if (SessionManager_460AS.Instancia.IsLogged_460AS())
             {
                 ActualizarEstadoSesion();
-                menuStrip1.Items[2].Visible = true;
-                menuStrip1.Items[3].Visible = true;
-                menuStrip1.Items[4].Visible = true;
-                menuStrip1.Items[5].Visible = true;
                 cambiarContraseñaToolStripMenuItem.Enabled = true;
                 cerrarSesiónToolStripMenuItem.Enabled = true;
-                if (SessionManager_460AS.Instancia.Usuario.Rol_460AS == "Admin")
+
+                var perfilActual = SessionManager_460AS.Instancia.Usuario.Rol_460AS;
+
+                if (perfilActual.Codigo_460AS == "SUPERADMIN")
                 {
-                    menuStrip1.Items[1].Visible = true;
+                    administradorToolStripMenuItem.Visible = true;
+                    maestroToolStripMenuItem.Visible = true;
+                    reservasToolStripMenuItem.Visible = true;
+                    reportesToolStripMenuItem.Visible = true;
+                }
+                else
+                {
+                    administradorToolStripMenuItem.Visible = false;
+                    maestroToolStripMenuItem.Visible = false;
+                    reservasToolStripMenuItem.Visible = false;
+                    reportesToolStripMenuItem.Visible = false;
+
+                    ValidarMenuPorPerfil_460AS();
                 }
             }
             else
             {
-                this.toolStripStatusLabel2.Text = "";
-                menuStrip1.Items[1].Visible = false;
-                menuStrip1.Items[2].Visible = false;
-                menuStrip1.Items[3].Visible = false;
-                menuStrip1.Items[4].Visible = false;
-                menuStrip1.Items[5].Visible = false;
                 cambiarContraseñaToolStripMenuItem.Enabled = false;
                 cerrarSesiónToolStripMenuItem.Enabled = false;
+
+                administradorToolStripMenuItem.Visible = false;
+                maestroToolStripMenuItem.Visible = false;
+                reservasToolStripMenuItem.Visible = false;
+                reportesToolStripMenuItem.Visible = false;
+
+                toolStripStatusLabel2.Text = "";
             }
+        }
+
+        private void ValidarMenuPorPerfil_460AS()
+        {
+            if (!SessionManager_460AS.Instancia.IsLogged_460AS())
+            {
+                return; 
+            }
+
+            var perfilActual = SessionManager_460AS.Instancia.Usuario.Rol_460AS;
+            var bllPerfil = new BLL460AS_Perfil();
+
+            List<Familia_460AS> familiasPerfil = bllPerfil.ObtenerFamiliasDePerfil_460AS(perfilActual.Codigo_460AS);
+
+            administradorToolStripMenuItem.Visible = familiasPerfil.Any(f => f.Nombre_460AS == "Perfiles");
+            maestroToolStripMenuItem.Visible = familiasPerfil.Any(f => f.Nombre_460AS == "Vuelos"); 
+            reservasToolStripMenuItem.Visible = familiasPerfil.Any(f => f.Nombre_460AS == "Reservas");
+            reportesToolStripMenuItem.Visible = familiasPerfil.Any(f => f.Nombre_460AS == "Reportes");
         }
 
         private void AbrirForm<T>() where T : Form, new()
@@ -109,11 +145,14 @@ namespace _460ASGUI
 
         private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string mensaje = IdiomaManager_460AS.Instancia.Traducir("confirmar_cierre_sesion");
-            string titulo = IdiomaManager_460AS.Instancia.Traducir("titulo_confirmacion");
+            string mensaje = IdiomaManager_460AS.Instancia.Traducir("msg_confirmar_cierre_sesion");
+            string titulo = IdiomaManager_460AS.Instancia.Traducir("msg_titulo_confirmacion");
             if (MessageBox.Show(mensaje, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 bllUsuario_460AS.Logout_460AS();
+
+                IdiomaManager_460AS.Instancia.CargarIdioma("español");
+
                 ValidarMenuPrincipal_460AS();
                 ActualizarIdioma();
                 CerrarForm();
@@ -171,9 +210,12 @@ namespace _460ASGUI
             registrarReservaToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_registrar_reserva");
             españolToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_español");
             inglesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_ingles");
+            gestionarPerfilesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_perfiles");
+            gestionarFamiliasToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_familias");
+            verComprobantesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_comprobantes");
             if (!SessionManager_460AS.Instancia.IsLogged_460AS())
             {
-                toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("sesion_no_iniciada");
+                toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("Sesion_no_iniciada");
                 toolStripStatusLabel2.Text = "";
             }
             else
@@ -186,15 +228,24 @@ namespace _460ASGUI
         {
             if (SessionManager_460AS.Instancia.IsLogged_460AS())
             {
-                string rol = SessionManager_460AS.Instancia.Usuario.Rol_460AS;
+                string rol = SessionManager_460AS.Instancia.Usuario.Rol_460AS?.Nombre_460AS;
+
+                if (!string.IsNullOrEmpty(rol))
+                {
+                    string rolTraducido = IdiomaManager_460AS.Instancia.Traducir(rol);
+                    toolStripStatusLabel1.Text = rolTraducido;
+                }
+                else
+                {
+                    toolStripStatusLabel1.Text = "[Rol no definido]";
+                }
+
                 string nombreCompleto = $"{SessionManager_460AS.Instancia.Usuario.Nombre_460AS} {SessionManager_460AS.Instancia.Usuario.Apellido_460AS}";
-                string rolTraducido = IdiomaManager_460AS.Instancia.Traducir(rol);
-                toolStripStatusLabel1.Text = rolTraducido;
                 toolStripStatusLabel2.Text = nombreCompleto;
             }
             else
             {
-                toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("sesion_no_iniciada");
+                toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("Sesion_no_iniciada");
                 toolStripStatusLabel2.Text = "";
             }
         }
@@ -261,6 +312,13 @@ namespace _460ASGUI
             GestionFamilias_460AS formGestionFamilias = new GestionFamilias_460AS();
             formGestionFamilias.MdiParent = this;
             formGestionFamilias.Show();
+        }
+
+        private void verComprobantesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionReportes_460AS formGestionReportes = new GestionReportes_460AS();
+            formGestionReportes.MdiParent = this;
+            formGestionReportes.Show();
         }
     }
 }

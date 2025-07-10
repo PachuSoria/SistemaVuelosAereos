@@ -14,251 +14,222 @@ namespace _460ASDAL
 
         public DAL460AS_Familia()
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True; MultipleActiveResultSets=True";
+            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True;MultipleActiveResultSets=True";
         }
 
-        public void Guardar_460AS(Familia_460AS familia)
+        public void GuardarFamilia_460AS(Familia_460AS familia)
         {
-            using SqlConnection conexion = new(cx);
-            conexion.Open();
-            SqlTransaction transaction = conexion.BeginTransaction();
-
-            try
+            using (SqlConnection con = new SqlConnection(cx))
             {
-                string query = "INSERT INTO FAMILIA_460AS (CodFamilia_460AS, Nombre_460AS) VALUES (@CodFamilia_460AS, @Nombre_460AS)";
-                using SqlCommand cmd = new(query, conexion, transaction);
+                string consulta = @"INSERT INTO FAMILIA_460AS (CodFamilia_460AS, Nombre_460AS)
+                                VALUES (@CodFamilia_460AS, @Nombre_460AS)";
+                SqlCommand cmd = new SqlCommand(consulta, con);
                 cmd.Parameters.AddWithValue("@CodFamilia_460AS", familia.Codigo_460AS);
                 cmd.Parameters.AddWithValue("@Nombre_460AS", familia.Nombre_460AS);
+                con.Open();
                 cmd.ExecuteNonQuery();
-
-                GuardarRelaciones_460AS(familia, conexion, transaction);
-                transaction.Commit();
-            }
-            catch (Exception)
-            {
-                transaction.Rollback();
-                throw;
             }
         }
 
-        public void Actualizar_460AS(Familia_460AS familia)
+        public List<Familia_460AS> ObtenerTodas_460AS()
         {
-            using SqlConnection conexion = new(cx);
-            conexion.Open();
-            SqlTransaction transaction = conexion.BeginTransaction();
+            List<Familia_460AS> lista = new List<Familia_460AS>();
 
-            try
+            using (SqlConnection con = new SqlConnection(cx))
             {
-                string query = "UPDATE FAMILIA_460AS SET Nombre_460AS = @Nombre_460AS WHERE CodFamilia_460AS = @CodFamilia_460AS";
-                using SqlCommand cmd = new(query, conexion, transaction);
-                cmd.Parameters.AddWithValue("@Nombre_460AS", familia.Nombre_460AS);
-                cmd.Parameters.AddWithValue("@CodFamilia_460AS", familia.Codigo_460AS);
-                cmd.ExecuteNonQuery();
+                string consulta = "SELECT CodFamilia_460AS, Nombre_460AS FROM FAMILIA_460AS";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                con.Open();
 
-                EliminarRelaciones_460AS(familia.Codigo_460AS, conexion, transaction);
-                GuardarRelaciones_460AS(familia, conexion, transaction);
-                transaction.Commit();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Familia_460AS fam = new Familia_460AS(
+                        reader["CodFamilia_460AS"].ToString(),
+                        reader["Nombre_460AS"].ToString()
+                    );
+                    lista.Add(fam);
+                }
             }
-            catch (Exception)
-            {
-                transaction.Rollback();
-                throw;
-            }
+            return lista;
         }
 
         public void Eliminar_460AS(Familia_460AS familia)
         {
-            EliminarPorCodigo_460AS(familia.Codigo_460AS);
-        }
-
-        public void EliminarPorCodigo_460AS(string codigoFamilia)
-        {
-            using SqlConnection conexion = new(cx);
-            conexion.Open();
-            SqlTransaction transaction = conexion.BeginTransaction();
-
-            try
+            using (SqlConnection con = new SqlConnection(cx))
             {
-                EliminarRelaciones_460AS(codigoFamilia, conexion, transaction);
-
-                string query = "DELETE FROM FAMILIA_460AS WHERE CodFamilia_460AS = @CodFamilia_460AS";
-                using SqlCommand cmd = new(query, conexion, transaction);
-                cmd.Parameters.AddWithValue("@CodFamilia_460AS", codigoFamilia);
-                cmd.ExecuteNonQuery();
-                transaction.Commit();
-            }
-            catch (Exception)
-            {
-                transaction.Rollback();
-                throw;
-            }
-        }
-
-        public Familia_460AS ObtenerPorCodigo_460AS(string codigoFamilia)
-        {
-            using SqlConnection conexion = new(cx);
-            conexion.Open();
-
-            string query = "SELECT CodFamilia_460AS, Nombre_460AS FROM FAMILIA_460AS WHERE CodFamilia_460AS = @CodFamilia_460AS";
-            using SqlCommand cmd = new(query, conexion);
-            cmd.Parameters.AddWithValue("@CodFamilia_460AS", codigoFamilia);
-            using SqlDataReader reader = cmd.ExecuteReader();
-
-            if (!reader.Read()) return null;
-
-            Familia_460AS familia = new()
-            {
-                Codigo_460AS = reader.GetString(0),
-                Nombre_460AS = reader.GetString(1)
-            };
-            reader.Close();
-
-            Dictionary<string, IComponentePermiso_460AS> loadedComponents = new Dictionary<string, IComponentePermiso_460AS>();
-            loadedComponents.Add(familia.Codigo_460AS, familia);
-
-            CargarRelaciones_460AS(familia, conexion, loadedComponents);
-
-            return familia;
-        }
-
-        public IList<Familia_460AS> ObtenerTodos_460AS()
-        {
-            List<Familia_460AS> familias = new();
-
-            using SqlConnection conexion = new(cx);
-            conexion.Open();
-
-            string query = "SELECT CodFamilia_460AS, Nombre_460AS FROM FAMILIA_460AS";
-            using SqlCommand cmd = new(query, conexion);
-            using SqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Familia_460AS familia = new()
-                {
-                    Codigo_460AS = reader.GetString(0),
-                    Nombre_460AS = reader.GetString(1)
-                };
-                familias.Add(familia);
-            }
-            reader.Close();
-
-            Dictionary<string, IComponentePermiso_460AS> loadedComponents = new Dictionary<string, IComponentePermiso_460AS>();
-            foreach (var familia in familias)
-            {
-                if (!loadedComponents.ContainsKey(familia.Codigo_460AS))
-                {
-                    loadedComponents.Add(familia.Codigo_460AS, familia);
-                }
-                CargarRelaciones_460AS(familia, conexion, loadedComponents);
-            }
-
-            return familias;
-        }
-
-        private void GuardarRelaciones_460AS(Familia_460AS familia, SqlConnection conexion, SqlTransaction transaction)
-        {
-            foreach (var hijo in familia.ObtenerHijos())
-            {
-                if (hijo is Permiso_460AS permiso)
-                {
-                    string insert = "INSERT INTO FAMILIA_PERMISO_460AS (CodFamilia_460AS, CodPermiso_460AS) VALUES (@CodFamilia_460AS, @CodPermiso_460AS)";
-                    using SqlCommand cmd = new(insert, conexion, transaction);
-                    cmd.Parameters.AddWithValue("@CodFamilia_460AS", familia.Codigo_460AS);
-                    cmd.Parameters.AddWithValue("@CodPermiso_460AS", permiso.Codigo_460AS);
-                    cmd.ExecuteNonQuery();
-                }
-                else if (hijo is Familia_460AS famHijo)
-                {
-                    string insert = "INSERT INTO FAMILIA_FAMILIA_460AS (CodFamiliaPadre_460AS, CodFamiliaHijo_460AS) VALUES (@CodFamiliaPadre_460AS, @CodFamiliaHijo_460AS)";
-                    using SqlCommand cmd = new(insert, conexion, transaction);
-                    cmd.Parameters.AddWithValue("@CodFamiliaPadre_460AS", familia.Codigo_460AS);
-                    cmd.Parameters.AddWithValue("@CodFamiliaHijo_460AS", famHijo.Codigo_460AS);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-        private void EliminarRelaciones_460AS(string codigoFamilia, SqlConnection conexion, SqlTransaction transaction)
-        {
-            string deletePermisos = "DELETE FROM FAMILIA_PERMISO_460AS WHERE CodFamilia_460AS = @CodFamilia_460AS";
-            using SqlCommand cmd1 = new(deletePermisos, conexion, transaction);
-            cmd1.Parameters.AddWithValue("@CodFamilia_460AS", codigoFamilia);
-            cmd1.ExecuteNonQuery();
-
-            string deleteHijos = "DELETE FROM FAMILIA_FAMILIA_460AS WHERE CodFamiliaPadre_460AS = @CodFamiliaPadre_460AS";
-            using SqlCommand cmd2 = new(deleteHijos, conexion, transaction);
-            cmd2.Parameters.AddWithValue("@CodFamiliaPadre_460AS", codigoFamilia);
-            cmd2.ExecuteNonQuery();
-        }
-
-        public void CargarRelaciones_460AS(Familia_460AS familia, SqlConnection conexion, Dictionary<string, IComponentePermiso_460AS> loadedComponents)
-        {
-            string queryPermisos = @"
-            SELECT p.CodPermiso_460AS, p.Nombre_460AS, p.Descripcion_460AS 
-            FROM FAMILIA_PERMISO_460AS fp 
-            JOIN PERMISO_460AS p ON fp.CodPermiso_460AS = p.CodPermiso_460AS 
-            WHERE fp.CodFamilia_460AS = @CodFamilia_460AS";
-
-            using (SqlCommand cmd = new(queryPermisos, conexion))
-            {
+                string consulta = @"DELETE FROM FAMILIA_460AS WHERE CodFamilia_460AS = @CodFamilia_460AS";
+                SqlCommand cmd = new SqlCommand(consulta, con);
                 cmd.Parameters.AddWithValue("@CodFamilia_460AS", familia.Codigo_460AS);
-                using SqlDataReader reader = cmd.ExecuteReader();
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void GuardarFamiliaFamilia_460AS(Familia_460AS familiaPadre, Familia_460AS familiaHijo)
+        {
+            using (SqlConnection con = new SqlConnection(cx))
+            {
+                string consulta = @"INSERT INTO FAMILIA_FAMILIA_460AS (CodFamiliaPadre_460AS, CodFamiliaHijo_460AS)
+                                VALUES (@CodFamiliaPadre_460AS, @CodFamiliaHijo_460AS)";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@CodFamiliaPadre_460AS", familiaPadre.Codigo_460AS);
+                cmd.Parameters.AddWithValue("@CodFamiliaHijo_460AS", familiaHijo.Codigo_460AS);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<Familia_460AS> ObtenerFamiliasHijas_460AS(Familia_460AS familiaPadre)
+        {
+            List<Familia_460AS> lista = new List<Familia_460AS>();
+
+            using (SqlConnection con = new SqlConnection(cx))
+            {
+                string consulta = @"
+                SELECT f.CodFamilia_460AS, f.Nombre_460AS
+                FROM FAMILIA_460AS f
+                INNER JOIN FAMILIA_FAMILIA_460AS ff ON f.CodFamilia_460AS = ff.CodFamiliaHijo_460AS
+                WHERE ff.CodFamiliaPadre_460AS = @CodFamiliaPadre_460AS";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@CodFamiliaPadre_460AS", familiaPadre.Codigo_460AS);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    string codPermiso = reader.GetString(0);
-                    if (loadedComponents.TryGetValue(codPermiso, out IComponentePermiso_460AS componenteExistente) && componenteExistente is Permiso_460AS pExistente)
-                    {
-                        familia.AgregarHijo(pExistente);
-                    }
-                    else
-                    {
-                        Permiso_460AS permiso = new(
-                            codigo: codPermiso,
-                            nombre: reader.GetString(1)
-                        )
-                        {
-                            Descripcion_460AS = reader.IsDBNull(2) ? null : reader.GetString(2)
-                        };
-                        familia.AgregarHijo(permiso);
-                        loadedComponents.Add(permiso.Codigo_460AS, permiso);
-                    }
+                    Familia_460AS fam = new Familia_460AS(
+                        reader["CodFamilia_460AS"].ToString(),
+                        reader["Nombre_460AS"].ToString()
+                    );
+                    lista.Add(fam);
                 }
             }
+            return lista;
+        }
 
-            string queryHijos = @"
-            SELECT f.CodFamilia_460AS, f.Nombre_460AS 
-            FROM FAMILIA_FAMILIA_460AS ff 
-            JOIN FAMILIA_460AS f ON ff.CodFamiliaHijo_460AS = f.CodFamilia_460AS 
-            WHERE ff.CodFamiliaPadre_460AS = @CodFamiliaPadre_460AS";
-
-            using (SqlCommand cmd2 = new(queryHijos, conexion))
+        public void EliminarTodasRelacionesFamilia_460AS(Familia_460AS familia)
+        {
+            using (SqlConnection con = new SqlConnection(cx))
             {
-                cmd2.Parameters.AddWithValue("@CodFamiliaPadre_460AS", familia.Codigo_460AS);
-                using SqlDataReader reader2 = cmd2.ExecuteReader();
+                con.Open();
 
-                while (reader2.Read())
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+
+                cmd.CommandText = @"DELETE FROM FAMILIA_FAMILIA_460AS WHERE CodFamiliaPadre_460AS = @Codigo_460AS OR CodFamiliaHijo_460AS = @Codigo_460AS";
+                cmd.Parameters.AddWithValue("@Codigo_460AS", familia.Codigo_460AS);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void EliminarRelacionFamilia_460AS(Familia_460AS familiaPadre, Familia_460AS familiaHijo)
+        {
+            using (SqlConnection con = new SqlConnection(cx))
+            {
+                string consulta = @"DELETE FROM FAMILIA_FAMILIA_460AS 
+                                WHERE CodFamiliaPadre_460AS = @CodFamiliaPadre_460AS 
+                                  AND CodFamiliaHijo_460AS = @CodFamiliaHijo_460AS";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@CodFamiliaPadre_460AS", familiaPadre.Codigo_460AS);
+                cmd.Parameters.AddWithValue("@CodFamiliaHijo_460AS", familiaHijo.Codigo_460AS);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void AgregarPermisoAFamilia_460AS(string codFamilia, string codPermiso)
+        {
+            using (SqlConnection con = new SqlConnection(cx))
+            {
+                string consulta = @"INSERT INTO FAMILIA_PERMISO_460AS (CodFamilia_460AS, CodPermiso_460AS)
+                                VALUES (@CodFamilia, @CodPermiso)";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@CodFamilia", codFamilia);
+                cmd.Parameters.AddWithValue("@CodPermiso", codPermiso);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void EliminarPermisoDeFamilia_460AS(string codFamilia, string codPermiso)
+        {
+            using (SqlConnection con = new SqlConnection(cx))
+            {
+                string consulta = @"DELETE FROM FAMILIA_PERMISO_460AS 
+                                WHERE CodFamilia_460AS = @CodFamilia AND CodPermiso_460AS = @CodPermiso";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@CodFamilia", codFamilia);
+                cmd.Parameters.AddWithValue("@CodPermiso", codPermiso);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<Permiso_460AS> ObtenerPermisosDeFamilia_460AS(string codFamilia)
+        {
+            List<Permiso_460AS> lista = new List<Permiso_460AS>();
+
+            using (SqlConnection con = new SqlConnection(cx))
+            {
+                string consulta = @"SELECT p.CodPermiso_460AS, p.Nombre_460AS, p.Descripcion_460AS
+                                FROM PERMISO_460AS p
+                                INNER JOIN FAMILIA_PERMISO_460AS fp ON p.CodPermiso_460AS = fp.CodPermiso_460AS
+                                WHERE fp.CodFamilia_460AS = @CodFamilia";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@CodFamilia", codFamilia);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    string codHijo = reader2.GetString(0);
-                    if (loadedComponents.TryGetValue(codHijo, out IComponentePermiso_460AS componenteExistente) && componenteExistente is Familia_460AS famHijoExistente)
+                    Permiso_460AS permiso = new Permiso_460AS(
+                        reader["CodPermiso_460AS"].ToString(),
+                        reader["Nombre_460AS"].ToString()
+                    )
                     {
-                        familia.AgregarHijo(famHijoExistente);
-                    }
-                    else
-                    {
-                        Familia_460AS hijo = new()
-                        {
-                            Codigo_460AS = codHijo,
-                            Nombre_460AS = reader2.GetString(1)
-                        };
-                        familia.AgregarHijo(hijo);
-                        loadedComponents.Add(hijo.Codigo_460AS, hijo);
-
-                        CargarRelaciones_460AS(hijo, conexion, loadedComponents);
-                    }
+                        Descripcion_460AS = reader.IsDBNull(2) ? null : reader["Descripcion_460AS"].ToString()
+                    };
+                    lista.Add(permiso);
                 }
             }
+
+            return lista;
+        }
+
+
+
+        public List<Familia_460AS> ObtenerFamiliasPadres_460AS(Familia_460AS familiaHija)
+        {
+            List<Familia_460AS> lista = new List<Familia_460AS>();
+
+            using (SqlConnection con = new SqlConnection(cx))
+            {
+                string consulta = @"
+            SELECT f.CodFamilia_460AS, f.Nombre_460AS
+            FROM FAMILIA_460AS f
+            INNER JOIN FAMILIA_FAMILIA_460AS ff ON f.CodFamilia_460AS = ff.CodFamiliaPadre_460AS
+            WHERE ff.CodFamiliaHijo_460AS = @CodFamiliaHijo_460AS";
+
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@CodFamiliaHijo_460AS", familiaHija.Codigo_460AS);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Familia_460AS fam = new Familia_460AS(
+                        reader["CodFamilia_460AS"].ToString(),
+                        reader["Nombre_460AS"].ToString()
+                    );
+                    lista.Add(fam);
+                }
+            }
+
+            return lista;
         }
     }
 }

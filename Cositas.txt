@@ -1,4 +1,3 @@
--Traducir bien todos los messagebox
--Poner bien la imagen del menu
--Probar abm clientes
--Vencimiento de la tarjeta
+-Agregar a la documentacion en dal comprobante ObtenerComprobantes()
+-Abrir doc al hacer doble clic en comprobante
+-Checkbox para mostrar encriptado o no el pasaporte

@@ -1,17 +1,19 @@
 ﻿using _460ASDAL;
 using _460ASServicios;
 using _460ASServicios.Singleton;
-using _460ASServicios;
 using Microsoft.VisualBasic.ApplicationServices;
+using _460ASServicios.Composite;
 
 namespace _460ASBLL
 {
     public class BLL460AS_Usuario
     {
         private DAL460AS_Usuario _usuarioDAL;
+        private DAL460AS_Perfil _perfilDAL;
         public BLL460AS_Usuario()
         {
             _usuarioDAL = new DAL460AS_Usuario();
+            _perfilDAL = new DAL460AS_Perfil();
         }
 
         public void GuardarUsuario_460AS(Usuario_460AS usuario)
@@ -64,6 +66,7 @@ namespace _460ASBLL
             {
                 user.Contador_460AS = 0;
                 _usuarioDAL.ActualizarUsuario_460AS(user);
+                user.Rol_460AS = _perfilDAL.ObtenerPorCodigo_460AS(user.Rol_460AS.Codigo_460AS);
                 SessionManager_460AS.Instancia.Login_460AS(user);
                 return LoginResult_460AS.ValidUser;
             }
@@ -107,7 +110,19 @@ namespace _460ASBLL
 
         public List<Usuario_460AS> ObtenerUsuarios460AS()
         {
-            return _usuarioDAL.ObtenerUsuarios_460AS().ToList();
+            List<Usuario_460AS> usuarios = new List<Usuario_460AS>();
+            foreach (var item in _usuarioDAL.ObtenerUsuarios_460AS())
+            {
+                foreach (var i in _perfilDAL.ObtenerTodos_460AS())
+                {
+                    if (i.Codigo_460AS == item.Rol_460AS.Codigo_460AS)
+                    {
+                        item.Rol_460AS = i;
+                        usuarios.Add(item);
+                    }
+                }
+            }
+            return usuarios;
         }
 
         public bool CambiarPassword_460AS(string loginUsuario, string nuevaPassword)

@@ -23,5 +23,7 @@ namespace _460ASBE
             this.PrecioTotal_460AS = precioTotal_460AS;
             AsientosReservados_460AS = new List<Asiento_460AS>();
         }
+
+        public Reserva_460AS() { }
     }
 }

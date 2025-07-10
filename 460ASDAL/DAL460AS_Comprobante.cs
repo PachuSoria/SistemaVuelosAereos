@@ -47,5 +47,42 @@ namespace _460ASDAL
                 return count > 0;
             }
         }
+
+        public List<Comprobante_460AS> ObtenerTodos_460AS()
+        {
+            List<Comprobante_460AS> lista = new List<Comprobante_460AS>();
+
+            string consulta = "SELECT CodComprobante_460AS, CodReserva_460AS, Monto_460AS, TipoPago_460AS, FechaPago_460AS FROM COMPROBANTE_460AS";
+
+            using (SqlConnection conexion = new SqlConnection(cx))
+            {
+                conexion.Open();
+                using (SqlCommand comando = new SqlCommand(consulta, conexion))
+                using (SqlDataReader lector = comando.ExecuteReader())
+                {
+                    while (lector.Read())
+                    {
+                        string codComprobante = lector["CodComprobante_460AS"].ToString();
+                        string codReserva = lector["CodReserva_460AS"].ToString();
+                        decimal monto = Convert.ToDecimal(lector["Monto_460AS"]);
+                        string tipoPago = lector["TipoPago_460AS"].ToString();
+                        DateTime fechaPago = Convert.ToDateTime(lector["FechaPago_460AS"]);
+
+                        Comprobante_460AS comprobante = new Comprobante_460AS
+                        {
+                            CodComprobante_460AS = codComprobante,
+                            Reserva_460AS = new Reserva_460AS { CodReserva_460AS = codReserva }, 
+                            Monto_460AS = monto,
+                            TipoPago_460AS = tipoPago,
+                            FechaPago_460AS = fechaPago
+                        };
+
+                        lista.Add(comprobante);
+                    }
+                }
+            }
+
+            return lista;
+        }
     }
 }

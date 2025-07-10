@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -28,15 +29,19 @@ namespace _460ASGUI
             textBox5.Text = $"${reservaActual.PrecioTotal_460AS} USD";
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
             ActualizarIdioma();
+            dateTimePicker1.Format = DateTimePickerFormat.Short;
+            dateTimePicker1.MinDate = DateTime.Today; 
+            dateTimePicker1.Value = DateTime.Today.AddMonths(1);
         }
 
         public void ActualizarIdioma()
         {
             label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_pago");
-            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_num_tarjeta");
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_tarjeta");
             label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_nombre_titular");
             label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_apellido_titular");
             label6.Text = IdiomaManager_460AS.Instancia.Traducir("label_monto");
+            label7.Text = IdiomaManager_460AS.Instancia.Traducir("label_fecha_vencimiento");
             button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_confirmar_pago");
             comboBox1.Items.Clear();
             comboBox1.DisplayMember = "Value";
@@ -50,6 +55,11 @@ namespace _460ASGUI
         {
             try
             {
+                DateTime fechaVencimiento = dateTimePicker1.Value;
+                if (fechaVencimiento < DateTime.Today)
+                {
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_fecha_vencimiento_invalida"));
+                }
                 if (string.IsNullOrWhiteSpace(comboBox1.Text)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pago_vacio"));
                 string tipoPago = ((KeyValuePair<string, string>)comboBox1.SelectedItem).Key;
                 if (textBox1.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_num_tarjeta_vacio"));
@@ -72,6 +82,29 @@ namespace _460ASGUI
                     tipoPago,
                     fechaPago);
                 bllComprobante_460AS.GuardarComprobante_460AS(comprobante);
+                Reportes_460AS reportes = new Reportes_460AS();
+                string rutaCarpeta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Comprobantes");
+                string rutaPdf = reportes.GenerarComprobantePDF(comprobante, rutaCarpeta);
+                if (File.Exists(rutaPdf))
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = rutaPdf,
+                        UseShellExecute = true
+                    });
+                    Task.Delay(5000).ContinueWith(_ =>
+                    {
+                        try
+                        {
+                            File.Delete(rutaPdf);
+                        }
+                        catch {  }
+                    });
+                }
+                else
+                {
+                    MessageBox.Show("No se encontró el comprobante en PDF.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 foreach (var asiento in reservaActual.AsientosReservados_460AS)
                 {
                     bllAsiento_460AS.AsignarReservaAsiento_460AS(asiento.NumAsiento_460AS, asiento.CodVuelo_460AS, reservaActual.CodReserva_460AS);

@@ -48,6 +48,7 @@
             label6 = new Label();
             label7 = new Label();
             label8 = new Label();
+            checkBox1 = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -223,11 +224,23 @@
             label8.TabIndex = 19;
             label8.Text = "label8";
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(493, 458);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(83, 19);
+            checkBox1.TabIndex = 20;
+            checkBox1.Text = "Encriptado";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // GestionClientes_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(942, 538);
+            Controls.Add(checkBox1);
             Controls.Add(label8);
             Controls.Add(label7);
             Controls.Add(label6);
@@ -277,5 +290,6 @@
         private Label label6;
         private Label label7;
         private Label label8;
+        private CheckBox checkBox1;
     }
 }

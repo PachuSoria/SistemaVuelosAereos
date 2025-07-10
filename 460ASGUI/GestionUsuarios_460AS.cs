@@ -1,5 +1,6 @@
 ﻿using _460ASBLL;
 using _460ASServicios;
+using _460ASServicios.Composite;
 using _460ASServicios.Observer;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,17 @@ namespace _460ASGUI
     public partial class GestionUsuarios_460AS : Form, IIdiomaObserver_460AS
     {
         BLL460AS_Usuario bllUsuario_460AS;
+        BLL460AS_Perfil bllPerfil_460AS;
         public GestionUsuarios_460AS()
         {
             InitializeComponent();
             bllUsuario_460AS = new BLL460AS_Usuario();
+            bllPerfil_460AS = new BLL460AS_Perfil();
             label6.Text = "Modo Consulta";
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
+            CargarComboBoxPerfiles_460AS();
             ActualizarGrillas_460AS();
             this.MinimumSize = new Size(1000, 700);
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -46,6 +50,17 @@ namespace _460ASGUI
             Activado
         }
 
+        private void CargarComboBoxPerfiles_460AS()
+        {
+            comboBox1.Items.Clear();
+            var perfiles = bllPerfil_460AS.ObtenerTodas_460AS();
+            foreach (var perfil in perfiles)
+            {
+                if (perfil.Nombre_460AS != "SuperAdmin") 
+                    comboBox1.Items.Add(perfil.Nombre_460AS);
+            }
+        }
+
         private void ActualizarGrillas_460AS()
         {
             List<Usuario_460AS> ListaUsuarios = bllUsuario_460AS.ObtenerUsuarios460AS();
@@ -53,14 +68,14 @@ namespace _460ASGUI
             if (radioButton1.Checked)
             {
                 var linq = from x in ListaUsuarios
-                           where x.Activo_460AS == true && x.Rol_460AS != "Admin"
+                           where x.Activo_460AS == true && x.Rol_460AS.Nombre_460AS != "SuperAdmin"
                            select new
                            {
                                DNI = x.DNI_460AS,
                                Nombre = x.Nombre_460AS,
                                Apellido = x.Apellido_460AS,
                                Username = x.Login_460AS,
-                               Rol = x.Rol_460AS,
+                               Rol = x.Rol_460AS.Nombre_460AS,
                                Telefono = x.Telefono_460AS
                            };
                 dataGridView1.DataSource = linq.ToList();
@@ -68,14 +83,14 @@ namespace _460ASGUI
             else
             {
                 var linq = from x in ListaUsuarios
-                           where x.Rol_460AS != "Admin"
+                           where x.Rol_460AS.Nombre_460AS != "SuperAdmin"
                            select new
                            {
                                DNI = x.DNI_460AS,
                                Nombre = x.Nombre_460AS,
                                Apellido = x.Apellido_460AS,
                                Username = x.Login_460AS,
-                               Rol = x.Rol_460AS,
+                               Rol = x.Rol_460AS.Nombre_460AS,
                                Telefono = x.Telefono_460AS
                            };
                 dataGridView1.DataSource = linq.ToList();
@@ -156,7 +171,9 @@ namespace _460ASGUI
                     if (string.IsNullOrWhiteSpace(comboBox1.Text))
                         throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_rol_no_seleccionado"));
 
-                    string rol = comboBox1.Text;
+                    Perfil_460AS rol = bllPerfil_460AS.ObtenerTodas_460AS()
+                    .FirstOrDefault(p => p.Nombre_460AS == comboBox1.Text);
+                    if (rol == null) throw new Exception("Rol no válido");
                     string dniPrefijo = dni.Substring(0, 3);
                     string login = $"{dniPrefijo}{nombre}";
                     string password = $"{dniPrefijo}{apellido}";
@@ -177,9 +194,13 @@ namespace _460ASGUI
                     if (tel.Length > 8 || tel.Length < 8 || !int.TryParse(tel, out int telefono))
                         throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_invalido"));
                     u.Telefono_460AS = telefono;
-                    if (string.IsNullOrWhiteSpace(comboBox1.Text))
-                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_rol_no_seleccionado"));
-                    u.Rol_460AS = comboBox1.Text;
+                    Perfil_460AS rol = bllPerfil_460AS.ObtenerTodas_460AS()
+                   .FirstOrDefault(p => p.Nombre_460AS == comboBox1.Text);
+                    if (rol == null) throw new Exception("Rol no válido");
+
+                    if (rol.Nombre_460AS == "SuperAdmin")
+                        throw new Exception("No puede modificar usuarios con perfil SuperAdmin");
+                    u.Rol_460AS = rol;
                     bllUsuario_460AS.Actualizar_460AS(u);
                     textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear();
                 }

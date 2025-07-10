@@ -38,7 +38,7 @@ namespace _460ASGUI
             label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_nueva_contraseña");
             label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_confirmar_contraseña");
             label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_usuario") + $": {_loginUsuarioActual}";
-            button1.Text = IdiomaManager_460AS.Instancia.Traducir("btn_confirmar");
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_confirmar");
             button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_cancelar");
             checkBox1.Text = IdiomaManager_460AS.Instancia.Traducir("checkbox_mostrar");
         }
@@ -54,7 +54,7 @@ namespace _460ASGUI
                 if (string.IsNullOrWhiteSpace(passwordActual) || string.IsNullOrEmpty(passwordNueva) || string.IsNullOrEmpty(confirmar))
                 {
                     MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_completar_campos"),
-                                    IdiomaManager_460AS.Instancia.Traducir("titulo_confirmacion"),
+                                    IdiomaManager_460AS.Instancia.Traducir("msg_titulo_confirmacion"),
                                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
