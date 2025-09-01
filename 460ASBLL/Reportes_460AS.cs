@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using _460ASBE;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.IO; 
+using System.Drawing;
 
 namespace _460ASBLL
 {
@@ -25,7 +27,7 @@ namespace _460ASBLL
             string nombreArchivo = $"Comprobante_{comprobante.CodComprobante_460AS}.pdf";
             string rutaArchivo = Path.Combine(rutaCarpeta, nombreArchivo);
 
-            Document documento = new Document(PageSize.A4);
+            Document documento = new Document(PageSize.A4, 40f, 40f, 40f, 40f);
             try
             {
                 PdfWriter.GetInstance(documento, new FileStream(rutaArchivo, FileMode.Create));

@@ -240,6 +240,8 @@
   "msg_nodo_invalido_seleccionado": "Invalid node. Please select a family.",
   "msg_codigo_familia_invalido": "The family code is not valid",
   "msg_pasaporte_repetido": "The passport number is already in use",
+  "msg_codperfil_vacio": "You must enter the profile code",
+  "msg_nombreperfil_vacio": "You must enter the profile name",
 
   //MODOS
   "modo_consulta": "Consult Mode",

@@ -32,7 +32,7 @@ namespace _460ASBLL
             return letra1 + letra2 + numeros + letra3;
         }
 
-        public string GenerarCodigoReservaUnico()
+        public string GenerarCodigoReservaUnico_460AS()
         {
             string codigo;
             do

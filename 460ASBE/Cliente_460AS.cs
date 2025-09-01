@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace _460ASBE
 {
+    [Serializable]
     public class Cliente_460AS
     {
         public string DNI_460AS { get; set; }
@@ -23,5 +26,6 @@ namespace _460ASBE
             this.Telefono_460AS = telefono_460AS;
             this.NroPasaporte_460AS = nroPasaporte_460AS;
         }
+        public Cliente_460AS() { }
     }
 }

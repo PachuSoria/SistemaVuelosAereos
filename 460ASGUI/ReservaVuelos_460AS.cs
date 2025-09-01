@@ -78,7 +78,7 @@ namespace _460ASGUI
         {
             try
             {
-                string codReserva = bllReserva_460AS.GenerarCodigoReservaUnico();
+                string codReserva = bllReserva_460AS.GenerarCodigoReservaUnico_460AS();
                 Reserva_460AS reserva = new Reserva_460AS(
                     codReserva,
                     DateTime.Now,

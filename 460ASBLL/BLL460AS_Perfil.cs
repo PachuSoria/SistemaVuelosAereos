@@ -209,6 +209,26 @@ namespace _460ASBLL
             return dalPerfil_460AS.ObtenerPermisosDePerfil_460AS(codPerfil_460AS);
         }
 
+        public List<Permiso_460AS> ObtenerTodosLosPermisosDelPerfil_460AS(string codPerfil)
+        {
+            var permisosDirectos = ObtenerPermisosDePerfil_460AS(codPerfil);
+
+            var permisosHeredados = new List<Permiso_460AS>();
+            var familias = ObtenerFamiliasDePerfil_460AS(codPerfil);
+            var bllFamilia = new BLL460AS_Familia();
+
+            foreach (var familia in familias)
+            {
+                permisosHeredados.AddRange(bllFamilia.ObtenerPermisosHeredados_460AS(familia.Codigo_460AS));
+            }
+
+            return permisosDirectos
+                .Concat(permisosHeredados)
+                .GroupBy(p => p.Codigo_460AS)
+                .Select(g => g.First())
+                .ToList();
+        }
+
         public void ActualizarIdioma()
         {
             

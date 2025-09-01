@@ -95,19 +95,59 @@ namespace _460ASGUI
         private void ValidarMenuPorPerfil_460AS()
         {
             if (!SessionManager_460AS.Instancia.IsLogged_460AS())
-            {
-                return; 
-            }
+                return;
 
             var perfilActual = SessionManager_460AS.Instancia.Usuario.Rol_460AS;
             var bllPerfil = new BLL460AS_Perfil();
 
-            List<Familia_460AS> familiasPerfil = bllPerfil.ObtenerFamiliasDePerfil_460AS(perfilActual.Codigo_460AS);
+            var permisos = bllPerfil.ObtenerTodosLosPermisosDelPerfil_460AS(perfilActual.Codigo_460AS);
 
-            administradorToolStripMenuItem.Visible = familiasPerfil.Any(f => f.Nombre_460AS == "Perfiles");
-            maestroToolStripMenuItem.Visible = familiasPerfil.Any(f => f.Nombre_460AS == "Vuelos"); 
-            reservasToolStripMenuItem.Visible = familiasPerfil.Any(f => f.Nombre_460AS == "Reservas");
-            reportesToolStripMenuItem.Visible = familiasPerfil.Any(f => f.Nombre_460AS == "Reportes");
+            if (permisos.Any(p => p.Nombre_460AS == "Gestionar Perfiles"))
+            {
+                administradorToolStripMenuItem.Visible = true;
+                gestionarUsuariosToolStripMenuItem.Visible = true;
+                gestionarPerfilesToolStripMenuItem.Visible = true;
+                gestionarFamiliasToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                administradorToolStripMenuItem.Visible = false;
+            }
+
+            bool tieneGestionarVuelos = permisos.Any(p => p.Nombre_460AS == "Gestionar Vuelos");
+            bool tieneGestionarClientes = permisos.Any(p => p.Nombre_460AS == "Gestionar Clientes");
+
+            if (tieneGestionarVuelos || tieneGestionarClientes)
+            {
+                maestroToolStripMenuItem.Visible = true;
+                gestionarVuelosToolStripMenuItem.Visible = tieneGestionarVuelos;
+                gestionarAsientosToolStripMenuItem.Visible = tieneGestionarVuelos;
+                gestionarClientesToolStripMenuItem.Visible = tieneGestionarClientes;
+            }
+            else
+            {
+                maestroToolStripMenuItem.Visible = false;
+            }
+
+            if (permisos.Any(p => p.Nombre_460AS == "Registrar Reserva"))
+            {
+                reservasToolStripMenuItem.Visible = true;
+                registrarReservaToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                reservasToolStripMenuItem.Visible = false;
+            }
+
+            if (permisos.Any(p => p.Nombre_460AS == "Gestionar Reportes"))
+            {
+                reportesToolStripMenuItem.Visible = true;
+                verComprobantesToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                reportesToolStripMenuItem.Visible = false;
+            }
         }
 
         private void AbrirForm<T>() where T : Form, new()
@@ -319,6 +359,13 @@ namespace _460ASGUI
             GestionReportes_460AS formGestionReportes = new GestionReportes_460AS();
             formGestionReportes.MdiParent = this;
             formGestionReportes.Show();
+        }
+
+        private void backupYRestoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BackUpRestore_460AS formBackUpRestore = new BackUpRestore_460AS();
+            formBackUpRestore.MdiParent = this;
+            formBackUpRestore.Show();
         }
     }
 }

@@ -49,6 +49,11 @@
             label7 = new Label();
             label8 = new Label();
             checkBox1 = new CheckBox();
+            button6 = new Button();
+            button7 = new Button();
+            button8 = new Button();
+            openFileDialog1 = new OpenFileDialog();
+            saveFileDialog1 = new SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -235,11 +240,48 @@
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
+            // button6
+            // 
+            button6.Location = new Point(67, 537);
+            button6.Name = "button6";
+            button6.Size = new Size(75, 23);
+            button6.TabIndex = 21;
+            button6.Text = "Serializar";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
+            // 
+            // button7
+            // 
+            button7.Location = new Point(178, 537);
+            button7.Name = "button7";
+            button7.Size = new Size(87, 23);
+            button7.TabIndex = 22;
+            button7.Text = "Des-serealizar";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
+            // 
+            // button8
+            // 
+            button8.Location = new Point(306, 537);
+            button8.Name = "button8";
+            button8.Size = new Size(75, 23);
+            button8.TabIndex = 23;
+            button8.Text = "Limpiar";
+            button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            // 
             // GestionClientes_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(942, 538);
+            ClientSize = new Size(1172, 733);
+            Controls.Add(button8);
+            Controls.Add(button7);
+            Controls.Add(button6);
             Controls.Add(checkBox1);
             Controls.Add(label8);
             Controls.Add(label7);
@@ -291,5 +333,10 @@
         private Label label7;
         private Label label8;
         private CheckBox checkBox1;
+        private Button button6;
+        private Button button7;
+        private Button button8;
+        private OpenFileDialog openFileDialog1;
+        private SaveFileDialog saveFileDialog1;
     }
 }

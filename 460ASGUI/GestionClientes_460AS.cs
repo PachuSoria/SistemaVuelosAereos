@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace _460ASGUI
 {
@@ -181,17 +182,34 @@ namespace _460ASGUI
         public void ActualizarClientes()
         {
             bool mostrarEncriptado = checkBox1.Checked;
-            dataGridView1.DataSource = bllCliente_460AS.ObtenerClientes_460AS().Select(c => new
+            if (mostrandoDesdeXML && clientesDeserializados != null)
             {
-                DNI = c.DNI_460AS,
-                Nombre = c.Nombre_460AS,
-                Apellido = c.Apellido_460AS,
-                FechaNacimiento = c.FechaNacimiento_460AS.ToShortDateString(),
-                Telefono = c.Telefono_460AS,
-                Pasaporte = mostrarEncriptado
-                ?c.NroPasaporte_460AS
-                : Cifrado_460AS.DesencriptarPasaporteAES_460AS(c.NroPasaporte_460AS)
-            }).ToList();
+                dataGridView1.DataSource = clientesDeserializados.Select(c => new
+                {
+                    DNI = c.DNI_460AS,
+                    Nombre = c.Nombre_460AS,
+                    Apellido = c.Apellido_460AS,
+                    FechaNacimiento = c.FechaNacimiento_460AS.ToShortDateString(),
+                    Telefono = c.Telefono_460AS,
+                    Pasaporte = mostrarEncriptado
+                        ? c.NroPasaporte_460AS
+                        : Cifrado_460AS.DesencriptarPasaporteAES_460AS(c.NroPasaporte_460AS)
+                }).ToList();
+            }
+            else
+            {
+                dataGridView1.DataSource = bllCliente_460AS.ObtenerClientes_460AS().Select(c => new
+                {
+                    DNI = c.DNI_460AS,
+                    Nombre = c.Nombre_460AS,
+                    Apellido = c.Apellido_460AS,
+                    FechaNacimiento = c.FechaNacimiento_460AS.ToShortDateString(),
+                    Telefono = c.Telefono_460AS,
+                    Pasaporte = mostrarEncriptado
+                    ? c.NroPasaporte_460AS
+                    : Cifrado_460AS.DesencriptarPasaporteAES_460AS(c.NroPasaporte_460AS)
+                }).ToList();
+            }
 
             dataGridView1.Columns[0].HeaderText = IdiomaManager_460AS.Instancia.Traducir("DNI");
             dataGridView1.Columns[1].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Nombre");
@@ -237,6 +255,81 @@ namespace _460ASGUI
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             ActualizarClientes();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<Cliente_460AS> clientes = bllCliente_460AS.ObtenerClientes_460AS();
+                if (clientes == null) MessageBox.Show("No hay clientes para serializar");
+                using (var sfd = new SaveFileDialog())
+                {
+                    sfd.Title = "Guardar clientes";
+                    sfd.Filter = "Archivo XML|*.xml";
+                    sfd.FileName = $"clientes_{DateTime.Now:yyyyMMdd_HHmm}.xml";
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        var serializer = new XmlSerializer(typeof(List<Cliente_460AS>));
+                        using (var fs = new FileStream(sfd.FileName, FileMode.Create))
+                        {
+                            serializer.Serialize(fs, clientes);
+                        }
+
+                        MessageBox.Show("Clientes serializados correctamente");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private List<Cliente_460AS> clientesDeserializados = null;
+        private bool mostrandoDesdeXML = false;
+        private void button7_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var ofd = new OpenFileDialog())
+                {
+                    ofd.Title = "Abrir archivo de clientes";
+                    ofd.Filter = "Archivo XML|*.xml";
+
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        List<Cliente_460AS> clientes = null;
+
+                        var serializer = new XmlSerializer(typeof(List<Cliente_460AS>));
+                        using (var fs = new FileStream(ofd.FileName, FileMode.Open))
+                        {
+                            clientes = (List<Cliente_460AS>)serializer.Deserialize(fs);
+                        }
+
+                        if (clientes == null || clientes.Count == 0)
+                        {
+                            MessageBox.Show("El archivo no contiene clientes");
+                            return;
+                        }
+                        clientesDeserializados = clientes;
+                        mostrandoDesdeXML = true;
+                        ActualizarClientes();
+                        MessageBox.Show("Clientes cargados correctamente");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            mostrandoDesdeXML = false;
+            clientesDeserializados = null;
+            ActualizarClientes();    
         }
     }
 }

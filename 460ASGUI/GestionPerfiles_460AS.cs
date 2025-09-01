@@ -118,6 +118,8 @@ namespace _460ASGUI
             try
             {
                 Perfil_460AS nuevo = new Perfil_460AS(textBox1.Text.Trim(), textBox2.Text.Trim());
+                if (textBox1.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_codperfil_vacio"));
+                if (textBox2.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_nombreperfil_vacio"));
                 bllPerfil.GuardarPerfil_460AS(nuevo);
                 CargarPerfiles();
             }

@@ -240,6 +240,8 @@
   "msg_nodo_invalido_seleccionado": "Nodo inválido. Seleccioná una familia.",
   "msg_codigo_familia_invalido": "El codigo de familia no es valido",
   "msg_pasaporte_repetido": "El número de pasaporte ya está en uso",
+  "msg_codperfil_vacio": "Debe ingresar el codigo del perfil",
+  "msg_nombreperfil_vacio" :  "Debe ingresar el nombre del perfil",
 
   //MODOS
   "modo_consulta": "Modo Consulta",
