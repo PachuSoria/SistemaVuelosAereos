@@ -54,6 +54,8 @@
             button8 = new Button();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
+            listBox1 = new ListBox();
+            label9 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -242,7 +244,7 @@
             // 
             // button6
             // 
-            button6.Location = new Point(67, 537);
+            button6.Location = new Point(329, 538);
             button6.Name = "button6";
             button6.Size = new Size(75, 23);
             button6.TabIndex = 21;
@@ -252,7 +254,7 @@
             // 
             // button7
             // 
-            button7.Location = new Point(178, 537);
+            button7.Location = new Point(329, 577);
             button7.Name = "button7";
             button7.Size = new Size(87, 23);
             button7.TabIndex = 22;
@@ -262,7 +264,7 @@
             // 
             // button8
             // 
-            button8.Location = new Point(306, 537);
+            button8.Location = new Point(329, 617);
             button8.Name = "button8";
             button8.Size = new Size(75, 23);
             button8.TabIndex = 23;
@@ -274,11 +276,32 @@
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // listBox1
+            // 
+            listBox1.FormattingEnabled = true;
+            listBox1.ItemHeight = 15;
+            listBox1.Location = new Point(67, 527);
+            listBox1.Name = "listBox1";
+            listBox1.SelectionMode = SelectionMode.None;
+            listBox1.Size = new Size(256, 169);
+            listBox1.TabIndex = 24;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(67, 509);
+            label9.Name = "label9";
+            label9.Size = new Size(112, 15);
+            label9.TabIndex = 25;
+            label9.Text = "Clientes serializados";
+            // 
             // GestionClientes_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1172, 733);
+            ClientSize = new Size(876, 724);
+            Controls.Add(label9);
+            Controls.Add(listBox1);
             Controls.Add(button8);
             Controls.Add(button7);
             Controls.Add(button6);
@@ -338,5 +361,7 @@
         private Button button8;
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
+        private ListBox listBox1;
+        private Label label9;
     }
 }

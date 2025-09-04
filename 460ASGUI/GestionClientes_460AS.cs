@@ -275,7 +275,12 @@ namespace _460ASGUI
                         {
                             serializer.Serialize(fs, clientes);
                         }
-
+                        listBox1.Items.Clear();
+                        string[] lineas = File.ReadAllLines(sfd.FileName);
+                        foreach (string linea in lineas)
+                        {
+                            listBox1.Items.Add(linea);
+                        }
                         MessageBox.Show("Clientes serializados correctamente");
                     }
                 }
