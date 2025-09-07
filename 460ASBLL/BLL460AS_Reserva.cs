@@ -1,5 +1,6 @@
 ﻿using _460ASBE;
 using _460ASDAL;
+using _460ASServicios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,19 @@ namespace _460ASBLL
     public class BLL460AS_Reserva
     {
         private DAL460AS_Reserva _reservaDAL;
+        private BLL460AS_Evento _eventoBLL;
         public BLL460AS_Reserva()
         {
             _reservaDAL = new DAL460AS_Reserva();
+            _eventoBLL = new BLL460AS_Evento();
         }
 
         public void AgregarReserva_460AS(Reserva_460AS reserva)
         {
             _reservaDAL.AgregarReserva_460AS(reserva);
+            Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Reservas", $"Reserva registrada - Código: {reserva.CodReserva_460AS}");
+            _eventoBLL.GuardarEvento_460AS(ev);
         }
 
         private string GenerarCodigoReserva_460AS()

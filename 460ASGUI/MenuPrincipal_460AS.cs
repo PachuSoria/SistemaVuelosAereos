@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace _460ASGUI
 {
@@ -185,6 +186,8 @@ namespace _460ASGUI
 
         private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SoundPlayer player = new SoundPlayer(Properties.Resources.clash_royale_prince_charge);
+            player.Play();
             string mensaje = IdiomaManager_460AS.Instancia.Traducir("msg_confirmar_cierre_sesion");
             string titulo = IdiomaManager_460AS.Instancia.Traducir("msg_titulo_confirmacion");
             if (MessageBox.Show(mensaje, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)

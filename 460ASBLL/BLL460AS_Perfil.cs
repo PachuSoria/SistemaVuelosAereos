@@ -1,4 +1,5 @@
 ﻿using _460ASDAL;
+using _460ASServicios;
 using _460ASServicios.Composite;
 using _460ASServicios.Observer;
 using System;
@@ -13,11 +14,13 @@ namespace _460ASBLL
     {
         private DAL460AS_Perfil dalPerfil_460AS;
         private DAL460AS_Familia dalFamilia_460AS;
+        private BLL460AS_Evento _eventoBLL;
 
         public BLL460AS_Perfil()
         {
             dalPerfil_460AS = new DAL460AS_Perfil();
             dalFamilia_460AS = new DAL460AS_Familia();
+            _eventoBLL = new BLL460AS_Evento();
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
             ActualizarIdioma();
         }
@@ -64,6 +67,9 @@ namespace _460ASBLL
                 throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_perfil_igual_codigo_nombre"));
 
             dalPerfil_460AS.GuardarPerfil_460AS(perfil);
+            Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Perfil creado - Código: {perfil.Codigo_460AS}");
+            _eventoBLL.GuardarEvento_460AS(ev);
         }
 
         public void EliminarPerfil_460AS(Perfil_460AS perfil)
@@ -78,6 +84,9 @@ namespace _460ASBLL
                 throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_perfil_tiene_familias_o_permisos"));
 
             dalPerfil_460AS.EliminarPerfil_460AS(perfil);
+            Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Perfil eliminado - Código: {perfil.Codigo_460AS}");
+            _eventoBLL.GuardarEvento_460AS(ev);
         }
 
         private void ValidarPerfilUnico_460AS(string codigo)

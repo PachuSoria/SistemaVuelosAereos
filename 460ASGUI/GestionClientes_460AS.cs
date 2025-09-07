@@ -19,11 +19,13 @@ namespace _460ASGUI
     public partial class GestionClientes_460AS : Form, IIdiomaObserver_460AS
     {
         private BLL460AS_Cliente bllCliente_460AS;
+        private BLL460AS_Serializar bllSerializar;
         private FormEstado estadoActual = FormEstado.Consulta;
         public GestionClientes_460AS()
         {
             InitializeComponent();
             bllCliente_460AS = new BLL460AS_Cliente();
+            bllSerializar = new BLL460AS_Serializar();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
             label8.Text = "Modo Consulta";
@@ -262,7 +264,11 @@ namespace _460ASGUI
             try
             {
                 List<Cliente_460AS> clientes = bllCliente_460AS.ObtenerClientes_460AS();
-                if (clientes == null) MessageBox.Show("No hay clientes para serializar");
+                if (clientes == null)
+                {
+                    MessageBox.Show("No hay clientes para serializar");
+                    return;
+                }
                 using (var sfd = new SaveFileDialog())
                 {
                     sfd.Title = "Guardar clientes";
@@ -270,11 +276,7 @@ namespace _460ASGUI
                     sfd.FileName = $"clientes_{DateTime.Now:yyyyMMdd_HHmm}.xml";
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        var serializer = new XmlSerializer(typeof(List<Cliente_460AS>));
-                        using (var fs = new FileStream(sfd.FileName, FileMode.Create))
-                        {
-                            serializer.Serialize(fs, clientes);
-                        }
+                        bllSerializar.Serializar(sfd.FileName, clientes);
                         listBox1.Items.Clear();
                         string[] lineas = File.ReadAllLines(sfd.FileName);
                         foreach (string linea in lineas)
@@ -304,14 +306,7 @@ namespace _460ASGUI
 
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
-                        List<Cliente_460AS> clientes = null;
-
-                        var serializer = new XmlSerializer(typeof(List<Cliente_460AS>));
-                        using (var fs = new FileStream(ofd.FileName, FileMode.Open))
-                        {
-                            clientes = (List<Cliente_460AS>)serializer.Deserialize(fs);
-                        }
-
+                        var clientes = bllSerializar.Deserializar(ofd.FileName);
                         if (clientes == null || clientes.Count == 0)
                         {
                             MessageBox.Show("El archivo no contiene clientes");

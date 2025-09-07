@@ -1,4 +1,5 @@
 ﻿using _460ASDAL;
+using _460ASServicios;
 using _460ASServicios.Composite;
 using _460ASServicios.Observer;
 using System;
@@ -13,11 +14,13 @@ namespace _460ASBLL
     {
         private DAL460AS_Familia dalFamilia_460AS;
         private DAL460AS_Permiso dalPermiso_460AS;
+        private BLL460AS_Evento _eventoBLL;
 
         public BLL460AS_Familia()
         {
             dalFamilia_460AS = new DAL460AS_Familia();
             dalPermiso_460AS = new DAL460AS_Permiso();
+            _eventoBLL = new BLL460AS_Evento();
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
             ActualizarIdioma();
         }
@@ -62,6 +65,9 @@ namespace _460ASBLL
             dalFamilia_460AS.EliminarTodasRelacionesFamilia_460AS(familia);
 
             dalFamilia_460AS.Eliminar_460AS(familia);
+            Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Familias", $"Familia eliminada - Código: {familia.Codigo_460AS}");
+            _eventoBLL.GuardarEvento_460AS(ev);
         }
 
         public void EliminarRelacionFamilia_460AS(Familia_460AS familiaPadre, Familia_460AS familiaHijo)
@@ -92,6 +98,9 @@ namespace _460ASBLL
                 throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_codigo_familia_vacio"));
 
             dalFamilia_460AS.GuardarFamilia_460AS(familia);
+            Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Familia creada - Código: {familia.Codigo_460AS}");
+            _eventoBLL.GuardarEvento_460AS(ev);
         }
 
         public void AgregarPermisoAFamilia_460AS(string codFamilia, string codPermiso)
