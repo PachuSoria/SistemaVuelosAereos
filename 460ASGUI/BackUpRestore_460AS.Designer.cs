@@ -126,9 +126,9 @@
             label1.AutoSize = true;
             label1.Location = new Point(12, 212);
             label1.Name = "label1";
-            label1.Size = new Size(218, 15);
+            label1.Size = new Size(177, 15);
             label1.TabIndex = 2;
-            label1.Text = "Estado: No se realizó ninguna operacion";
+            label1.Text = "No se realizó ninguna operacion";
             // 
             // BackUpRestore_460AS
             // 

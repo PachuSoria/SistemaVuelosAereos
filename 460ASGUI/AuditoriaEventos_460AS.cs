@@ -47,18 +47,11 @@ namespace _460ASGUI
 
                 if (desde > hasta)
                 {
-                    MessageBox.Show("La fecha de inicio no puede ser mayor que la fecha de fin",
+                    MessageBox.Show("Las fechas no son validas",
                                     "Rango inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
                 string usuario = string.IsNullOrWhiteSpace(textBox1.Text) ? null : textBox1.Text.Trim();
-                if (usuario != null && !System.Text.RegularExpressions.Regex.IsMatch(usuario, @"^[a-zA-Z0-9\s]+$"))
-                {
-                    MessageBox.Show("Usuario solo puede contener letras, números y espacios.",
-                                    "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 string modulo = GetComboFiltro(comboBox1);
                 string actividad = GetComboFiltro(comboBox2);
                 int? criticidad = GetComboCriticidad(comboBox3);

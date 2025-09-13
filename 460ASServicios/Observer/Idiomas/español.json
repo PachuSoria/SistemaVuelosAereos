@@ -21,7 +21,7 @@
   "menu_comprobantes": "Ver comprobantes",
   "menu_familias": "Gestionar familias",
   "menu_perfiles": "Gestionar perfiles",
-  "menu_auditoria" :  "Auditar eventos",
+  "menu_auditoria": "Auditar eventos",
 
   //LABELS
   "label_usuario": "Nombre de usuario",
@@ -75,7 +75,8 @@
   "label_fechaFin": "Fecha fin",
   "label_eventos": "Eventos",
   "label_serializados": "Clientes serializados",
-  "label_estado_backup" :  "Estado: No se realizó ninguna operacion",
+  "label_estado_backup": "No se realizó ninguna operacion",
+  "label_ultimo_estado": "Último backup realizado: {0} en {1}",
 
   //BOTONES
   "boton_ingresar": "Ingresar",
@@ -102,6 +103,14 @@
   "boton_seleccionar": "Seleccionar",
   "boton_crear_perfil": "Crear perfil",
   "boton_eliminar_perfil": "Eliminar perfil",
+  "boton_aplicar": "Aplicar",
+  "boton_imprimir": "Imprimir",
+  "boton_limpiar": "Limpiar",
+  "boton_serializar": "Serializar",
+  "boton_desserealizar": "Des-serealizar",
+  "boton_ubicacion": "Seleccionar ubicacion",
+  "boton_copia": "Generar copia",
+  "boton_restaurar": "Restaurar",
 
   //RADIOBUTTONS
   "radiobutton_activos": "Activos",
@@ -109,7 +118,7 @@
 
   //CHECKBOXS
   "checkbox_mostrar": "Mostrar",
-  "checkbox_encriptado" :  "Encriptado",
+  "checkbox_encriptado": "Encriptado",
 
   //MENSAJES
   "msg_usuario_incorrecto": "Usuario incorrecto",
@@ -250,7 +259,17 @@
   "msg_codigo_familia_invalido": "El codigo de familia no es valido",
   "msg_pasaporte_repetido": "El número de pasaporte ya está en uso",
   "msg_codperfil_vacio": "Debe ingresar el codigo del perfil",
-  "msg_nombreperfil_vacio" :  "Debe ingresar el nombre del perfil",
+  "msg_nombreperfil_vacio": "Debe ingresar el nombre del perfil",
+  "msg_copia_realizada": "Se realizó la copia de seguidad correctamente",
+  "msg_restauracion_realizada": "Se realizó la restauracion de la copia de seguridad correctamente",
+  "msg_seleccionar_ubi_copia": "Debe seleccionar la ubicacion para guardar la copia de seguridad",
+  "msg_seleccionar_ubi_restauracion": "Debe seleccionar la ubicacion para restaurar la copia de seguridad",
+  "msg_no_clientes_serializar": "No hay clientes para serializar",
+  "msg_clientes_serializados": "Clientes serializados correctamente",
+  "msg_archivo_sin_clientes": "El archivo no contiene clientes",
+  "msg_clientes_cargados": "Clientes cargados correctamente",
+  "msg_no_datos": "No hay datos para exportar",
+  "msg_pdf" :  "PDF generado correctamente",
 
   //MODOS
   "modo_consulta": "Modo Consulta",
@@ -308,5 +327,35 @@
   "Monto": "Monto",
   "Tipo_pago": "TipoPago",
   "Fecha_pago": "FechaPago",
-  "Sesion_no_iniciada": "[Sesion no iniciada]"
+  "Sesion_no_iniciada": "[Sesion no iniciada]",
+  "combo_todos": "Todos",
+  "combo_clientes": "Clientes",
+  "combo_perfiles": "Perfiles/Familias",
+  "combo_reservas": "Reservas",
+  "combo_usuarios": "Usuarios",
+  "combo_vuelos": "Vuelos",
+  "combo_activacion": "Activacion de usuario",
+  "combo_alta_cliente": "Alta de cliente",
+  "combo_alta_vuelo": "Alta de vuelo",
+  "combo_baja_cliente": "Baja de cliente",
+  "combo_bloqueo": "Bloqueo automatico",
+  "combo_cambio_contaseña": "Cambio de contraseña",
+  "combo_creacion_familia": "Creacion de familia",
+  "combo_creacion_perfil": "Creacion de perfil",
+  "combo_desactivacion": "Desactivacion de usuario",
+  "combo_desbloqueo": "Desbloqueo de usuario",
+  "combo_eliminacion_vuelo": "Eliminacion de vuelo",
+  "combo_eliminacion_familia": "Eliminacion de familia",
+  "combo_eliminacion_perfil": "Eliminacion de pefil",
+  "combo_comprobante": "Generacion de comprobante",
+  "combo_login_fallido": "Intento de login fallido",
+  "combo_login_exitoso": "Login exitoso",
+  "combo_login_fallido_bloqueado": "Login fallido por usuario bloqueado",
+  "combo_login_fallido_inactivo": "Login fallido por usuario inactivo",
+  "combo_logout": "Logout",
+  "combo_modificacion_cliente": "Modificacion de cliente",
+  "combo_modificacion_vuelo": "Modificacion de vuelo",
+  "combo_registro_reserva": "Registro de reserva",
+  "combo_alta_usuario": "Alta de usuario",
+  "combo_modificacion_usuario" :  "Modificacion de usuario"
 }
