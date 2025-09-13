@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _460ASBE
 {
-    public class Reserva_460AS
+    public class Reserva_460AS : ComponenteReserva_460AS
     {
         public string CodReserva_460AS { get; set; }
         public DateTime FechaReserva_460AS { get; set; }
@@ -25,5 +25,15 @@ namespace _460ASBE
         }
 
         public Reserva_460AS() { }
+
+        public override decimal CalcularPrecio()
+        {
+            return PrecioTotal_460AS;
+        }
+
+        public override string GetDescripcion()
+        {
+            return $"Reserva {CodReserva_460AS} del vuelo {Vuelo_460AS.CodVuelo_460AS}";
+        }
     }
 }

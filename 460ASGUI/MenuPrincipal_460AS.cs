@@ -370,5 +370,12 @@ namespace _460ASGUI
             formBackUpRestore.MdiParent = this;
             formBackUpRestore.Show();
         }
+
+        private void auditarEventosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AuditoriaEventos_460AS formAuditarEventos = new AuditoriaEventos_460AS();
+            formAuditarEventos.MdiParent = this;
+            formAuditarEventos.Show();
+        }
     }
 }

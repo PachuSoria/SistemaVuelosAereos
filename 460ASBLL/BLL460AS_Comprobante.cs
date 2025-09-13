@@ -30,7 +30,7 @@ namespace _460ASBLL
             _comprobanteDAL.GuardarComprobante(comprobante);
             var eventoBLL = new BLL460AS_Evento();
             Evento_460AS ultimo = eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Comprobantes", $"Comprobante generado - Código: {comprobante.CodComprobante_460AS}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 4, "Comprobantes", $"Generacion de comprobante: {comprobante.CodComprobante_460AS}");
             eventoBLL.GuardarEvento_460AS(ev);
         }
 

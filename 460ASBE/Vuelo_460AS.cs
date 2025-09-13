@@ -25,5 +25,7 @@ namespace _460ASBE
             this.FechaLlegada_460AS = fechaLlegada_460AS;
             this.PrecioVuelo_460AS = precioVuelo_460AS;
         }
+
+        public Vuelo_460AS() { }
     }
 }

@@ -68,7 +68,7 @@ namespace _460ASBLL
 
             dalPerfil_460AS.GuardarPerfil_460AS(perfil);
             Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Perfil creado - Código: {perfil.Codigo_460AS}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Creacion de perfil - Código: {perfil.Codigo_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 
@@ -85,7 +85,7 @@ namespace _460ASBLL
 
             dalPerfil_460AS.EliminarPerfil_460AS(perfil);
             Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Perfil eliminado - Código: {perfil.Codigo_460AS}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Eliminacion de perfil - Código: {perfil.Codigo_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 

@@ -21,6 +21,7 @@
   "menu_comprobantes": "Ver comprobantes",
   "menu_familias": "Gestionar familias",
   "menu_perfiles": "Gestionar perfiles",
+  "menu_auditoria" :  "Auditar eventos",
 
   //LABELS
   "label_usuario": "Nombre de usuario",
@@ -67,6 +68,14 @@
   "label_nombre_perfil": "Nombre perfil",
   "label_perfiles": "Perfiles",
   "label_fecha_vencimiento": "Fecha vencimiento",
+  "label_modulo": "Modulo",
+  "label_actividad": "Actividad",
+  "label_criticidad": "Criticidad",
+  "label_fechaIni": "Fecha inicio",
+  "label_fechaFin": "Fecha fin",
+  "label_eventos": "Eventos",
+  "label_serializados": "Clientes serializados",
+  "label_estado_backup" :  "Estado: No se realizó ninguna operacion",
 
   //BOTONES
   "boton_ingresar": "Ingresar",

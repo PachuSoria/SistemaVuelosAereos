@@ -66,7 +66,7 @@ namespace _460ASBLL
 
             dalFamilia_460AS.Eliminar_460AS(familia);
             Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Familias", $"Familia eliminada - Código: {familia.Codigo_460AS}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Familias", $"Eliminacion de familia - Código: {familia.Codigo_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 
@@ -99,7 +99,7 @@ namespace _460ASBLL
 
             dalFamilia_460AS.GuardarFamilia_460AS(familia);
             Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Familia creada - Código: {familia.Codigo_460AS}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Perfiles/Familias", $"Creacion de familia - Código: {familia.Codigo_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 

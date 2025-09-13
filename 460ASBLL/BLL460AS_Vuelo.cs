@@ -28,7 +28,7 @@ namespace _460ASBLL
         {
             _vueloDAL.AgregarVuelo_460AS(vuelo);
             var ultimo = _eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Vuelos", $"Alta de vuelo Código={vuelo.CodVuelo_460AS}, Aerolínea={vuelo.Aerolinea_460AS}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Vuelos", $"Alta de vuelo: {vuelo.CodVuelo_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 
@@ -36,7 +36,7 @@ namespace _460ASBLL
         {
             _vueloDAL.ActualizarVuelo_460AS(vuelo);
             var ultimo = _eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Vuelos", $"Modificación de vuelo Código={vuelo.CodVuelo_460AS}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Vuelos", $"Modificacion de vuelo: {vuelo.CodVuelo_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 
@@ -44,7 +44,7 @@ namespace _460ASBLL
         {
             _vueloDAL.EliminarVuelo_460AS(codVuelo);
             var ultimo = _eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Vuelos", $"Baja de vuelo Código={codVuelo}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Vuelos", $"Eliminacion de vuelo: {codVuelo}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
     }

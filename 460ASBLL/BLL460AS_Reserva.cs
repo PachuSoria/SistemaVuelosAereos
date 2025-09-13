@@ -23,7 +23,7 @@ namespace _460ASBLL
         {
             _reservaDAL.AgregarReserva_460AS(reserva);
             Evento_460AS ultimo = _eventoBLL.ObtenerUltimo_460AS();
-            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Reservas", $"Reserva registrada - Código: {reserva.CodReserva_460AS}");
+            var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Reservas", $"Registro de reserva: {reserva.CodReserva_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 
@@ -46,6 +46,11 @@ namespace _460ASBLL
                 codigo = GenerarCodigoReserva_460AS();
             } while (_reservaDAL.ExisteCodigoReserva_460AS(codigo));
             return codigo;
+        }
+
+        public List<Reserva_460AS> ObtenerReservasCliente_460AS(string dniCliente)
+        {
+            return _reservaDAL.ObtenerReservasCliente_460AS(dniCliente);
         }
     }
 }

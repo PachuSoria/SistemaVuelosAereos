@@ -30,5 +30,23 @@ namespace _460ASBLL
         {
             return _dal.ObtenerUltimo_460AS();
         }
+
+        public IList<Evento_460AS> ObtenerEventosUltimosTresDias_460AS()
+        {
+            DateTime hoy = DateTime.Today;
+            DateTime haceTresDias = hoy.AddDays(-3);
+            DateTime hasta = hoy.AddDays(1).AddSeconds(-1); 
+            return _dal.ObtenerPorFechas_460AS(haceTresDias, hasta);
+        }
+
+        public IList<Evento_460AS> ObtenerEventosPorFechas_460AS(DateTime desde, DateTime hasta)
+        {
+            return _dal.ObtenerPorFechas_460AS(desde, hasta);
+        }
+
+        public IList<Evento_460AS> FiltrarEventos_460AS(DateTime desde, DateTime hasta, string actividadPrefijo = null, string usuario = null, string modulo = null, int? criticidad = null)
+        {
+            return _dal.FiltrarEventos_460AS(desde, hasta, actividadPrefijo, usuario, modulo, criticidad);
+        }
     }
 }

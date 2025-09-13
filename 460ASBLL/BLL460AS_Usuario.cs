@@ -22,6 +22,8 @@ namespace _460ASBLL
         {
             usuario.Password_460AS = Hashing_460AS.HashearPasswordSHA256_460AS(usuario.Password_460AS);
             _usuarioDAL.GuardarUsuario_460AS(usuario);
+            var ev = Evento_460AS.GenerarEvento_460AS(_eventoBLL.ObtenerUltimo_460AS(), 2, "Usuarios", $"Alta de usuario: {usuario.Login_460AS}");
+            _eventoBLL.GuardarEvento_460AS(ev);
         }
 
         public LoginResult_460AS Login_460AS(string login, string password)
@@ -31,7 +33,7 @@ namespace _460ASBLL
             var user = _usuarioDAL.ObtenerUsuarios_460AS().Where(u => u.Login_460AS.Equals(login)).FirstOrDefault();
             if (user == null)
             {
-                var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Usuarios", "Intento de login fallido");
+                var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Usuarios", $"Intento de login fallido: {login}");
                 _eventoBLL.GuardarEvento_460AS(ev);
                 throw new LoginException_460AS(LoginResult_460AS.InvalidUsername);
             }          
@@ -51,14 +53,14 @@ namespace _460ASBLL
                     double horasRestantes = 4 - horasTranscurridas;
                     if (horasRestantes < 1) mensaje = $"Intente de nuevo en {(int)(horasRestantes * 60)} minutos";
                     else mensaje = $"Intente de nuevo en {horasRestantes:F1} horas";
-                    var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Usuarios", "Intento de login fallido: usuario bloqueado");
+                    var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Usuarios", $"Login fallido por usuario bloqueado: {user.Login_460AS}");
                     _eventoBLL.GuardarEvento_460AS(ev);
                     throw new LoginException_460AS(LoginResult_460AS.UserBlocked, mensaje);
                 }
             }
             if (user.Activo_460AS == false)
             {
-                var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Usuarios", "Intento de login fallido: usuario inactivo");
+                var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Usuarios", $"Login fallido por usuario inactivo: {user.Login_460AS}");
                 _eventoBLL.GuardarEvento_460AS(ev);
                 throw new LoginException_460AS(LoginResult_460AS.UserInactive);
             }
@@ -73,11 +75,11 @@ namespace _460ASBLL
                 {
                     user.Bloqueado_460AS = true;
                     _usuarioDAL.ActualizarUsuario_460AS(user);
-                    var evBloq = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Usuarios", "Usuario bloqueado por intentos fallidos");
+                    var evBloq = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Usuarios", $"Bloqueo automatico por intentos fallidos: {user.Login_460AS}");
                     _eventoBLL.GuardarEvento_460AS(evBloq);
                     throw new LoginException_460AS(LoginResult_460AS.UserBlocked);
                 }
-                var evFallido = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Usuarios", "Intento de login fallido: contraseña incorrecta");
+                var evFallido = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Usuarios", $"Login fallido por contraseña incorrecta: {user.Login_460AS}");
                 _eventoBLL.GuardarEvento_460AS(evFallido);
                 throw new LoginException_460AS(LoginResult_460AS.InvalidPassword);
             }
@@ -109,19 +111,21 @@ namespace _460ASBLL
         public void Actualizar_460AS(Usuario_460AS usuario)
         {
             _usuarioDAL.ActualizarUsuario_460AS(usuario);
+            var ev = Evento_460AS.GenerarEvento_460AS(_eventoBLL.ObtenerUltimo_460AS(), 2, "Usuarios", $"Modificacion de usuario: {usuario.Login_460AS}");
+            _eventoBLL.GuardarEvento_460AS(ev);
         }
 
         public void Activar_460AS(Usuario_460AS usuario)
         {
             _usuarioDAL.ActivarUsuario_460AS(usuario);
-            var ev = Evento_460AS.GenerarEvento_460AS(_eventoBLL.ObtenerUltimo_460AS(), 2, "Usuarios", "Usuario activado");
+            var ev = Evento_460AS.GenerarEvento_460AS(_eventoBLL.ObtenerUltimo_460AS(), 2, "Usuarios", $"Activación de usuario: {usuario.Login_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 
         public void Desactivar_460AS(Usuario_460AS usuario)
         {
             _usuarioDAL.DesactivarUsuario_460AS(usuario);
-            var ev = Evento_460AS.GenerarEvento_460AS(_eventoBLL.ObtenerUltimo_460AS(), 2, "Usuarios", "Usuario desactivado");
+            var ev = Evento_460AS.GenerarEvento_460AS(_eventoBLL.ObtenerUltimo_460AS(), 2, "Usuarios", $"Desactivacion de usuario: {usuario.Login_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
 
         }
@@ -136,7 +140,7 @@ namespace _460ASBLL
             usuario.Password_460AS = Hashing_460AS.HashearPasswordSHA256_460AS(passwordOriginal);
             usuario.Contador_460AS = 0;
             _usuarioDAL.ActualizarUsuario_460AS(usuario);
-            var ev = Evento_460AS.GenerarEvento_460AS(_eventoBLL.ObtenerUltimo_460AS(), 3, "Usuarios", "Usuario desbloqueado");
+            var ev = Evento_460AS.GenerarEvento_460AS(_eventoBLL.ObtenerUltimo_460AS(), 3, "Usuarios", $"Desbloqueo de usuario: {usuario.Login_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
 
