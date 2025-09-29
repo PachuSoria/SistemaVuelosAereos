@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Media;
+//using System.Media;
 
 namespace _460ASGUI
 {
@@ -31,8 +31,8 @@ namespace _460ASGUI
         {
             try
             {
-                SoundPlayer player = new SoundPlayer(Properties.Resources.clash_royale_startup_sound);
-                player.Play();
+                //SoundPlayer player = new SoundPlayer(Properties.Resources.clash_royale_startup_sound);
+                //player.Play();
                 var respuesta = bllUsuario_460AS.Login_460AS(this.textBox1.Text, this.textBox2.Text);
                 IdiomaManager_460AS.Instancia.CargarIdioma(SessionManager_460AS.Instancia.Usuario.Idioma_460AS);
                 MenuPrincipal_460AS menu = (MenuPrincipal_460AS)this.MdiParent;
@@ -68,8 +68,8 @@ namespace _460ASGUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SoundPlayer player = new SoundPlayer(Properties.Resources.ana_mini_pekka);
-            player.Play();
+            //SoundPlayer player = new SoundPlayer(Properties.Resources.ana_mini_pekka);
+            //player.Play();
             this.Close();
         }
 

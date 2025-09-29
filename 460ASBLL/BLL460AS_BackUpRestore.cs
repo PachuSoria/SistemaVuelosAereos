@@ -22,7 +22,7 @@ namespace _460ASBLL
 
         public void RealizarRestore_460AS(string restorePath)
         {
-            _dal.RealizarBackup_460S(restorePath);
+            _dal.RealizarRestore_460AS(restorePath);
         }
     }
 }

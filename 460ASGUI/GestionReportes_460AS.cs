@@ -1,5 +1,6 @@
 ﻿using _460ASBE;
 using _460ASBLL;
+using _460ASServicios.Observer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,7 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class GestionReportes_460AS : Form
+    public partial class GestionReportes_460AS : Form, IIdiomaObserver_460AS
     {
         private BLL460AS_Comprobante bllComprobante;
         private List<Comprobante_460AS> listaComprobantes;
@@ -24,6 +25,22 @@ namespace _460ASGUI
             CargarComprobantes();
             dataGridView1.CellDoubleClick -= dataGridView1_CellDoubleClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            ActualizarIdioma();
+        }
+
+        public void ActualizarIdioma()
+        {
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_comprobantes"); 
+
+            if (dataGridView1.Columns.Count > 0)
+            {
+                dataGridView1.Columns["CodComprobante"].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Codigo_comprobante");
+                dataGridView1.Columns["CodReserva"].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Codigo_reserva");
+                dataGridView1.Columns["Monto"].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Monto");
+                dataGridView1.Columns["TipoPago"].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Tipo_pago");
+                dataGridView1.Columns["FechaPago"].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Fecha_pago");
+            }
         }
 
         private void CargarComprobantes()
@@ -77,7 +94,7 @@ namespace _460ASGUI
                 }
                 else
                 {
-                    MessageBox.Show("No se encontró el comprobante en PDF.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_no_pdf"));
                 }
             }
         }

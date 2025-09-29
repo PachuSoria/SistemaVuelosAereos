@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "460ASServicios", "460ASServicios\460ASServicios.csproj", "{4CE4D807-9351-4D8F-92CF-FE54D7DDBFC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{EA13DC08-C0F0-4D23-A0E2-CC43EAE628BF}"
+	ProjectSection(SolutionItems) = preProject
+		Cositas.txt = Cositas.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

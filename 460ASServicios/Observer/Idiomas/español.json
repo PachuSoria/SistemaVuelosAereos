@@ -22,6 +22,7 @@
   "menu_familias": "Gestionar familias",
   "menu_perfiles": "Gestionar perfiles",
   "menu_auditoria": "Auditar eventos",
+  "menu_backup": "Backup y Restore",
 
   //LABELS
   "label_usuario": "Nombre de usuario",
@@ -77,6 +78,8 @@
   "label_serializados": "Clientes serializados",
   "label_estado_backup": "No se realizó ninguna operacion",
   "label_ultimo_estado": "Último backup realizado: {0} en {1}",
+  "label_fecha": "Fecha",
+  "label_comprobantes": "Comprobantes",
 
   //BOTONES
   "boton_ingresar": "Ingresar",
@@ -269,7 +272,12 @@
   "msg_archivo_sin_clientes": "El archivo no contiene clientes",
   "msg_clientes_cargados": "Clientes cargados correctamente",
   "msg_no_datos": "No hay datos para exportar",
-  "msg_pdf" :  "PDF generado correctamente",
+  "msg_pdf": "PDF generado correctamente",
+  "msg_titulo_rango_invalido": "Rango invalido",
+  "msg_titulo_exito": "Exito",
+  "msg_no_pdf": "No se encontró el comprobante en PDF",
+  "msg_no_eventos": "No se encontraron eventos que coincidan con los filtros seleccionados",
+  "msg_titulo_aviso" :  "Auditoria de eventos",
 
   //MODOS
   "modo_consulta": "Modo Consulta",
@@ -357,5 +365,6 @@
   "combo_modificacion_vuelo": "Modificacion de vuelo",
   "combo_registro_reserva": "Registro de reserva",
   "combo_alta_usuario": "Alta de usuario",
-  "combo_modificacion_usuario" :  "Modificacion de usuario"
+  "combo_modificacion_usuario": "Modificacion de usuario",
+  "group_resumen": "Resumen"
 }

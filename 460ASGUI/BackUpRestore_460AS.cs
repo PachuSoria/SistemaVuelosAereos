@@ -1,4 +1,5 @@
 ﻿using _460ASBLL;
+using _460ASServicios.Observer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,13 +12,25 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class BackUpRestore_460AS : Form
+    public partial class BackUpRestore_460AS : Form, IIdiomaObserver_460AS
     {
         BLL460AS_BackUpRestore _bll;
         public BackUpRestore_460AS()
         {
             InitializeComponent();
             _bll = new BLL460AS_BackUpRestore();
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            ActualizarIdioma();
+        }
+
+        public void ActualizarIdioma()
+        {
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_copia");
+            button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_restaurar");
+            button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_ubicacion");
+            button4.Text = IdiomaManager_460AS.Instancia.Traducir("boton_ubicacion");
+
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_estado_backup");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -27,11 +40,13 @@ namespace _460ASGUI
                 if (textBox1.Text.Length > 0)
                 {
                     _bll.RealizarBackUp_460AS(textBox1.Text);
-                    MessageBox.Show("Se realizo la copia correctamente");
-                    label1.Text = $"Último backup realizado: {DateTime.Now:dd/MM/yyyy HH:mm} en {textBox1.Text}";
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_copia_realizada"));
+                    label1.Text = string.Format(IdiomaManager_460AS.Instancia.Traducir("label_ultimo_estado"),
+                                                DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                                                textBox1.Text);
                     textBox1.Clear();
                 }
-                else MessageBox.Show("Debe seleccionar la ubicacion para guardar la copia");
+                else MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_seleccionar_ubi_copia"));
             }
             catch (Exception ex)
             {
@@ -45,11 +60,11 @@ namespace _460ASGUI
             {
                 if (textBox2.Text.Length > 0)
                 {
-                    _bll.RealizarRestore_460AS(textBox1.Text);
-                    MessageBox.Show("Se realizo la restauracion correctamente");
+                    _bll.RealizarRestore_460AS(textBox2.Text);
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_restauracion_realizada"));
                     textBox1.Clear();
                 }
-                else MessageBox.Show("Debe seleccionar la ubicacion para la restauracion");
+                else MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_seleccionar_ubi_restauracion"));
             }
             catch (Exception ex)
             {

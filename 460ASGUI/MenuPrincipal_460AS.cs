@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Media;
+//using System.Media;
 
 namespace _460ASGUI
 {
@@ -68,6 +68,8 @@ namespace _460ASGUI
                     maestroToolStripMenuItem.Visible = true;
                     reservasToolStripMenuItem.Visible = true;
                     reportesToolStripMenuItem.Visible = true;
+                    backupYRestoreToolStripMenuItem.Visible = true;
+                    auditarEventosToolStripMenuItem.Visible = true;
                 }
                 else
                 {
@@ -75,6 +77,8 @@ namespace _460ASGUI
                     maestroToolStripMenuItem.Visible = false;
                     reservasToolStripMenuItem.Visible = false;
                     reportesToolStripMenuItem.Visible = false;
+                    backupYRestoreToolStripMenuItem.Visible = false;
+                    auditarEventosToolStripMenuItem.Visible = false;
 
                     ValidarMenuPorPerfil_460AS();
                 }
@@ -149,6 +153,26 @@ namespace _460ASGUI
             {
                 reportesToolStripMenuItem.Visible = false;
             }
+
+            if (permisos.Any(p => p.Nombre_460AS == "Auditar Eventos"))
+            {
+                administradorToolStripMenuItem.Visible = true;
+                auditarEventosToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                auditarEventosToolStripMenuItem.Visible = false;
+            }
+
+            if (permisos.Any(p => p.Nombre_460AS == "Guardar y Restaurar"))
+            {
+                administradorToolStripMenuItem.Visible = true;
+                backupYRestoreToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                backupYRestoreToolStripMenuItem.Visible = false;
+            }
         }
 
         private void AbrirForm<T>() where T : Form, new()
@@ -186,8 +210,8 @@ namespace _460ASGUI
 
         private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SoundPlayer player = new SoundPlayer(Properties.Resources.clash_royale_prince_charge);
-            player.Play();
+            //SoundPlayer player = new SoundPlayer(Properties.Resources.clash_royale_prince_charge);
+            //player.Play();
             string mensaje = IdiomaManager_460AS.Instancia.Traducir("msg_confirmar_cierre_sesion");
             string titulo = IdiomaManager_460AS.Instancia.Traducir("msg_titulo_confirmacion");
             if (MessageBox.Show(mensaje, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -256,6 +280,8 @@ namespace _460ASGUI
             gestionarPerfilesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_perfiles");
             gestionarFamiliasToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_familias");
             verComprobantesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_comprobantes");
+            backupYRestoreToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_backup");
+            auditarEventosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_auditoria");
             if (!SessionManager_460AS.Instancia.IsLogged_460AS())
             {
                 toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("Sesion_no_iniciada");
@@ -300,7 +326,7 @@ namespace _460ASGUI
             {
                 var usuario = SessionManager_460AS.Instancia.Usuario;
                 usuario.Idioma_460AS = "Español";
-                bllUsuario_460AS.Actualizar_460AS(usuario);
+                bllUsuario_460AS.ActualizarIdioma_460AS(usuario);
             }
         }
 
@@ -311,7 +337,7 @@ namespace _460ASGUI
             {
                 var usuario = SessionManager_460AS.Instancia.Usuario;
                 usuario.Idioma_460AS = "Ingles";
-                bllUsuario_460AS.Actualizar_460AS(usuario);
+                bllUsuario_460AS.ActualizarIdioma_460AS(usuario);
             }
         }
 

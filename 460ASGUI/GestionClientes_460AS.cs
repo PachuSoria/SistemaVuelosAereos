@@ -152,7 +152,7 @@ namespace _460ASGUI
                     if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_apellido_vacio"));
                     c.Apellido_460AS = textBox3.Text;
                     if (textBox4.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_vacio"));
-                    string tel = Regex.Replace(textBox4.Text, @"\\D", "");
+                    string tel = Regex.Replace(textBox4.Text, @"\D", "");
                     if (tel.Length != 8 || !int.TryParse(tel, out int telefono)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_invalido"));
                     c.Telefono_460AS = telefono;
                     c.FechaNacimiento_460AS = dateTimePicker1.Value;
@@ -230,11 +230,15 @@ namespace _460ASGUI
             label5.Text = IdiomaManager_460AS.Instancia.Traducir("label_pasaporte");
             label6.Text = IdiomaManager_460AS.Instancia.Traducir("label_nacimiento");
             label7.Text = IdiomaManager_460AS.Instancia.Traducir("label_clientes");
+            label9.Text = IdiomaManager_460AS.Instancia.Traducir("label_serializados");
             button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_añadir");
             button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_modificar");
             button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_eliminar");
             button4.Text = IdiomaManager_460AS.Instancia.Traducir("boton_guardar");
             button5.Text = IdiomaManager_460AS.Instancia.Traducir("boton_cancelar");
+            button6.Text = IdiomaManager_460AS.Instancia.Traducir("boton_serializar");
+            button7.Text = IdiomaManager_460AS.Instancia.Traducir("boton_desserealizar");
+            button8.Text = IdiomaManager_460AS.Instancia.Traducir("boton_limpiar");
             checkBox1.Text = IdiomaManager_460AS.Instancia.Traducir("checkbox_encriptado");
             switch (estadoActual)
             {
@@ -266,7 +270,7 @@ namespace _460ASGUI
                 List<Cliente_460AS> clientes = bllCliente_460AS.ObtenerClientes_460AS();
                 if (clientes == null)
                 {
-                    MessageBox.Show("No hay clientes para serializar");
+                    MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_no_clientes_serializar"));
                     return;
                 }
                 using (var sfd = new SaveFileDialog())
@@ -283,7 +287,7 @@ namespace _460ASGUI
                         {
                             listBox1.Items.Add(linea);
                         }
-                        MessageBox.Show("Clientes serializados correctamente");
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_clientes_serializados"));
                     }
                 }
             }
@@ -309,13 +313,13 @@ namespace _460ASGUI
                         var clientes = bllSerializar.Deserializar(ofd.FileName);
                         if (clientes == null || clientes.Count == 0)
                         {
-                            MessageBox.Show("El archivo no contiene clientes");
+                            MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_archivo_sin_clientes"));
                             return;
                         }
                         clientesDeserializados = clientes;
                         mostrandoDesdeXML = true;
                         ActualizarClientes();
-                        MessageBox.Show("Clientes cargados correctamente");
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_clientes_cargados"));
                     }
                 }
             }

@@ -224,6 +224,8 @@ namespace _460ASGUI
             comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("Estados Unidos"));
             comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("Uruguay"));
             comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("Todos"));
+
+            groupBox1.Text = IdiomaManager_460AS.Instancia.Traducir("group_resumen");
         }
     }
 }

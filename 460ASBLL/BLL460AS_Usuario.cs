@@ -169,5 +169,10 @@ namespace _460ASBLL
             _eventoBLL.GuardarEvento_460AS(ev);
             return true;
         }
+
+        public void ActualizarIdioma_460AS(Usuario_460AS usuario)
+        {
+            _usuarioDAL.ActualizarUsuario_460AS(usuario);
+        }
     }
 }

@@ -68,17 +68,17 @@
             // 
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Todos", "Clientes", "Pefiles/Familias", "Reservas", "Usuarios", "Vuelos" });
+            comboBox1.Items.AddRange(new object[] { "Clientes", "Perfiles/Familias", "Reservas", "Usuarios", "Vuelos" });
             comboBox1.Location = new Point(261, 371);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(121, 23);
             comboBox1.TabIndex = 2;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // comboBox2
             // 
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.FormattingEnabled = true;
-            comboBox2.Items.AddRange(new object[] { "Todos", "Activacion de usuario", "Alta de cliente", "Alta de vuelo", "Baja de cliente", "Bloqueo automatico ", "Cambio de contaseña", "Creacion de familia/perfil", "Desactivacion de usuario", "Desbloqueo de usuario", "Eliminacion de vuelo", "Eliminacion de familia/perfil", "Generacion de comprobante", "Intento de login fallido", "Login exitoso", "Login fallido por usuario bloqueado", "Login fallido por usuario inactivo", "Logout", "Modificacion de cliente", "Modificacion de vuelo", "Registro de reserva " });
             comboBox2.Location = new Point(471, 371);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(200, 23);

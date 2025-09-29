@@ -36,16 +36,16 @@
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(93, 80);
+            dataGridView1.Location = new Point(46, 56);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(465, 209);
+            dataGridView1.Size = new Size(560, 251);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(93, 62);
+            label1.Location = new Point(46, 38);
             label1.Name = "label1";
             label1.Size = new Size(86, 15);
             label1.TabIndex = 1;
@@ -55,7 +55,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(686, 377);
+            ClientSize = new Size(673, 352);
             Controls.Add(label1);
             Controls.Add(dataGridView1);
             Name = "GestionReportes_460AS";

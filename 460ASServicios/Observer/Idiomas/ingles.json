@@ -22,6 +22,7 @@
   "menu_familias": "Manage Families",
   "menu_perfiles": "Manage Profiles",
   "menu_auditoria": "Audit events",
+  "menu_backup": "Backup and Restore",
 
   //LABELS
   "label_usuario": "Username",
@@ -77,6 +78,8 @@
   "label_serializados": "Serialized clients",
   "label_estado_backup": "No operation was performed",
   "label_ultimo_estado": "Last backup performed: {0} at {1}",
+  "label_fecha": "Date",
+  "label_comprobantes": "Receipts",
 
   //BOTONES
   "boton_ingresar": "Login",
@@ -270,6 +273,11 @@
   "msg_clientes_cargados": "Clients loaded successfully",
   "msg_no_datos": "No data to export",
   "msg_pdf": "PDF generated successfully",
+  "msg_titulo_rango_invalido": "Invalid range",
+  "msg_titulo_exito": "Success",
+  "msg_no_pdf": "PDF receipt not found",
+  "msg_no_eventos": "No events were found matching the selected filters",
+  "msg_titulo_aviso": "Event audit",
 
   //MODOS
   "modo_consulta": "Consult Mode",
@@ -357,5 +365,6 @@
   "combo_modificacion_vuelo": "Flight modification",
   "combo_registro_reserva": "Reservation registration",
   "combo_alta_usuario": "User registration",
-  "combo_modificacion_usuario": "User modification"
+  "combo_modificacion_usuario": "User modification",
+  "group_resumen": "Summary"
 }
