@@ -61,6 +61,7 @@
             dataGridView1.ReadOnly = true;
             dataGridView1.Size = new Size(864, 312);
             dataGridView1.TabIndex = 0;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             // 
             // label1
             // 

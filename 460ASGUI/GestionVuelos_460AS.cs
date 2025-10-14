@@ -23,6 +23,7 @@ namespace _460ASGUI
         public GestionVuelos_460AS()
         {
             InitializeComponent();
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             bllVuelo_460AS = new BLL460AS_Vuelo();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect; dataGridView1.MultiSelect = false;
             label9.Text = "Modo Consulta";
@@ -198,7 +199,7 @@ namespace _460ASGUI
                 case "Spain": return "España";
                 case "United States": return "Estados Unidos";
                 case "Uruguay": return "Uruguay";
-                default: return paisTraducido; 
+                default: return paisTraducido;
             }
         }
 
@@ -239,7 +240,7 @@ namespace _460ASGUI
             button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_eliminar");
             button4.Text = IdiomaManager_460AS.Instancia.Traducir("boton_guardar");
             button5.Text = IdiomaManager_460AS.Instancia.Traducir("boton_cancelar");
-            switch(estadoActual)
+            switch (estadoActual)
             {
                 case FormEstado.Agregar:
                     IdiomaManager_460AS.Instancia.Traducir("modo_añadir");
@@ -260,6 +261,31 @@ namespace _460ASGUI
             comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("Estados Unidos"));
             comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("Uruguay"));
             CargarVuelos();
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (estadoActual != FormEstado.Modificar)
+                return;
+
+            if (dataGridView1.SelectedRows.Count == 0)
+                return;
+
+            var fila = dataGridView1.SelectedRows[0];
+
+            textBox1.Text = fila.Cells[0].Value?.ToString();
+            textBox2.Text = fila.Cells[1].Value?.ToString();
+            textBox3.Text = fila.Cells[2].Value?.ToString();
+            comboBox1.Text = fila.Cells[3].Value?.ToString();
+
+            if (DateTime.TryParse(fila.Cells[4].Value?.ToString(), out DateTime salida))
+                dateTimePicker1.Value = salida;
+
+            if (DateTime.TryParse(fila.Cells[5].Value?.ToString(), out DateTime llegada))
+                dateTimePicker2.Value = llegada;
+
+            string precioStr = fila.Cells[6].Value?.ToString().Replace("$", "").Replace("USD", "").Trim();
+            textBox4.Text = precioStr;
         }
     }
 }

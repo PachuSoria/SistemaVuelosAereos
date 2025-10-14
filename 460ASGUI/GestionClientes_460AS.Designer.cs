@@ -56,6 +56,8 @@
             saveFileDialog1 = new SaveFileDialog();
             listBox1 = new ListBox();
             label9 = new Label();
+            listBox2 = new ListBox();
+            label10 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -66,6 +68,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(661, 291);
             dataGridView1.TabIndex = 0;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             // 
             // button1
             // 
@@ -244,9 +247,9 @@
             // 
             // button6
             // 
-            button6.Location = new Point(329, 538);
+            button6.Location = new Point(359, 553);
             button6.Name = "button6";
-            button6.Size = new Size(75, 23);
+            button6.Size = new Size(87, 23);
             button6.TabIndex = 21;
             button6.Text = "Serializar";
             button6.UseVisualStyleBackColor = true;
@@ -254,7 +257,7 @@
             // 
             // button7
             // 
-            button7.Location = new Point(329, 577);
+            button7.Location = new Point(359, 592);
             button7.Name = "button7";
             button7.Size = new Size(87, 23);
             button7.TabIndex = 22;
@@ -264,9 +267,9 @@
             // 
             // button8
             // 
-            button8.Location = new Point(329, 617);
+            button8.Location = new Point(359, 632);
             button8.Name = "button8";
-            button8.Size = new Size(75, 23);
+            button8.Size = new Size(87, 23);
             button8.TabIndex = 23;
             button8.Text = "Limpiar";
             button8.UseVisualStyleBackColor = true;
@@ -295,11 +298,31 @@
             label9.TabIndex = 25;
             label9.Text = "Clientes serializados";
             // 
+            // listBox2
+            // 
+            listBox2.FormattingEnabled = true;
+            listBox2.ItemHeight = 15;
+            listBox2.Location = new Point(472, 527);
+            listBox2.Name = "listBox2";
+            listBox2.Size = new Size(256, 169);
+            listBox2.TabIndex = 26;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(472, 509);
+            label10.Name = "label10";
+            label10.Size = new Size(133, 15);
+            label10.TabIndex = 27;
+            label10.Text = "Clientes desserealizados";
+            // 
             // GestionClientes_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(873, 724);
+            Controls.Add(label10);
+            Controls.Add(listBox2);
             Controls.Add(label9);
             Controls.Add(listBox1);
             Controls.Add(button8);
@@ -363,5 +386,7 @@
         private SaveFileDialog saveFileDialog1;
         private ListBox listBox1;
         private Label label9;
+        private ListBox listBox2;
+        private Label label10;
     }
 }

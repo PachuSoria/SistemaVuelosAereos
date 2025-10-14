@@ -76,6 +76,7 @@
   "label_fechaFin": "End date",
   "label_eventos": "Events",
   "label_serializados": "Serialized clients",
+  "label_desserealizados": "Unserialized clients",
   "label_estado_backup": "No operation was performed",
   "label_ultimo_estado": "Last backup performed: {0} at {1}",
   "label_fecha": "Date",
@@ -278,6 +279,12 @@
   "msg_no_pdf": "PDF receipt not found",
   "msg_no_eventos": "No events were found matching the selected filters",
   "msg_titulo_aviso": "Event audit",
+  "msg_carpeta_inexistente": "The selected folder does not exist",
+  "msg_sin_permisos": "You do not have permission to write to this folder. Please select another location",
+  "msg_error_permisos": "Error verifying folder permissions",
+  "msg_archivo_inexistente": "The selected file does not exist",
+  "msg_no_permisos": "You do not have permission to access this backup file",
+  "msg_error_acceso": "Error verifying file access",
 
   //MODOS
   "modo_consulta": "Consult Mode",

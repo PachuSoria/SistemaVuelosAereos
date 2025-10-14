@@ -39,6 +39,22 @@ namespace _460ASGUI
             {
                 if (textBox1.Text.Length > 0)
                 {
+                    if (!Directory.Exists(textBox1.Text))
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_carpeta_inexistente"));
+
+                    try
+                    {
+                        string testFile = Path.Combine(textBox1.Text, "permiso_prueba.tmp");
+                        using (FileStream fs = File.Create(testFile, 1, FileOptions.DeleteOnClose)) { }
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_sin_permisos"));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_error_permisos"));
+                    }
                     _bll.RealizarBackUp_460AS(textBox1.Text);
                     MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_copia_realizada"));
                     label1.Text = string.Format(IdiomaManager_460AS.Instancia.Traducir("label_ultimo_estado"),
@@ -60,6 +76,21 @@ namespace _460ASGUI
             {
                 if (textBox2.Text.Length > 0)
                 {
+                    if (!File.Exists(textBox2.Text))
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_archivo_inexistente"));
+
+                    try
+                    {
+                        using (FileStream fs = File.OpenRead(textBox2.Text)) { }
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_no_permisos"));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_error_acceso"));
+                    }
                     _bll.RealizarRestore_460AS(textBox2.Text);
                     MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_restauracion_realizada"));
                     textBox1.Clear();

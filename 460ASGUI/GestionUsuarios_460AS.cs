@@ -56,7 +56,7 @@ namespace _460ASGUI
             var perfiles = bllPerfil_460AS.ObtenerTodas_460AS();
             foreach (var perfil in perfiles)
             {
-                if (perfil.Nombre_460AS != "SuperAdmin") 
+                if (perfil.Nombre_460AS != "SuperAdmin")
                     comboBox1.Items.Add(perfil.Nombre_460AS);
             }
         }
@@ -230,7 +230,7 @@ namespace _460ASGUI
                 }
                 ActualizarGrillas_460AS();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -328,7 +328,7 @@ namespace _460ASGUI
             button5.Text = IdiomaManager_460AS.Instancia.Traducir("boton_activar");
             button6.Text = IdiomaManager_460AS.Instancia.Traducir("boton_desbloquear");
             button7.Text = IdiomaManager_460AS.Instancia.Traducir("boton_salir");
-            switch(estadoActual)
+            switch (estadoActual)
             {
                 case FormEstado_460AS.Consulta:
                     label6.Text = IdiomaManager_460AS.Instancia.Traducir("modo_consulta");
@@ -360,6 +360,28 @@ namespace _460ASGUI
                 dataGridView1.Columns[4].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Rol");
                 dataGridView1.Columns[5].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Telefono");
             }
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (estadoActual != FormEstado_460AS.Modificar)
+                return;
+
+            if (dataGridView1.SelectedRows.Count == 0)
+                return;
+
+            var fila = dataGridView1.SelectedRows[0];
+
+            textBox1.Text = fila.Cells[0].Value?.ToString();
+            textBox2.Text = fila.Cells[1].Value?.ToString();
+            textBox3.Text = fila.Cells[2].Value?.ToString();
+            textBox4.Text = fila.Cells[6].Value?.ToString();
+
+            string rol = fila.Cells[5].Value?.ToString();
+            if (!string.IsNullOrEmpty(rol) && comboBox1.Items.Contains(rol))
+                comboBox1.SelectedItem = rol;
+            else
+                comboBox1.SelectedIndex = -1;
         }
     }
 }

@@ -76,6 +76,7 @@
   "label_fechaFin": "Fecha fin",
   "label_eventos": "Eventos",
   "label_serializados": "Clientes serializados",
+  "label_desserealizados": "Clientes desserealizados",
   "label_estado_backup": "No se realizó ninguna operacion",
   "label_ultimo_estado": "Último backup realizado: {0} en {1}",
   "label_fecha": "Fecha",
@@ -277,7 +278,13 @@
   "msg_titulo_exito": "Exito",
   "msg_no_pdf": "No se encontró el comprobante en PDF",
   "msg_no_eventos": "No se encontraron eventos que coincidan con los filtros seleccionados",
-  "msg_titulo_aviso" :  "Auditoria de eventos",
+  "msg_titulo_aviso": "Auditoria de eventos",
+  "msg_carpeta_inexistente": "La carpeta seleccionada no existe",
+  "msg_sin_permisos": "No tiene permisos para escribir en esta carpeta. Seleccione otra ubicación",
+  "msg_error_permisos": "Error al verificar permisos",
+  "msg_archivo_inexistente": "El archivo seleccionado no existe",
+  "msg_no_permisos": "No tiene permisos para acceder a este archivo de backup",
+  "msg_error_acceso":  "Error al verificar acceso al archivo",
 
   //MODOS
   "modo_consulta": "Modo Consulta",

@@ -24,6 +24,7 @@ namespace _460ASGUI
         public GestionClientes_460AS()
         {
             InitializeComponent();
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             bllCliente_460AS = new BLL460AS_Cliente();
             bllSerializar = new BLL460AS_Serializar();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -34,6 +35,7 @@ namespace _460ASGUI
             ActualizarIdioma();
             HabilitarCampos(false);
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            ConfigurarSeleccionDataGrid();
         }
 
         private enum FormEstado
@@ -91,6 +93,7 @@ namespace _460ASGUI
             ActualizarIdioma();
             HabilitarCampos(true);
             textBox1.Enabled = true;
+            ConfigurarSeleccionDataGrid();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -99,6 +102,7 @@ namespace _460ASGUI
             ActualizarIdioma();
             HabilitarCampos(true);
             textBox1.Enabled = false;
+            ConfigurarSeleccionDataGrid();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -111,6 +115,7 @@ namespace _460ASGUI
             button3.Enabled = false;
             button4.Enabled = true;
             button5.Enabled = true;
+            ConfigurarSeleccionDataGrid();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -155,7 +160,12 @@ namespace _460ASGUI
                     string tel = Regex.Replace(textBox4.Text, @"\D", "");
                     if (tel.Length != 8 || !int.TryParse(tel, out int telefono)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_telefono_invalido"));
                     c.Telefono_460AS = telefono;
-                    c.FechaNacimiento_460AS = dateTimePicker1.Value;
+                    DateTime fechaNacimiento = dateTimePicker1.Value.Date;
+                    if (fechaNacimiento > DateTime.Today) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_nacimiento_invalido"));
+                    int edad = DateTime.Today.Year - fechaNacimiento.Year;
+                    if (fechaNacimiento.Date > DateTime.Today.AddYears(-edad)) edad--;
+                    if (edad < 18) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_mas18"));
+                    c.FechaNacimiento_460AS = fechaNacimiento;
                     bllCliente_460AS.ActualizarCliente_460AS(c);
                 }
                 else if (estadoActual == FormEstado.Eliminar)
@@ -179,6 +189,7 @@ namespace _460ASGUI
             LimpiarCampos();
             HabilitarCampos(false);
             RestaurarBotonesModoConsulta();
+            ConfigurarSeleccionDataGrid();
         }
 
         public void ActualizarClientes()
@@ -219,6 +230,7 @@ namespace _460ASGUI
             dataGridView1.Columns[3].HeaderText = IdiomaManager_460AS.Instancia.Traducir("FechaNacimiento");
             dataGridView1.Columns[4].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Telefono");
             dataGridView1.Columns[5].HeaderText = IdiomaManager_460AS.Instancia.Traducir("Pasaporte");
+            dataGridView1.ClearSelection();
         }
 
         public void ActualizarIdioma()
@@ -231,6 +243,7 @@ namespace _460ASGUI
             label6.Text = IdiomaManager_460AS.Instancia.Traducir("label_nacimiento");
             label7.Text = IdiomaManager_460AS.Instancia.Traducir("label_clientes");
             label9.Text = IdiomaManager_460AS.Instancia.Traducir("label_serializados");
+            label10.Text = IdiomaManager_460AS.Instancia.Traducir("label_desserealizados");
             button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_añadir");
             button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_modificar");
             button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_eliminar");
@@ -320,6 +333,11 @@ namespace _460ASGUI
                         mostrandoDesdeXML = true;
                         ActualizarClientes();
                         MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_clientes_cargados"));
+                        listBox2.Items.Clear();
+                        foreach (var c in clientes)
+                        {
+                            listBox2.Items.Add($"{c.DNI_460AS} - {c.Nombre_460AS} {c.Apellido_460AS} - {c.FechaNacimiento_460AS:dd/MM/yyyy}");
+                        }
                     }
                 }
             }
@@ -333,7 +351,44 @@ namespace _460ASGUI
         {
             mostrandoDesdeXML = false;
             clientesDeserializados = null;
-            ActualizarClientes();    
+            ActualizarClientes();
+            listBox1.Items.Clear();
+            listBox2.Items.Clear();
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (estadoActual != FormEstado.Modificar)
+                return;
+
+            if (dataGridView1.SelectedRows.Count == 0)
+                return;
+
+            var fila = dataGridView1.SelectedRows[0];
+
+            textBox1.Text = fila.Cells[0].Value?.ToString();
+            textBox2.Text = fila.Cells[1].Value?.ToString();
+            textBox3.Text = fila.Cells[2].Value?.ToString();
+
+            if (DateTime.TryParse(fila.Cells[3].Value?.ToString(), out DateTime fecha))
+                dateTimePicker1.Value = fecha;
+
+            textBox4.Text = fila.Cells[4].Value?.ToString();
+            textBox5.Text = fila.Cells[5].Value?.ToString();
+        }
+
+        private void ConfigurarSeleccionDataGrid()
+        {
+            if (estadoActual == FormEstado.Consulta)
+            {
+                dataGridView1.MultiSelect = true;
+                dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            }
+            else
+            {
+                dataGridView1.MultiSelect = false;
+                dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            }
         }
     }
 }
