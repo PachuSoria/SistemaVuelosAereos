@@ -56,6 +56,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(843, 305);
             dataGridView1.TabIndex = 0;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             // 
             // textBox1
             // 

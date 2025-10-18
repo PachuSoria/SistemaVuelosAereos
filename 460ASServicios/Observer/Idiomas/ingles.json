@@ -285,6 +285,7 @@
   "msg_archivo_inexistente": "The selected file does not exist",
   "msg_no_permisos": "You do not have permission to access this backup file",
   "msg_error_acceso": "Error verifying file access",
+  "msg_confirmar_todos_clientes": "No clients selected. Do you want to serialize all?",
 
   //MODOS
   "modo_consulta": "Consult Mode",

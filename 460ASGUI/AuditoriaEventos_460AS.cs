@@ -21,6 +21,7 @@ namespace _460ASGUI
         public AuditoriaEventos_460AS()
         {
             InitializeComponent();
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             _bllEvento = new BLL460AS_Evento();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect; dataGridView1.MultiSelect = false; dataGridView1.ReadOnly = true;
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
@@ -55,6 +56,10 @@ namespace _460ASGUI
                     MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_fechas_invalidas"),
                                     IdiomaManager_460AS.Instancia.Traducir("msg_titulo_rango_invalido"),
                                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    dateTimePicker1.Value = DateTime.Today.AddDays(-3);
+                    dateTimePicker2.Value = DateTime.Today;
+                    return;
                 }
 
                 string usuario = string.IsNullOrWhiteSpace(textBox1.Text) ? null : textBox1.Text.Trim();
@@ -236,43 +241,6 @@ namespace _460ASGUI
             label5.Text = IdiomaManager_460AS.Instancia.Traducir("label_criticidad");
             label6.Text = IdiomaManager_460AS.Instancia.Traducir("label_fechaIni");
             label7.Text = IdiomaManager_460AS.Instancia.Traducir("label_fechaFin");
-
-            //comboBox1.Items.Clear();
-            //comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_todos"));
-            //comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_clientes"));
-            //comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_perfiles"));
-            //comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_reservas"));
-            //comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_usuarios"));
-            //comboBox1.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_vuelos"));
-            //comboBox1.SelectedIndex = 0;
-
-            //comboBox2.Items.Clear();
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_todos"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_activacion"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_alta_cliente"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_alta_vuelo"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_baja_cliente"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_bloqueo"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_cambio_contaseña"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_creacion_familia"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_creacion_perfil"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_desactivacion"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_desbloqueo"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_eliminacion_vuelo"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_eliminacion_familia"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_eliminacion_perfil"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_comprobante"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_login_fallido"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_login_exitoso"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_login_fallido_bloqueado"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_login_fallido_inactivo"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_logout"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_modificacion_cliente"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_modificacion_vuelo"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_registro_reserva"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_alta_usuario"));
-            //comboBox2.Items.Add(IdiomaManager_460AS.Instancia.Traducir("combo_modificacion_usuario"));
-            //comboBox2.SelectedIndex = 0;
         }
 
         private void CargarComboActividades()
@@ -348,7 +316,7 @@ namespace _460ASGUI
 
             if (eventosPorModulo.ContainsKey(modulo))
             {
-                comboBox2.Items.Add($"Todos ({modulo})");   
+                comboBox2.Items.Add($"Todos ({modulo})");
 
                 foreach (var evento in eventosPorModulo[modulo])
                 {
@@ -356,6 +324,25 @@ namespace _460ASGUI
                 }
 
                 comboBox2.SelectedIndex = 0;
+            }
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                var fila = dataGridView1.SelectedRows[0];
+
+                string loginUsuario = fila.Cells[0].Value?.ToString();
+
+                var bllUsuario = new BLL460AS_Usuario();
+                var usuario = bllUsuario.ObtenerUsuarios460AS()
+                                        .FirstOrDefault(u => u.Login_460AS == loginUsuario || u.DNI_460AS == loginUsuario);
+
+                if (usuario != null)
+                    textBox1.Text = $"{usuario.Nombre_460AS} {usuario.Apellido_460AS}";
+                else
+                    textBox1.Text = loginUsuario; 
             }
         }
     }

@@ -36,6 +36,11 @@ namespace _460ASGUI
             HabilitarCampos(false);
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             ConfigurarSeleccionDataGrid();
+            dataGridView1.DataBindingComplete += (s, e) =>
+            {
+                if (estadoActual == FormEstado.Consulta)
+                    dataGridView1.ClearSelection();
+            };
         }
 
         private enum FormEstado
@@ -280,26 +285,51 @@ namespace _460ASGUI
         {
             try
             {
-                List<Cliente_460AS> clientes = bllCliente_460AS.ObtenerClientes_460AS();
-                if (clientes == null)
+                var clientesTotales = bllCliente_460AS.ObtenerClientes_460AS();
+
+                if (clientesTotales == null || clientesTotales.Count == 0)
                 {
                     MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_no_clientes_serializar"));
                     return;
                 }
+
+                List<Cliente_460AS> clientesSeleccionados = new List<Cliente_460AS>();
+                foreach (DataGridViewRow fila in dataGridView1.SelectedRows)
+                {
+                    string dni = fila.Cells["DNI"].Value.ToString();
+                    var cliente = clientesTotales.FirstOrDefault(c => c.DNI_460AS == dni);
+                    if (cliente != null)
+                        clientesSeleccionados.Add(cliente);
+                }
+
+                if (clientesSeleccionados.Count == 0)
+                {
+                    var msg = IdiomaManager_460AS.Instancia.Traducir("msg_confirmar_todos_clientes");
+                    var titulo = IdiomaManager_460AS.Instancia.Traducir("msg_titulo_confirmacion");
+                    if (MessageBox.Show(msg, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        clientesSeleccionados = clientesTotales;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 using (var sfd = new SaveFileDialog())
                 {
-                    sfd.Title = "Guardar clientes";
+                    sfd.Title = IdiomaManager_460AS.Instancia.Traducir("titulo_guardar_clientes");
                     sfd.Filter = "Archivo XML|*.xml";
                     sfd.FileName = $"clientes_{DateTime.Now:yyyyMMdd_HHmm}.xml";
+
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        bllSerializar.Serializar(sfd.FileName, clientes);
+                        bllSerializar.Serializar(sfd.FileName, clientesSeleccionados);
                         listBox1.Items.Clear();
                         string[] lineas = File.ReadAllLines(sfd.FileName);
                         foreach (string linea in lineas)
-                        {
                             listBox1.Items.Add(linea);
-                        }
+
                         MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_clientes_serializados"));
                     }
                 }

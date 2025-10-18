@@ -284,7 +284,8 @@
   "msg_error_permisos": "Error al verificar permisos",
   "msg_archivo_inexistente": "El archivo seleccionado no existe",
   "msg_no_permisos": "No tiene permisos para acceder a este archivo de backup",
-  "msg_error_acceso":  "Error al verificar acceso al archivo",
+  "msg_error_acceso": "Error al verificar acceso al archivo",
+  "msg_confirmar_todos_clientes": "No seleccionó ningún cliente. ¿Desea serializar todos?",
 
   //MODOS
   "modo_consulta": "Modo Consulta",
