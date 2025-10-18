@@ -36,12 +36,12 @@
             label3 = new Label();
             label4 = new Label();
             panel1 = new Panel();
+            button1 = new Button();
             dataGridView1 = new DataGridView();
             label5 = new Label();
             comboBox1 = new ComboBox();
             label6 = new Label();
             groupBox1 = new GroupBox();
-            button1 = new Button();
             button2 = new Button();
             button3 = new Button();
             panel1.SuspendLayout();
@@ -120,13 +120,27 @@
             panel1.Size = new Size(298, 205);
             panel1.TabIndex = 7;
             // 
+            // button1
+            // 
+            button1.Location = new Point(107, 165);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 13;
+            button1.Text = "Ingresar";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(439, 36);
+            dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(532, 243);
             dataGridView1.TabIndex = 8;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             // 
             // label5
             // 
@@ -164,16 +178,6 @@
             groupBox1.TabIndex = 12;
             groupBox1.TabStop = false;
             groupBox1.Text = "Resumen";
-            // 
-            // button1
-            // 
-            button1.Location = new Point(107, 165);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 13;
-            button1.Text = "Ingresar";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // button2
             // 

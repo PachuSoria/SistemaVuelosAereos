@@ -36,13 +36,13 @@
             administradorToolStripMenuItem = new ToolStripMenuItem();
             auditarEventosToolStripMenuItem = new ToolStripMenuItem();
             backupYRestoreToolStripMenuItem = new ToolStripMenuItem();
-            gestionarUsuariosToolStripMenuItem = new ToolStripMenuItem();
-            gestionarPerfilesToolStripMenuItem = new ToolStripMenuItem();
             gestionarFamiliasToolStripMenuItem = new ToolStripMenuItem();
+            gestionarPerfilesToolStripMenuItem = new ToolStripMenuItem();
+            gestionarUsuariosToolStripMenuItem = new ToolStripMenuItem();
             maestroToolStripMenuItem = new ToolStripMenuItem();
-            gestionarVuelosToolStripMenuItem = new ToolStripMenuItem();
             gestionarAsientosToolStripMenuItem = new ToolStripMenuItem();
             gestionarClientesToolStripMenuItem = new ToolStripMenuItem();
+            gestionarVuelosToolStripMenuItem = new ToolStripMenuItem();
             reservasToolStripMenuItem = new ToolStripMenuItem();
             registrarReservaToolStripMenuItem = new ToolStripMenuItem();
             reportesToolStripMenuItem = new ToolStripMenuItem();
@@ -54,6 +54,7 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripStatusLabel2 = new ToolStripStatusLabel();
+            serviciosAdicionalesToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -117,12 +118,12 @@
             backupYRestoreToolStripMenuItem.Text = "Backup y Restore";
             backupYRestoreToolStripMenuItem.Click += backupYRestoreToolStripMenuItem_Click;
             // 
-            // gestionarUsuariosToolStripMenuItem
+            // gestionarFamiliasToolStripMenuItem
             // 
-            gestionarUsuariosToolStripMenuItem.Name = "gestionarUsuariosToolStripMenuItem";
-            gestionarUsuariosToolStripMenuItem.Size = new Size(171, 22);
-            gestionarUsuariosToolStripMenuItem.Text = "Gestionar usuarios";
-            gestionarUsuariosToolStripMenuItem.Click += gestionarUsuariosToolStripMenuItem_Click;
+            gestionarFamiliasToolStripMenuItem.Name = "gestionarFamiliasToolStripMenuItem";
+            gestionarFamiliasToolStripMenuItem.Size = new Size(171, 22);
+            gestionarFamiliasToolStripMenuItem.Text = "Gestionar familias";
+            gestionarFamiliasToolStripMenuItem.Click += gestionarFamiliasToolStripMenuItem_Click;
             // 
             // gestionarPerfilesToolStripMenuItem
             // 
@@ -131,12 +132,12 @@
             gestionarPerfilesToolStripMenuItem.Text = "Gestionar perfiles";
             gestionarPerfilesToolStripMenuItem.Click += gestionarPerfilesToolStripMenuItem_Click;
             // 
-            // gestionarFamiliasToolStripMenuItem
+            // gestionarUsuariosToolStripMenuItem
             // 
-            gestionarFamiliasToolStripMenuItem.Name = "gestionarFamiliasToolStripMenuItem";
-            gestionarFamiliasToolStripMenuItem.Size = new Size(171, 22);
-            gestionarFamiliasToolStripMenuItem.Text = "Gestionar familias";
-            gestionarFamiliasToolStripMenuItem.Click += gestionarFamiliasToolStripMenuItem_Click;
+            gestionarUsuariosToolStripMenuItem.Name = "gestionarUsuariosToolStripMenuItem";
+            gestionarUsuariosToolStripMenuItem.Size = new Size(171, 22);
+            gestionarUsuariosToolStripMenuItem.Text = "Gestionar usuarios";
+            gestionarUsuariosToolStripMenuItem.Click += gestionarUsuariosToolStripMenuItem_Click;
             // 
             // maestroToolStripMenuItem
             // 
@@ -145,30 +146,30 @@
             maestroToolStripMenuItem.Size = new Size(62, 20);
             maestroToolStripMenuItem.Text = "Maestro";
             // 
-            // gestionarVuelosToolStripMenuItem
-            // 
-            gestionarVuelosToolStripMenuItem.Name = "gestionarVuelosToolStripMenuItem";
-            gestionarVuelosToolStripMenuItem.Size = new Size(170, 22);
-            gestionarVuelosToolStripMenuItem.Text = "Gestionar vuelos";
-            gestionarVuelosToolStripMenuItem.Click += gestionarVuelosToolStripMenuItem_Click;
-            // 
             // gestionarAsientosToolStripMenuItem
             // 
             gestionarAsientosToolStripMenuItem.Name = "gestionarAsientosToolStripMenuItem";
-            gestionarAsientosToolStripMenuItem.Size = new Size(170, 22);
+            gestionarAsientosToolStripMenuItem.Size = new Size(180, 22);
             gestionarAsientosToolStripMenuItem.Text = "Gestionar asientos";
             gestionarAsientosToolStripMenuItem.Click += gestionarAsientosToolStripMenuItem_Click;
             // 
             // gestionarClientesToolStripMenuItem
             // 
             gestionarClientesToolStripMenuItem.Name = "gestionarClientesToolStripMenuItem";
-            gestionarClientesToolStripMenuItem.Size = new Size(170, 22);
+            gestionarClientesToolStripMenuItem.Size = new Size(180, 22);
             gestionarClientesToolStripMenuItem.Text = "Gestionar clientes";
             gestionarClientesToolStripMenuItem.Click += gestionarClientesToolStripMenuItem_Click;
             // 
+            // gestionarVuelosToolStripMenuItem
+            // 
+            gestionarVuelosToolStripMenuItem.Name = "gestionarVuelosToolStripMenuItem";
+            gestionarVuelosToolStripMenuItem.Size = new Size(180, 22);
+            gestionarVuelosToolStripMenuItem.Text = "Gestionar vuelos";
+            gestionarVuelosToolStripMenuItem.Click += gestionarVuelosToolStripMenuItem_Click;
+            // 
             // reservasToolStripMenuItem
             // 
-            reservasToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { registrarReservaToolStripMenuItem });
+            reservasToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { registrarReservaToolStripMenuItem, serviciosAdicionalesToolStripMenuItem });
             reservasToolStripMenuItem.Name = "reservasToolStripMenuItem";
             reservasToolStripMenuItem.Size = new Size(64, 20);
             reservasToolStripMenuItem.Text = "Reservas";
@@ -176,7 +177,7 @@
             // registrarReservaToolStripMenuItem
             // 
             registrarReservaToolStripMenuItem.Name = "registrarReservaToolStripMenuItem";
-            registrarReservaToolStripMenuItem.Size = new Size(180, 22);
+            registrarReservaToolStripMenuItem.Size = new Size(182, 22);
             registrarReservaToolStripMenuItem.Text = "Registrar reserva";
             registrarReservaToolStripMenuItem.Click += registrarReservaToolStripMenuItem_Click;
             // 
@@ -190,7 +191,7 @@
             // verComprobantesToolStripMenuItem
             // 
             verComprobantesToolStripMenuItem.Name = "verComprobantesToolStripMenuItem";
-            verComprobantesToolStripMenuItem.Size = new Size(180, 22);
+            verComprobantesToolStripMenuItem.Size = new Size(170, 22);
             verComprobantesToolStripMenuItem.Text = "Ver comprobantes";
             verComprobantesToolStripMenuItem.Click += verComprobantesToolStripMenuItem_Click;
             // 
@@ -204,14 +205,14 @@
             // españolToolStripMenuItem
             // 
             españolToolStripMenuItem.Name = "españolToolStripMenuItem";
-            españolToolStripMenuItem.Size = new Size(180, 22);
+            españolToolStripMenuItem.Size = new Size(115, 22);
             españolToolStripMenuItem.Text = "Español";
             españolToolStripMenuItem.Click += españolToolStripMenuItem_Click;
             // 
             // inglesToolStripMenuItem
             // 
             inglesToolStripMenuItem.Name = "inglesToolStripMenuItem";
-            inglesToolStripMenuItem.Size = new Size(180, 22);
+            inglesToolStripMenuItem.Size = new Size(115, 22);
             inglesToolStripMenuItem.Text = "Ingles";
             inglesToolStripMenuItem.Click += inglesToolStripMenuItem_Click;
             // 
@@ -239,6 +240,13 @@
             // 
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             toolStripStatusLabel2.Size = new Size(0, 17);
+            // 
+            // serviciosAdicionalesToolStripMenuItem
+            // 
+            serviciosAdicionalesToolStripMenuItem.Name = "serviciosAdicionalesToolStripMenuItem";
+            serviciosAdicionalesToolStripMenuItem.Size = new Size(182, 22);
+            serviciosAdicionalesToolStripMenuItem.Text = "Servicios adicionales";
+            serviciosAdicionalesToolStripMenuItem.Click += serviciosAdicionalesToolStripMenuItem_Click;
             // 
             // MenuPrincipal_460AS
             // 
@@ -289,5 +297,6 @@
         private ToolStripMenuItem verComprobantesToolStripMenuItem;
         private ToolStripMenuItem backupYRestoreToolStripMenuItem;
         private ToolStripMenuItem auditarEventosToolStripMenuItem;
+        private ToolStripMenuItem serviciosAdicionalesToolStripMenuItem;
     }
 }

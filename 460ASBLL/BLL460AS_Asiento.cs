@@ -41,10 +41,21 @@ namespace _460ASBLL
             _asientoDAL.AgregarAsiento_460AS(asiento);
         }
 
-
         public void EliminarAsiento(string numAsiento, string codVuelo)
         {
             _asientoDAL.EliminarAsiento_460AS(numAsiento, codVuelo);
+        }
+
+        public List<Asiento_460AS> ObtenerAsientosDeReserva_460AS(string codReserva)
+        {
+            return _asientoDAL.ObtenerAsientosPorReserva_460AS(codReserva).ToList();
+        }
+
+        public void ActualizarCambioAsiento_460AS(Asiento_460AS viejo, Asiento_460AS nuevo)
+        {
+            DAL460AS_Asiento dal = new DAL460AS_Asiento();
+            dal.LiberarAsiento_460AS(viejo.NumAsiento_460AS, viejo.CodVuelo_460AS);
+            dal.OcuparAsiento_460AS(nuevo.NumAsiento_460AS, nuevo.CodVuelo_460AS, viejo.Reserva_460AS.CodReserva_460AS);
         }
     }
 }

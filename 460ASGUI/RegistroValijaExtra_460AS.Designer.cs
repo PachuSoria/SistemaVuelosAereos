@@ -83,6 +83,7 @@
             button1.TabIndex = 6;
             button1.Text = "Agregar";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // comboBox1
             // 
@@ -112,6 +113,7 @@
             button2.TabIndex = 9;
             button2.Text = "Registrar";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // listBox1
             // 

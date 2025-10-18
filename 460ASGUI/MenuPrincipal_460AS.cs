@@ -403,5 +403,12 @@ namespace _460ASGUI
             formAuditarEventos.MdiParent = this;
             formAuditarEventos.Show();
         }
+
+        private void serviciosAdicionalesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionServiciosAdicionales_460AS formGestionarServicios = new GestionServiciosAdicionales_460AS();
+            formGestionarServicios.MdiParent = this;
+            formGestionarServicios.Show();
+        }
     }
 }

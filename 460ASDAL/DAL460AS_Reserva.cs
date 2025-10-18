@@ -54,7 +54,7 @@ namespace _460ASDAL
             using (SqlConnection con = new SqlConnection(cx))
             {
                 string consulta = @"SELECT CodReserva_460AS, FechaReserva_460AS, CodVuelo_460AS, PrecioTotal_460AS
-                                FROM RESERVAS_460AS
+                                FROM RESERVA_460AS
                                 WHERE DNICliente_460AS = @DNICliente_460AS";
 
                 SqlCommand cmd = new SqlCommand(consulta, con);
