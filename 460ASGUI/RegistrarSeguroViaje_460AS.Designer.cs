@@ -55,6 +55,7 @@
             button1 = new Button();
             textBox1 = new TextBox();
             label17 = new Label();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -229,7 +230,7 @@
             // 
             dateTimePicker1.Location = new Point(40, 412);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(217, 23);
+            dateTimePicker1.Size = new Size(233, 23);
             dateTimePicker1.TabIndex = 18;
             // 
             // label16
@@ -251,6 +252,7 @@
             radioButton1.TabStop = true;
             radioButton1.Text = "Premium";
             radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
             // 
             // radioButton2
             // 
@@ -276,12 +278,13 @@
             // 
             // button1
             // 
-            button1.Location = new Point(333, 446);
+            button1.Location = new Point(198, 467);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 23;
             button1.Text = "Registrar";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // textBox1
             // 
@@ -300,11 +303,22 @@
             label17.TabIndex = 25;
             label17.Text = "Precio";
             // 
+            // button2
+            // 
+            button2.Location = new Point(883, 467);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 26;
+            button2.Text = "Salir";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // RegistrarSeguroViaje_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(978, 502);
+            Controls.Add(button2);
             Controls.Add(label17);
             Controls.Add(textBox1);
             Controls.Add(button1);
@@ -368,5 +382,6 @@
         private Button button1;
         private TextBox textBox1;
         private Label label17;
+        private Button button2;
     }
 }

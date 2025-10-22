@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegistrarComidaEspecial_460AS));
-            listBox1 = new ListBox();
             button1 = new Button();
             textBox1 = new TextBox();
             label1 = new Label();
@@ -40,32 +39,26 @@
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
+            button2 = new Button();
+            checkedListBox1 = new CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             SuspendLayout();
             // 
-            // listBox1
-            // 
-            listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 15;
-            listBox1.Location = new Point(416, 215);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(247, 199);
-            listBox1.TabIndex = 0;
-            // 
             // button1
             // 
-            button1.Location = new Point(588, 444);
+            button1.Location = new Point(588, 370);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 1;
             button1.Text = "Registrar";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(416, 444);
+            textBox1.Location = new Point(416, 370);
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
             textBox1.Size = new Size(140, 23);
@@ -74,7 +67,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(416, 426);
+            label1.Location = new Point(416, 352);
             label1.Name = "label1";
             label1.Size = new Size(66, 15);
             label1.TabIndex = 3;
@@ -146,11 +139,34 @@
             label5.TabIndex = 10;
             label5.Text = "Comidas";
             // 
+            // button2
+            // 
+            button2.Location = new Point(588, 619);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 11;
+            button2.Text = "Salir";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // checkedListBox1
+            // 
+            checkedListBox1.FormattingEnabled = true;
+            checkedListBox1.Location = new Point(416, 215);
+            checkedListBox1.Name = "checkedListBox1";
+            checkedListBox1.Size = new Size(247, 130);
+            checkedListBox1.TabIndex = 12;
+            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
+            checkedListBox1.MouseDown += checkedListBox1_MouseDown;
+            checkedListBox1.MouseUp += checkedListBox1_MouseUp;
+            // 
             // RegistrarComidaEspecial_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(741, 667);
+            ClientSize = new Size(700, 667);
+            Controls.Add(checkedListBox1);
+            Controls.Add(button2);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -161,9 +177,9 @@
             Controls.Add(label1);
             Controls.Add(textBox1);
             Controls.Add(button1);
-            Controls.Add(listBox1);
             Name = "RegistrarComidaEspecial_460AS";
             Text = "RegistrarComidaEspecial_460AS";
+            Load += RegistrarComidaEspecial_460AS_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
@@ -172,8 +188,6 @@
         }
 
         #endregion
-
-        private ListBox listBox1;
         private Button button1;
         private TextBox textBox1;
         private Label label1;
@@ -184,5 +198,7 @@
         private Label label3;
         private Label label4;
         private Label label5;
+        private Button button2;
+        private CheckedListBox checkedListBox1;
     }
 }

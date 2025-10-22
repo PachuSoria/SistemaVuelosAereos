@@ -42,10 +42,12 @@
             comboBox1 = new ComboBox();
             label6 = new Label();
             groupBox1 = new GroupBox();
+            label7 = new Label();
             button2 = new Button();
             button3 = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // textBox1
@@ -172,12 +174,22 @@
             // 
             // groupBox1
             // 
-            groupBox1.Location = new Point(22, 421);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Location = new Point(22, 377);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(320, 169);
+            groupBox1.Size = new Size(320, 222);
             groupBox1.TabIndex = 12;
             groupBox1.TabStop = false;
             groupBox1.Text = "Resumen";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(6, 28);
+            label7.Name = "label7";
+            label7.Size = new Size(38, 15);
+            label7.TabIndex = 0;
+            label7.Text = "label7";
             // 
             // button2
             // 
@@ -191,11 +203,11 @@
             // 
             // button3
             // 
-            button3.Location = new Point(372, 495);
+            button3.Location = new Point(378, 480);
             button3.Name = "button3";
             button3.Size = new Size(75, 23);
             button3.TabIndex = 14;
-            button3.Text = "Pagar";
+            button3.Text = "Cobrar";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
@@ -217,6 +229,8 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -239,5 +253,6 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        private Label label7;
     }
 }

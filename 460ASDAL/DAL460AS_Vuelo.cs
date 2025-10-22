@@ -102,5 +102,34 @@ namespace _460ASDAL
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public Vuelo_460AS ObtenerVueloPorCodigo_460AS(string codVuelo)
+        {
+            using (SqlConnection conexion = new SqlConnection(cx))
+            {
+                conexion.Open();
+                string sql = "SELECT * FROM VUELO_460AS WHERE CodVuelo_460AS = @CodVuelo_460AS";
+                SqlCommand cmd = new SqlCommand(sql, conexion);
+                cmd.Parameters.AddWithValue("@CodVuelo_460AS", codVuelo);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Vuelo_460AS
+                        {
+                            CodVuelo_460AS = reader["CodVuelo_460AS"].ToString(),
+                            Aerolinea_460AS = reader["Aerolinea_460AS"].ToString(),
+                            Origen_460AS = reader["Origen_460AS"].ToString(),
+                            Destino_460AS = reader["Destino_460AS"].ToString(),
+                            FechaSalida_460AS = Convert.ToDateTime(reader["FechaSalida_460AS"]),
+                            FechaLlegada_460AS = Convert.ToDateTime(reader["FechaLlegada_460AS"]),
+                            PrecioVuelo_460AS = Convert.ToDecimal(reader["PrecioVuelo_460AS"])
+                        };
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

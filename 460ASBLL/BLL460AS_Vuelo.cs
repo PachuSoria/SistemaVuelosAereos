@@ -47,5 +47,10 @@ namespace _460ASBLL
             var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Vuelos", $"Eliminacion de vuelo: {codVuelo}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
+
+        public Vuelo_460AS ObtenerVueloPorCodigo_460AS(string codVuelo)
+        {
+            return _vueloDAL.ObtenerVueloPorCodigo_460AS(codVuelo);
+        }
     }
 }

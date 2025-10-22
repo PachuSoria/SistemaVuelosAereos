@@ -4,6 +4,7 @@ using _460ASServicios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,7 +51,8 @@ namespace _460ASBLL
 
         public List<Reserva_460AS> ObtenerReservasCliente_460AS(string dniCliente)
         {
-            return _reservaDAL.ObtenerReservasCliente_460AS(dniCliente);
+            DAL460AS_Reserva dalReserva = new DAL460AS_Reserva();
+            return dalReserva.ObtenerReservasCliente_460AS(dniCliente);
         }
     }
 }

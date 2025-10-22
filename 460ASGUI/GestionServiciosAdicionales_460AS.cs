@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace _460ASGUI
 {
@@ -19,7 +20,7 @@ namespace _460ASGUI
         private Reserva_460AS reservaSeleccionada;
         private BLL460AS_Cliente bllCliente;
         private BLL460AS_Reserva bllReserva;
-        private List<string> serviciosAgregados = new List<string>();
+        private List<(string Nombre, decimal Monto)> serviciosAgregados = new();
 
 
         public GestionServiciosAdicionales_460AS()
@@ -88,7 +89,7 @@ namespace _460ASGUI
                     CambioAsiento_460AS form = new CambioAsiento_460AS(codVuelo, reservaSeleccionada.CodReserva_460AS);
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        serviciosAgregados.Add(servicio);
+                        serviciosAgregados.Add(("Cambio de asiento", 0));
                         ActualizarResumen();
                     }
                 }
@@ -97,19 +98,28 @@ namespace _460ASGUI
                     RegistroValijaExtra_460AS form = new RegistroValijaExtra_460AS();
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        serviciosAgregados.Add($"Valija extra – Total {form.TotalValijas:C2}");
+                        serviciosAgregados.Add(("Valija extra", form.TotalValijas));
                         ActualizarResumen();
                     }
                 }
                 else if (servicio == "Comida especial")
                 {
-                    MessageBox.Show("Este servicio se implementará próximamente.",
-                        "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RegistrarComidaEspecial_460AS form = new RegistrarComidaEspecial_460AS();
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        serviciosAgregados.Add(("Comida especial", form.TotalComidas));
+                        ActualizarResumen();
+                    }
                 }
                 else if (servicio == "Seguro de viaje")
                 {
-                    MessageBox.Show("Este servicio se implementará próximamente.",
-                        "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DateTime fechaSalida = reservaSeleccionada.Vuelo_460AS.FechaSalida_460AS;
+                    RegistrarSeguroViaje_460AS form = new RegistrarSeguroViaje_460AS(fechaSalida);
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        serviciosAgregados.Add(("Seguro de viaje", form.PrecioSeleccionado));
+                        ActualizarResumen();
+                    }
                 }
             }
             catch (Exception ex)
@@ -125,14 +135,46 @@ namespace _460ASGUI
                 panel1.Visible = true;
                 button3.Enabled = true;
 
-                //labelResumen.Text = "Servicios agregados:\n" +
-                //    string.Join("\n", serviciosAgregados.Select(s => $"• {s}"));
+                decimal total = serviciosAgregados.Sum(s => s.Monto);
+
+                label7.Text =
+                    $"Cliente: {clienteActual?.Nombre_460AS} {clienteActual?.Apellido_460AS}\n" +
+                    $"Reserva: {reservaSeleccionada?.CodReserva_460AS}\n" +
+                    $"Vuelo: {reservaSeleccionada?.Vuelo_460AS?.CodVuelo_460AS} – {reservaSeleccionada?.Vuelo_460AS?.Destino_460AS}\n\n" +
+                    "Servicios agregados:\n" +
+                    string.Join("\n", serviciosAgregados.Select(s => $"• {s.Nombre} – {s.Monto:0.00} USD")) + "\n\n" +
+                    $"Total a pagar: {total:0.00} USD";
+            }
+            else
+            {
+                panel1.Visible = false;
+                button3.Enabled = false;
+                label7.Text = string.Empty;
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            decimal totalServicios = serviciosAgregados.Sum(s => s.Monto);
 
+            if (totalServicios <= 0)
+                throw new Exception("No hay servicios con monto válido para cobrar.");
+
+            using (CobroServicios_460AS formCobro = new CobroServicios_460AS(totalServicios))
+            {
+                if (formCobro.ShowDialog() == DialogResult.OK)
+                {
+                    MessageBox.Show("Servicios adicionales pagados correctamente.", "Éxito",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    serviciosAgregados.Clear();
+                    label7.Text = string.Empty;
+                    panel1.Visible = false;
+
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+            }
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)

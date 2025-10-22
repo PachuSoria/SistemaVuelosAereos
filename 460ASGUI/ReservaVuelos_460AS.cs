@@ -150,7 +150,7 @@ namespace _460ASGUI
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!formInicializado || !panel1.Enabled) return; // evitar que cargue al inicio
+            if (!formInicializado || !panel1.Enabled) return; 
             CargarVuelos();
         }
 

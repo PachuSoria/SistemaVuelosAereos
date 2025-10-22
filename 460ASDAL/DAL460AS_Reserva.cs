@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,34 +50,42 @@ namespace _460ASDAL
 
         public List<Reserva_460AS> ObtenerReservasCliente_460AS(string dniCliente)
         {
-            var reservas = new List<Reserva_460AS>();
+            List<Reserva_460AS> reservas = new List<Reserva_460AS>();
+            DAL460AS_Vuelo dalVuelo = new DAL460AS_Vuelo();
 
-            using (SqlConnection con = new SqlConnection(cx))
+            using (SqlConnection conexion = new SqlConnection(cx))
             {
-                string consulta = @"SELECT CodReserva_460AS, FechaReserva_460AS, CodVuelo_460AS, PrecioTotal_460AS
-                                FROM RESERVA_460AS
-                                WHERE DNICliente_460AS = @DNICliente_460AS";
+                conexion.Open();
 
-                SqlCommand cmd = new SqlCommand(consulta, con);
+                string query = "SELECT * FROM RESERVA_460AS WHERE DNICliente_460AS = @DNICliente_460AS";
+                SqlCommand cmd = new SqlCommand(query, conexion);
                 cmd.Parameters.AddWithValue("@DNICliente_460AS", dniCliente);
 
-                con.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        var reserva = new Reserva_460AS
+                        Reserva_460AS reserva = new Reserva_460AS();
+
+
+                        reserva.CodReserva_460AS = reader["CodReserva_460AS"].ToString();
+                        reserva.FechaReserva_460AS = Convert.ToDateTime(reader["FechaReserva_460AS"]);
+                        reserva.PrecioTotal_460AS = Convert.ToDecimal(reader["PrecioTotal_460AS"]);
+
+
+                        reserva.Cliente_460AS = new Cliente_460AS
                         {
-                            CodReserva_460AS = reader["CodReserva_460AS"].ToString(),
-                            FechaReserva_460AS = Convert.ToDateTime(reader["FechaReserva_460AS"]),
-                            Cliente_460AS = new Cliente_460AS { DNI_460AS = dniCliente }, 
-                            Vuelo_460AS = new Vuelo_460AS { CodVuelo_460AS = reader["CodVuelo_460AS"].ToString() },
-                            PrecioTotal_460AS = Convert.ToDecimal(reader["PrecioTotal_460AS"])
+                            DNI_460AS = reader["DNICliente_460AS"].ToString()
                         };
+
+                        string codVuelo = reader["CodVuelo_460AS"].ToString();
+                        reserva.Vuelo_460AS = dalVuelo.ObtenerVueloPorCodigo_460AS(codVuelo);
+
                         reservas.Add(reserva);
                     }
                 }
             }
+
             return reservas;
         }
     }
