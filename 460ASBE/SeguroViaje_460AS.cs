@@ -10,22 +10,21 @@ namespace _460ASBE
     {
         public string Cobertura_460AS { get; set; }
         public DateTime Vencimiento_460AS { get; set; }
-        public decimal Precio_460AS { get; set; }
-        public SeguroViaje_460AS(ComponenteReserva_460AS reserva, string cobertura, DateTime vencimiento, decimal precio) : base(reserva)
+        public SeguroViaje_460AS(ComponenteReserva_460AS reserva, string cobertura, DateTime vencimiento) : base(reserva)
         {
             Cobertura_460AS = cobertura;
             Vencimiento_460AS = vencimiento;
-            Precio_460AS = precio;
         }
+        public SeguroViaje_460AS() { }
 
         public override decimal CalcularPrecio()
         {
-            return _reserva.CalcularPrecio() + Precio_460AS;
+            return Precio_460AS;
         }
 
         public override string GetDescripcion()
         {
-            return $"{_reserva.GetDescripcion()} + Seguro de viaje {Cobertura_460AS} ({Precio_460AS:0.00} USD, vence {Vencimiento_460AS:dd/MM/yyyy})";
+            return $"Seguro de viaje {Cobertura_460AS} ({Precio_460AS:0.00} USD, vence {Vencimiento_460AS:dd/MM/yyyy})";
         }
     }
 }

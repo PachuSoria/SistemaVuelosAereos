@@ -12,6 +12,7 @@ namespace _460ASGUI
 {
     public partial class RegistrarSeguroViaje_460AS : Form
     {
+        public string SeguroSeleccionado => seguroSeleccionado;
         private DateTime fechaSalidaVuelo;
         private Dictionary<string, decimal> preciosSeguros = new()
         {

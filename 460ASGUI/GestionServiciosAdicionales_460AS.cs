@@ -16,6 +16,8 @@ namespace _460ASGUI
 {
     public partial class GestionServiciosAdicionales_460AS : Form, IIdiomaObserver_460AS
     {
+        private BLL460AS_Servicios bllServicios = new BLL460AS_Servicios();
+        private BLL460AS_Pago bllPago = new BLL460AS_Pago();
         private Cliente_460AS clienteActual;
         private Reserva_460AS reservaSeleccionada;
         private BLL460AS_Cliente bllCliente;
@@ -115,8 +117,22 @@ namespace _460ASGUI
                 {
                     DateTime fechaSalida = reservaSeleccionada.Vuelo_460AS.FechaSalida_460AS;
                     RegistrarSeguroViaje_460AS form = new RegistrarSeguroViaje_460AS(fechaSalida);
+
                     if (form.ShowDialog() == DialogResult.OK)
                     {
+                        var nuevoSeguro = new SeguroViaje_460AS
+                        {
+                            CodServicio_460AS = Guid.NewGuid().ToString(),
+                            Reserva_460AS = reservaSeleccionada,
+                            Cobertura_460AS = form.SeguroSeleccionado,
+                            Vencimiento_460AS = form.FechaVencimiento,
+                            Precio_460AS = form.PrecioSeleccionado,
+                            TipoServicio_460AS = "Seguro de viaje",
+                            Descripcion_460AS = $"Seguro {form.SeguroSeleccionado} - vence {form.FechaVencimiento:dd/MM/yyyy}"
+                        };
+
+                        bllServicios.GuardarServicio_460AS(nuevoSeguro);
+
                         serviciosAgregados.Add(("Seguro de viaje", form.PrecioSeleccionado));
                         ActualizarResumen();
                     }
@@ -156,22 +172,48 @@ namespace _460ASGUI
         private void button3_Click(object sender, EventArgs e)
         {
             decimal totalServicios = serviciosAgregados.Sum(s => s.Monto);
-
             if (totalServicios <= 0)
                 throw new Exception("No hay servicios con monto válido para cobrar.");
+
+            List<Servicio_460AS> listaServicios = new List<Servicio_460AS>();
+
+            foreach (var s in serviciosAgregados)
+            {
+                Servicio_460AS servicio = new Servicio_460AS
+                {
+                    CodServicio_460AS = Guid.NewGuid().ToString(),
+                    CodReserva_460AS = reservaSeleccionada.CodReserva_460AS,
+                    TipoServicio_460AS = s.Nombre,
+                    Descripcion_460AS = $"Servicio adicional: {s.Nombre}",
+                    Precio_460AS = s.Monto
+                };
+
+                bllServicios.GuardarServicio_460AS(servicio);
+                listaServicios.Add(servicio);
+            }
 
             using (CobroServicios_460AS formCobro = new CobroServicios_460AS(totalServicios))
             {
                 if (formCobro.ShowDialog() == DialogResult.OK)
                 {
-                    MessageBox.Show("Servicios adicionales pagados correctamente.", "Éxito",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Pago_460AS pago = new Pago_460AS
+                    {
+                        CodPago_460AS = Guid.NewGuid().ToString(),
+                        Reserva_460AS = reservaSeleccionada,
+                        Monto_460AS = totalServicios,
+                        TipoPago_460AS = formCobro.TipoPagoSeleccionado,
+                        FechaPago_460AS = DateTime.Now,
+                        ServiciosPagados = listaServicios
+                    };
+
+                    bllPago.GuardarPago_460AS(pago);
+
+                    MessageBox.Show("Servicios adicionales pagados y guardados correctamente.",
+                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     serviciosAgregados.Clear();
                     label7.Text = string.Empty;
                     panel1.Visible = false;
-
-                    this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
             }

@@ -17,6 +17,7 @@ namespace _460ASGUI
 {
     public partial class CobroServicios_460AS : Form, IIdiomaObserver_460AS
     {
+        public string TipoPagoSeleccionado { get; private set; }
         private decimal montoTotal;
         public CobroServicios_460AS(decimal montoTotalServicios)
         {
@@ -58,7 +59,7 @@ namespace _460ASGUI
                 if (string.IsNullOrWhiteSpace(comboBox1.Text))
                     throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pago_vacio"));
 
-                string tipoPago = ((KeyValuePair<string, string>)comboBox1.SelectedItem).Key;
+                string tipoPago = comboBox1.SelectedItem.ToString();
                 if (string.IsNullOrWhiteSpace(textBox1.Text))
                     throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_num_tarjeta_vacio"));
 

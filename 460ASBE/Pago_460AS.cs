@@ -13,10 +13,10 @@ namespace _460ASBE
         public decimal Monto_460AS { get; set; }
         public string TipoPago_460AS { get; set; }
         public DateTime FechaPago_460AS { get; set; }
-        public List<ServiciosDecorator_460AS> ServiciosPagados { get; set; }
+        public List<Servicio_460AS> ServiciosPagados { get; set; }
         public Pago_460AS()
         {
-            ServiciosPagados = new List<ServiciosDecorator_460AS>();
+            ServiciosPagados = new List<Servicio_460AS>();
         }
         public Pago_460AS(string codPago_460AS, Reserva_460AS reserva_460AS, decimal monto_460AS, string tipoPago_460AS, DateTime fechaPago_460AS)
         {
@@ -25,7 +25,7 @@ namespace _460ASBE
             this.Monto_460AS = monto_460AS;
             this.TipoPago_460AS = tipoPago_460AS;
             this.FechaPago_460AS = fechaPago_460AS;
-            this.ServiciosPagados = new List<ServiciosDecorator_460AS>();
+            this.ServiciosPagados = new List<Servicio_460AS>();
         }
     }
 }
