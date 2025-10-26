@@ -15,6 +15,8 @@ namespace _460ASGUI
 {
     public partial class CambioAsiento_460AS : Form, IIdiomaObserver_460AS
     {
+        public List<(Asiento_460AS AsientoViejo_460AS, Asiento_460AS AsientoNuevo_460AS)> ListaCambios { get; set; } = new List<(Asiento_460AS, Asiento_460AS)>();
+        public decimal PrecioTotal { get; private set; } = 0;
         BLL460AS_Asiento bllAsiento_460AS;
         private string codVueloSeleccionado;
         private string codReservaSeleccionada;
@@ -23,6 +25,8 @@ namespace _460ASGUI
         private List<Asiento_460AS> asientosActuales;
         private Asiento_460AS asientoSeleccionadoActual;
         private Dictionary<string, Asiento_460AS> cambiosPendientes = new Dictionary<string, Asiento_460AS>();
+        private Reserva_460AS reservaSeleccionada;
+
         public Dictionary<string, Asiento_460AS> CambiosPendientes => cambiosPendientes;
         public List<Asiento_460AS> AsientosSeleccionados => asientosSeleccionados;
         public CambioAsiento_460AS(string codVuelo, string codReserva)
@@ -36,6 +40,11 @@ namespace _460ASGUI
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
             CargarAsientosActuales();
             ActualizarIdioma();
+        }
+
+        public CambioAsiento_460AS(Reserva_460AS reservaSeleccionada)
+        {
+            this.reservaSeleccionada = reservaSeleccionada;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -122,7 +131,20 @@ namespace _460ASGUI
         {
             try
             {
-                if (cambiosPendientes.Count == 0) throw new Exception("Debe seleccionar al menos un cambio de asiento.");
+                if (cambiosPendientes.Count == 0)
+                    throw new Exception("Debe seleccionar al menos un cambio de asiento.");
+
+                decimal precioPorCambio = radioButton1.Checked ? 50 : 100;
+                PrecioTotal = cambiosPendientes.Count * precioPorCambio;
+
+                ListaCambios.Clear();
+                foreach (var kvp in cambiosPendientes)
+                {
+                    var asientoViejo = asientosActuales.First(a => a.NumAsiento_460AS == kvp.Key);
+                    var asientoNuevo = kvp.Value;
+                    ListaCambios.Add((asientoViejo, asientoNuevo));
+                }
+
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using CambioAsientoForm = _460ASGUI.CambioAsiento_460AS;
+using CambioAsientoServicio = _460ASBE.CambioAsiento_460AS;
 
 namespace _460ASGUI
 {
@@ -22,8 +24,8 @@ namespace _460ASGUI
         private Reserva_460AS reservaSeleccionada;
         private BLL460AS_Cliente bllCliente;
         private BLL460AS_Reserva bllReserva;
-        private List<(string Nombre, decimal Monto)> serviciosAgregados = new();
-
+        private List<(string Nombre, decimal Monto, string Extra)> serviciosAgregados = new();
+        private List<ServiciosDecorator_460AS> serviciosParaGuardar = new();
 
         public GestionServiciosAdicionales_460AS()
         {
@@ -88,19 +90,53 @@ namespace _460ASGUI
                 if (servicio == "Cambio de asiento")
                 {
                     string codVuelo = reservaSeleccionada.Vuelo_460AS.CodVuelo_460AS;
-                    CambioAsiento_460AS form = new CambioAsiento_460AS(codVuelo, reservaSeleccionada.CodReserva_460AS);
-                    if (form.ShowDialog() == DialogResult.OK)
+                    var formCambio = new CambioAsientoForm(codVuelo, reservaSeleccionada.CodReserva_460AS);
+
+                    if (formCambio.ShowDialog() == DialogResult.OK && formCambio.CambiosPendientes.Any())
                     {
-                        serviciosAgregados.Add(("Cambio de asiento", 0));
+                        serviciosAgregados.RemoveAll(s => s.Nombre == "Cambio de asiento");
+                        serviciosParaGuardar.RemoveAll(s => s.TipoServicio_460AS == "Cambio de asiento");
+
+                        serviciosAgregados.Add(("Cambio de asiento", formCambio.PrecioTotal, string.Empty));
+
+                        string codServicioComun = Guid.NewGuid().ToString();
+
+                        foreach (var cambio in formCambio.CambiosPendientes.Values)
+                        {
+                            serviciosParaGuardar.Add(new CambioAsientoServicio(reservaSeleccionada)
+                            {
+                                CodServicio_460AS = codServicioComun,
+                                NumAsiento_460AS = cambio.NumAsiento_460AS,
+                                TipoServicio_460AS = "Cambio de asiento",
+                                Descripcion_460AS = $"Cambio a asientos {string.Join(", ", formCambio.CambiosPendientes.Values.Select(a => a.NumAsiento_460AS))}",
+                                Precio_460AS = formCambio.PrecioTotal / formCambio.CambiosPendientes.Count,
+                                ListaCambios = formCambio.ListaCambios,
+                                Reserva_460AS = reservaSeleccionada
+                            });
+                        }
+
                         ActualizarResumen();
                     }
                 }
+
                 else if (servicio == "Valija extra")
                 {
                     RegistroValijaExtra_460AS form = new RegistroValijaExtra_460AS();
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        serviciosAgregados.Add(("Valija extra", form.TotalValijas));
+                        serviciosAgregados.RemoveAll(s => s.Nombre == "Valija extra");
+                        serviciosParaGuardar.RemoveAll(s => s.TipoServicio_460AS == "Valija extra");
+                        serviciosAgregados.Add(("Valija extra", form.TotalValijas, ""));
+                        serviciosParaGuardar.Add(new ValijaExtra_460AS(reservaSeleccionada)
+                        {
+                            CodServicio_460AS = Guid.NewGuid().ToString(),
+                            Precio_460AS = form.TotalValijas,
+                            Cantidad_460AS = form.CantidadTotal,    
+                            PesoTotal_460AS = form.PesoTotal,
+                            TipoServicio_460AS = "Valija extra",
+                            Descripcion_460AS = $"Valijas: {form.CantidadTotal} - Peso total: {form.PesoTotal} kg",
+                            Reserva_460AS = reservaSeleccionada
+                        });
                         ActualizarResumen();
                     }
                 }
@@ -109,32 +145,43 @@ namespace _460ASGUI
                     RegistrarComidaEspecial_460AS form = new RegistrarComidaEspecial_460AS();
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        serviciosAgregados.Add(("Comida especial", form.TotalComidas));
+                        serviciosAgregados.RemoveAll(s => s.Nombre == "Comida especial");
+                        serviciosParaGuardar.RemoveAll(s => s.TipoServicio_460AS == "Comida especial");
+                        serviciosAgregados.Add(("Comida especial", form.TotalComidas, ""));
+                        serviciosParaGuardar.Add(new ComidaEspecial_460AS(reservaSeleccionada)
+                        {
+                            CodServicio_460AS = Guid.NewGuid().ToString(),
+                            Precio_460AS = form.TotalComidas,
+                            TipoComida_460AS = form.TipoSeleccionado,
+                            TipoServicio_460AS = "Comida especial",
+                            Descripcion_460AS = $"Comida: {form.TipoSeleccionado}",
+                            Reserva_460AS = reservaSeleccionada
+                        });
                         ActualizarResumen();
                     }
                 }
                 else if (servicio == "Seguro de viaje")
                 {
                     DateTime fechaSalida = reservaSeleccionada.Vuelo_460AS.FechaSalida_460AS;
-                    RegistrarSeguroViaje_460AS form = new RegistrarSeguroViaje_460AS(fechaSalida);
-
-                    if (form.ShowDialog() == DialogResult.OK)
+                    using (var form = new RegistrarSeguroViaje_460AS(fechaSalida))
                     {
-                        var nuevoSeguro = new SeguroViaje_460AS
+                        if (form.ShowDialog() == DialogResult.OK)
                         {
-                            CodServicio_460AS = Guid.NewGuid().ToString(),
-                            Reserva_460AS = reservaSeleccionada,
-                            Cobertura_460AS = form.SeguroSeleccionado,
-                            Vencimiento_460AS = form.FechaVencimiento,
-                            Precio_460AS = form.PrecioSeleccionado,
-                            TipoServicio_460AS = "Seguro de viaje",
-                            Descripcion_460AS = $"Seguro {form.SeguroSeleccionado} - vence {form.FechaVencimiento:dd/MM/yyyy}"
-                        };
-
-                        bllServicios.GuardarServicio_460AS(nuevoSeguro);
-
-                        serviciosAgregados.Add(("Seguro de viaje", form.PrecioSeleccionado));
-                        ActualizarResumen();
+                            serviciosAgregados.RemoveAll(s => s.Nombre == "Seguro de viaje");
+                            serviciosParaGuardar.RemoveAll(s => s.TipoServicio_460AS == "Seguro de viaje");
+                            serviciosAgregados.Add(("Seguro de viaje", form.PrecioSeleccionado, $"vence {form.FechaVencimiento:dd/MM/yyyy}"));
+                            serviciosParaGuardar.Add(new SeguroViaje_460AS(reservaSeleccionada)
+                            {
+                                CodServicio_460AS = Guid.NewGuid().ToString(),
+                                Precio_460AS = form.PrecioSeleccionado,
+                                Cobertura_460AS = form.SeguroSeleccionado,   
+                                Vencimiento_460AS = form.FechaVencimiento,
+                                TipoServicio_460AS = "Seguro de viaje",
+                                Descripcion_460AS = $"Seguro: {form.SeguroSeleccionado} - Vence {form.FechaVencimiento:dd/MM/yyyy}",
+                                Reserva_460AS = reservaSeleccionada
+                            });
+                            ActualizarResumen();
+                        }
                     }
                 }
             }
@@ -158,7 +205,9 @@ namespace _460ASGUI
                     $"Reserva: {reservaSeleccionada?.CodReserva_460AS}\n" +
                     $"Vuelo: {reservaSeleccionada?.Vuelo_460AS?.CodVuelo_460AS} – {reservaSeleccionada?.Vuelo_460AS?.Destino_460AS}\n\n" +
                     "Servicios agregados:\n" +
-                    string.Join("\n", serviciosAgregados.Select(s => $"• {s.Nombre} – {s.Monto:0.00} USD")) + "\n\n" +
+                    string.Join("\n", serviciosAgregados.Select(s =>
+                        $"• {s.Nombre} – {s.Monto:0.00} USD" + (string.IsNullOrEmpty(s.Extra) ? "" : $" ({s.Extra})")
+                    )) + "\n\n" +
                     $"Total a pagar: {total:0.00} USD";
             }
             else
@@ -171,51 +220,82 @@ namespace _460ASGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            decimal totalServicios = serviciosAgregados.Sum(s => s.Monto);
-            if (totalServicios <= 0)
-                throw new Exception("No hay servicios con monto válido para cobrar.");
-
-            List<Servicio_460AS> listaServicios = new List<Servicio_460AS>();
-
-            foreach (var s in serviciosAgregados)
+            try
             {
-                Servicio_460AS servicio = new Servicio_460AS
-                {
-                    CodServicio_460AS = Guid.NewGuid().ToString(),
-                    CodReserva_460AS = reservaSeleccionada.CodReserva_460AS,
-                    TipoServicio_460AS = s.Nombre,
-                    Descripcion_460AS = $"Servicio adicional: {s.Nombre}",
-                    Precio_460AS = s.Monto
-                };
+                decimal totalServicios = serviciosAgregados.Sum(s => s.Monto);
+                if (totalServicios <= 0)
+                    throw new Exception("No hay servicios con monto válido para cobrar.");
 
-                bllServicios.GuardarServicio_460AS(servicio);
-                listaServicios.Add(servicio);
-            }
-
-            using (CobroServicios_460AS formCobro = new CobroServicios_460AS(totalServicios))
-            {
-                if (formCobro.ShowDialog() == DialogResult.OK)
+                using (var formCobro = new CobroServicios_460AS(totalServicios))
                 {
-                    Pago_460AS pago = new Pago_460AS
+                    if (formCobro.ShowDialog() != DialogResult.OK)
+                        return;
+
+                    foreach (var servicio in serviciosParaGuardar)
+                    {
+                        if (string.IsNullOrWhiteSpace(servicio.CodServicio_460AS))
+                            servicio.CodServicio_460AS = Guid.NewGuid().ToString();
+
+                        servicio.Reserva_460AS = reservaSeleccionada;
+                    }
+
+                    foreach (var servicio in serviciosParaGuardar)
+                    {
+                        bllServicios.GuardarServicio_460AS(servicio);
+                    }
+
+                    reservaSeleccionada.Cliente_460AS = clienteActual;
+                    var pago = new Pago_460AS
                     {
                         CodPago_460AS = Guid.NewGuid().ToString(),
                         Reserva_460AS = reservaSeleccionada,
                         Monto_460AS = totalServicios,
                         TipoPago_460AS = formCobro.TipoPagoSeleccionado,
                         FechaPago_460AS = DateTime.Now,
-                        ServiciosPagados = listaServicios
+                        ServiciosPagados = serviciosParaGuardar.Select(d => new Servicio_460AS
+                        {
+                            CodServicio_460AS = d.CodServicio_460AS,
+                            CodReserva_460AS = reservaSeleccionada.CodReserva_460AS,
+                            TipoServicio_460AS = d.TipoServicio_460AS,
+                            Descripcion_460AS = d.Descripcion_460AS,
+                            Precio_460AS = d.Precio_460AS
+                        }).ToList()
                     };
 
                     bllPago.GuardarPago_460AS(pago);
 
-                    MessageBox.Show("Servicios adicionales pagados y guardados correctamente.",
-                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    BLL460AS_Asiento bllAsiento = new BLL460AS_Asiento();
+                    foreach (var servicio in serviciosParaGuardar)
+                    {
+                        if (servicio is _460ASBE.CambioAsiento_460AS cambio &&
+                            cambio.ListaCambios != null && cambio.ListaCambios.Any())
+                        {
+                            foreach (var det in cambio.ListaCambios)
+                            {
+                                bllAsiento.ActualizarCambioAsiento_460AS(
+                                    det.AsientoViejo_460AS,
+                                    det.AsientoNuevo_460AS
+                                );
+                            }
+                        }
+                    }
+
+                    MessageBox.Show(
+                        $"Pago de servicios adicionales registrado correctamente.\n" +
+                        $"Monto: {totalServicios:0.00} USD\n" +
+                        $"Tipo de pago: {formCobro.TipoPagoSeleccionado}",
+                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     serviciosAgregados.Clear();
+                    serviciosParaGuardar.Clear();
                     label7.Text = string.Empty;
                     panel1.Visible = false;
-                    this.Close();
+                    Close();
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

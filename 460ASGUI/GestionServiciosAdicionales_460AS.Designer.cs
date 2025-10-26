@@ -56,6 +56,7 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(120, 23);
             textBox1.TabIndex = 0;
+            textBox1.Text = "78978978";
             // 
             // textBox2
             // 
@@ -63,6 +64,7 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(120, 23);
             textBox2.TabIndex = 1;
+            textBox2.Text = "Lucas";
             // 
             // textBox3
             // 
@@ -70,6 +72,7 @@
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(120, 23);
             textBox3.TabIndex = 2;
+            textBox3.Text = "Gallardo";
             // 
             // label1
             // 
@@ -187,9 +190,8 @@
             label7.AutoSize = true;
             label7.Location = new Point(6, 28);
             label7.Name = "label7";
-            label7.Size = new Size(38, 15);
+            label7.Size = new Size(0, 15);
             label7.TabIndex = 0;
-            label7.Text = "label7";
             // 
             // button2
             // 

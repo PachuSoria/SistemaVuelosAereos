@@ -18,6 +18,8 @@ namespace _460ASDAL
 
         public void GuardarPago_460AS(Pago_460AS pago)
         {
+            if (string.IsNullOrWhiteSpace(pago.CodPago_460AS))
+                pago.CodPago_460AS = Guid.NewGuid().ToString();
             using (SqlConnection conexion = new SqlConnection(cx))
             {
                 string consulta = @"INSERT INTO PAGO_460AS 
@@ -52,18 +54,32 @@ namespace _460ASDAL
 
             using (SqlConnection conexion = new SqlConnection(cx))
             {
-                string consulta = @"INSERT INTO PAGO_SERVICIOS_460AS
-                                    (CodPago_460AS, CodServicio_460AS)
-                                    VALUES (@CodPago_460AS, @CodServicio_460AS)";
                 conexion.Open();
+
+                string checkQuery = @"SELECT COUNT(*) FROM PAGO_SERVICIOS_460AS 
+                              WHERE CodPago_460AS = @CodPago_460AS AND CodServicio_460AS = @CodServicio_460AS";
+
+                string insertQuery = @"INSERT INTO PAGO_SERVICIOS_460AS
+                               (CodPago_460AS, CodServicio_460AS)
+                               VALUES (@CodPago_460AS, @CodServicio_460AS)";
 
                 foreach (var s in pago.ServiciosPagados)
                 {
-                    using (SqlCommand cmd = new SqlCommand(consulta, conexion))
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conexion))
                     {
-                        cmd.Parameters.AddWithValue("@CodPago_460AS", pago.CodPago_460AS);
-                        cmd.Parameters.AddWithValue("@CodServicio_460AS", s.CodServicio_460AS);
-                        cmd.ExecuteNonQuery();
+                        checkCmd.Parameters.AddWithValue("@CodPago_460AS", pago.CodPago_460AS);
+                        checkCmd.Parameters.AddWithValue("@CodServicio_460AS", s.CodServicio_460AS);
+
+                        int existe = (int)checkCmd.ExecuteScalar();
+                        if (existe > 0)
+                            continue;
+                    }
+
+                    using (SqlCommand insertCmd = new SqlCommand(insertQuery, conexion))
+                    {
+                        insertCmd.Parameters.AddWithValue("@CodPago_460AS", pago.CodPago_460AS);
+                        insertCmd.Parameters.AddWithValue("@CodServicio_460AS", s.CodServicio_460AS);
+                        insertCmd.ExecuteNonQuery();
                     }
                 }
             }

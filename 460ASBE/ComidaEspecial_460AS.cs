@@ -15,6 +15,10 @@ namespace _460ASBE
         }
         public ComidaEspecial_460AS() { }
 
+        public ComidaEspecial_460AS(ComponenteReserva_460AS reserva) : base(reserva)
+        {
+        }
+
         public override decimal CalcularPrecio()
         {
             return Precio_460AS;

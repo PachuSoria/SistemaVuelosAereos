@@ -9,11 +9,18 @@ namespace _460ASBE
     public class CambioAsiento_460AS : ServiciosDecorator_460AS
     {
         public string NumAsiento_460AS { get; set; }
+        public List<(Asiento_460AS AsientoViejo_460AS, Asiento_460AS AsientoNuevo_460AS)> ListaCambios { get; set; }
+            = new List<(Asiento_460AS, Asiento_460AS)>();
+
         public CambioAsiento_460AS(ComponenteReserva_460AS reserva, string numAsiento) : base(reserva)
         {
             NumAsiento_460AS = numAsiento;
         }
         public CambioAsiento_460AS() { }
+
+        public CambioAsiento_460AS(ComponenteReserva_460AS reserva) : base(reserva)
+        {
+        }
 
         public override decimal CalcularPrecio()
         {

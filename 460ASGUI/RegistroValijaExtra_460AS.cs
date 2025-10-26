@@ -16,6 +16,8 @@ namespace _460ASGUI
         private List<(int Cantidad, string Peso, decimal Precio)> valijasAgregadas = new();
         private Dictionary<int, decimal> preciosPorPeso = new();
         public decimal TotalValijas => valijasAgregadas.Sum(v => v.Precio);
+        public int CantidadTotal {  get; set; }
+        public decimal PesoTotal { get; set; }
         public RegistroValijaExtra_460AS()
         {
             InitializeComponent();
@@ -98,6 +100,13 @@ namespace _460ASGUI
             }
 
             int totalValijas = valijasAgregadas.Sum(v => v.Cantidad);
+            decimal totalPeso = valijasAgregadas.Sum(v =>
+            {
+                int kilos = int.Parse(v.Peso.Split(' ')[0]);
+                return v.Cantidad * kilos;
+            });
+            CantidadTotal = totalValijas;
+            PesoTotal = totalPeso;
             MessageBox.Show($"Se registraron {totalValijas} valija(s) – Total: {TotalValijas:0.00} USD",
                             "Servicio agregado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.DialogResult = DialogResult.OK;

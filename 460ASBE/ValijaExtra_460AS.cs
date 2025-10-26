@@ -17,6 +17,10 @@ namespace _460ASBE
         }
         public ValijaExtra_460AS() { }
 
+        public ValijaExtra_460AS(ComponenteReserva_460AS reserva) : base(reserva)
+        {
+        }
+
         public override decimal CalcularPrecio()
         {
             return Precio_460AS;

@@ -12,6 +12,7 @@ namespace _460ASGUI
 {
     public partial class RegistrarComidaEspecial_460AS : Form
     {
+        public string TipoSeleccionado { get; set; }
         public RegistrarComidaEspecial_460AS()
         {
             InitializeComponent();
@@ -45,7 +46,8 @@ namespace _460ASGUI
                                 "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
+            string texto = checkedListBox1.CheckedItems[0].ToString();
+            TipoSeleccionado = texto.Split('–')[0].Trim();
             MessageBox.Show($"Se registraron {checkedListBox1.CheckedItems.Count} comidas – Total: {TotalComidas:0.00} USD",
                             "Servicio agregado", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
