@@ -282,6 +282,7 @@ namespace _460ASGUI
             verComprobantesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_comprobantes");
             backupYRestoreToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_backup");
             auditarEventosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_auditoria");
+            serviciosAdicionalesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_servicios");
             if (!SessionManager_460AS.Instancia.IsLogged_460AS())
             {
                 toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("Sesion_no_iniciada");
@@ -409,6 +410,13 @@ namespace _460ASGUI
             GestionServiciosAdicionales_460AS formGestionarServicios = new GestionServiciosAdicionales_460AS();
             formGestionarServicios.MdiParent = this;
             formGestionarServicios.Show();
+        }
+
+        private void auditoriaDeCambiosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AuditoriaCambios_460AS auditoriaCambios_460AS = new AuditoriaCambios_460AS();
+            auditoriaCambios_460AS.MdiParent = this;
+            auditoriaCambios_460AS.Show();
         }
     }
 }

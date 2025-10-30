@@ -91,8 +91,7 @@ namespace _460ASDAL
 
             using (SqlConnection conexion = new SqlConnection(cx))
             {
-                string consulta = @"SELECT * FROM PAGO_460AS 
-                                    WHERE CodReserva_460AS = @CodReserva_460AS";
+                string consulta = @"SELECT * FROM PAGO_460AS WHERE CodReserva_460AS = @CodReserva_460AS";
                 using (SqlCommand cmd = new SqlCommand(consulta, conexion))
                 {
                     cmd.Parameters.AddWithValue("@CodReserva_460AS", codReserva);
@@ -113,7 +112,39 @@ namespace _460ASDAL
                                     CodReserva_460AS = reader["CodReserva_460AS"].ToString()
                                 }
                             };
+
                             lista.Add(pago);
+                        }
+                    }
+                }
+
+                foreach (var pago in lista)
+                {
+                    string consultaServicios = @"SELECT s.CodServicio_460AS, s.TipoServicio_460AS, s.Descripcion_460AS, s.Precio_460AS
+                                         FROM PAGO_SERVICIOS_460AS ps
+                                         INNER JOIN SERVICIOS_460AS s ON ps.CodServicio_460AS = s.CodServicio_460AS
+                                         WHERE ps.CodPago_460AS = @CodPago_460AS";
+
+                    using (SqlCommand cmdServ = new SqlCommand(consultaServicios, conexion))
+                    {
+                        cmdServ.Parameters.AddWithValue("@CodPago_460AS", pago.CodPago_460AS);
+
+                        using (SqlDataReader readerServ = cmdServ.ExecuteReader())
+                        {
+                            var servicios = new List<Servicio_460AS>();
+
+                            while (readerServ.Read())
+                            {
+                                servicios.Add(new Servicio_460AS
+                                {
+                                    CodServicio_460AS = readerServ["CodServicio_460AS"].ToString(),
+                                    TipoServicio_460AS = readerServ["TipoServicio_460AS"].ToString(),
+                                    Descripcion_460AS = readerServ["Descripcion_460AS"].ToString(),
+                                    Precio_460AS = Convert.ToDecimal(readerServ["Precio_460AS"])
+                                });
+                            }
+
+                            pago.ServiciosPagados = servicios;
                         }
                     }
                 }

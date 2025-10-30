@@ -49,5 +49,11 @@ namespace _460ASBLL
             var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Clientes", $"Baja de cliente: {dni}");
             _eventoBLL.GuardarEvento_460AS(ev);
         }
+
+        public Cliente_460AS ObtenerClientePorDNI_460AS(string dni)
+        {
+            return _clienteDAL.ObtenerClientes_460AS()
+                              .FirstOrDefault(c => c.DNI_460AS == dni);
+        }
     }
 }

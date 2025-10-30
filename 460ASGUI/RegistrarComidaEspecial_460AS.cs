@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _460ASServicios.Observer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace _460ASGUI
 {
-    public partial class RegistrarComidaEspecial_460AS : Form
+    public partial class RegistrarComidaEspecial_460AS : Form, IIdiomaObserver_460AS
     {
         public string TipoSeleccionado { get; set; }
         public RegistrarComidaEspecial_460AS()
@@ -20,6 +21,8 @@ namespace _460ASGUI
             checkedListBox1.SelectionMode = SelectionMode.One;
             checkedListBox1.MouseUp += checkedListBox1_MouseUp;
             CargarComidas();
+            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
+            ActualizarIdioma();
         }
 
         private void CargarComidas()
@@ -42,14 +45,23 @@ namespace _460ASGUI
         {
             if (checkedListBox1.CheckedItems.Count == 0)
             {
-                MessageBox.Show("Debe seleccionar al menos una comida especial.",
-                                "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    IdiomaManager_460AS.Instancia.Traducir("msg_seleccionar_comida"),
+                    "⚠️",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 return;
             }
             string texto = checkedListBox1.CheckedItems[0].ToString();
             TipoSeleccionado = texto.Split('–')[0].Trim();
-            MessageBox.Show($"Se registraron {checkedListBox1.CheckedItems.Count} comidas – Total: {TotalComidas:0.00} USD",
-                            "Servicio agregado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(
+                string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_registro_comida"),
+                              checkedListBox1.CheckedItems.Count, TotalComidas),
+                IdiomaManager_460AS.Instancia.Traducir("msg_servicio_agregado"),
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -103,6 +115,21 @@ namespace _460ASGUI
                 bool actual = checkedListBox1.GetItemChecked(index);
                 checkedListBox1.SetItemChecked(index, !actual);
             }
+        }
+
+        public void ActualizarIdioma()
+        {
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_vegetariana");
+            label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_gluten");
+            label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_premium");
+            label5.Text = IdiomaManager_460AS.Instancia.Traducir("label_comidas");
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_precio_final");
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_registrar");
+            button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_salir");
+            checkedListBox1.Items.Clear();
+            checkedListBox1.Items.Add($"{IdiomaManager_460AS.Instancia.Traducir("listbox_vegetariana")} – {preciosComida["Vegetariana"]:0.00} USD");
+            checkedListBox1.Items.Add($"{IdiomaManager_460AS.Instancia.Traducir("listbox_gluten")} – {preciosComida["Sin gluten"]:0.00} USD");
+            checkedListBox1.Items.Add($"{IdiomaManager_460AS.Instancia.Traducir("listbox_premium")} – {preciosComida["Premium"]:0.00} USD");
         }
     }
 }

@@ -19,8 +19,10 @@ namespace _460ASDAL
 
         public void GuardarCliente_460AS(Cliente_460AS cliente)
         {
-            string consulta = "INSERT INTO CLIENTE_460AS (DNI_460AS, Nombre_460AS, Apellido_460AS, FechaNacimiento_460AS, Telefono_460AS, NroPasaporte_460AS)" +
-                              "VALUES (@DNI_460AS, @Nombre_460AS, @Apellido_460AS, @FechaNacimiento_460AS, @Telefono_460AS, @NroPasaporte_460AS)";
+            string consulta = "INSERT INTO CLIENTE_460AS " +
+                              "(DNI_460AS, Nombre_460AS, Apellido_460AS, FechaNacimiento_460AS, Telefono_460AS, NroPasaporte_460AS, Eliminado_460AS) " +
+                              "VALUES (@DNI_460AS, @Nombre_460AS, @Apellido_460AS, @FechaNacimiento_460AS, @Telefono_460AS, @NroPasaporte_460AS, 0)";
+
             using (SqlConnection conexion = new SqlConnection(cx))
             {
                 conexion.Open();
@@ -44,14 +46,14 @@ namespace _460ASDAL
 
             using (SqlConnection conexion = new SqlConnection(cx))
             {
-                SqlCommand comando = new SqlCommand("SELECT * FROM CLIENTE_460AS", conexion);
+                SqlCommand comando = new SqlCommand("SELECT * FROM CLIENTE_460AS WHERE Eliminado_460AS = 0", conexion);
                 conexion.Open();
 
                 SqlDataReader reader = comando.ExecuteReader();
                 while (reader.Read())
                 {
                     Cliente_460AS cliente = new Cliente_460AS(reader["DNI_460AS"].ToString(), reader["Nombre_460AS"].ToString(), reader["Apellido_460AS"].ToString(),
-                        Convert.ToDateTime(reader["FechaNacimiento_460AS"]), Convert.ToInt32(reader["Telefono_460AS"]), reader["NroPasaporte_460AS"].ToString());
+                        Convert.ToDateTime(reader["FechaNacimiento_460AS"]), Convert.ToInt32(reader["Telefono_460AS"]), reader["NroPasaporte_460AS"].ToString(), Convert.ToBoolean(reader["Eliminado_460AS"]));
 
                     listaClientes.Add(cliente);
                 }
@@ -62,12 +64,13 @@ namespace _460ASDAL
         public void ActualizarCliente_460AS(Cliente_460AS cliente)
         {
             string consulta = "UPDATE CLIENTE_460AS SET " +
-                      "Nombre_460AS = @Nombre_460AS, " +
-                      "Apellido_460AS = @Apellido_460AS, " +
-                      "FechaNacimiento_460AS = @FechaNacimiento_460AS, " +
-                      "Telefono_460AS = @Telefono_460AS, " +
-                      "NroPasaporte_460AS = @NroPasaporte_460AS " +
-                      "WHERE DNI_460AS = @DNI_460AS";
+                              "Nombre_460AS = @Nombre_460AS, " +
+                              "Apellido_460AS = @Apellido_460AS, " +
+                              "FechaNacimiento_460AS = @FechaNacimiento_460AS, " +
+                              "Telefono_460AS = @Telefono_460AS, " +
+                              "NroPasaporte_460AS = @NroPasaporte_460AS, " +
+                              "Eliminado_460AS = @Eliminado_460AS " +
+                              "WHERE DNI_460AS = @DNI_460AS";
 
             using (SqlConnection conexion = new SqlConnection(cx))
             {
@@ -79,6 +82,7 @@ namespace _460ASDAL
                     comando.Parameters.AddWithValue("@FechaNacimiento_460AS", cliente.FechaNacimiento_460AS);
                     comando.Parameters.AddWithValue("@Telefono_460AS", cliente.Telefono_460AS);
                     comando.Parameters.AddWithValue("@NroPasaporte_460AS", cliente.NroPasaporte_460AS);
+                    comando.Parameters.AddWithValue("@Eliminado_460AS", cliente.Eliminado_460AS);
                     comando.Parameters.AddWithValue("@DNI_460AS", cliente.DNI_460AS);
 
                     comando.ExecuteNonQuery();
@@ -88,7 +92,7 @@ namespace _460ASDAL
 
         public void EliminarCliente_460AS(string dni)
         {
-            string consulta = "DELETE FROM CLIENTE_460AS WHERE DNI_460AS = @DNI_460AS";
+            string consulta = "UPDATE CLIENTE_460AS SET Eliminado_460AS = 1 WHERE DNI_460AS = @DNI_460AS";
 
             using (SqlConnection conexion = new SqlConnection(cx))
             {

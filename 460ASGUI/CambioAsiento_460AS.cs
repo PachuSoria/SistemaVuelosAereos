@@ -51,22 +51,22 @@ namespace _460ASGUI
         {
             try
             {
-                if (comboBox1.SelectedItem == null) throw new Exception("Debe seleccionar cuál asiento desea cambiar.");
+                if (comboBox1.SelectedItem == null) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_seleccionar_asiento"));
 
                 if (dataGridView1.SelectedRows.Count == 0)
-                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_asiento_vacio"));
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_seleccionar_cambio_asiento"));
 
                 string numAsientoNuevo = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
                 var asientoNuevo = asientosDisponibles.FirstOrDefault(a => a.NumAsiento_460AS == numAsientoNuevo);
                 if (asientoNuevo == null)
-                    throw new Exception("Asiento inválido.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_asiento_invalido"));
 
                 var asientoViejo = (Asiento_460AS)comboBox1.SelectedItem;
 
                 if (!asientoNuevo.Disponible_460AS)
                     throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_asiento_ocupado"), numAsientoNuevo));
                 if (numAsientoNuevo == asientoViejo.NumAsiento_460AS)
-                    throw new Exception("No puede elegir el mismo asiento que ya posee.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_asiento_posee"));
 
                 if (cambiosPendientes.ContainsKey(asientoViejo.NumAsiento_460AS))
                 {
@@ -78,14 +78,16 @@ namespace _460ASGUI
                         v.NumAsiento_460AS == asientoNuevo.NumAsiento_460AS
                         && v.CodVuelo_460AS == asientoNuevo.CodVuelo_460AS); 
                     if (nuevoYaUsado)
-                        throw new Exception($"El asiento {asientoNuevo.NumAsiento_460AS} ya fue elegido para otro cambio.");
+                        throw new Exception($"El asiento {asientoNuevo.NumAsiento_460AS} ya fue elegido para otro cambio");
 
                     cambiosPendientes.Add(asientoViejo.NumAsiento_460AS, asientoNuevo);
                 }
 
                 listBox1.Items.Clear();
-                foreach (var kvp in cambiosPendientes)
-                    listBox1.Items.Add($"Asiento {kvp.Key} → {kvp.Value.NumAsiento_460AS}");
+                foreach(var kvp in cambiosPendientes)
+                    listBox1.Items.Add(string.Format(
+                        IdiomaManager_460AS.Instancia.Traducir("listbox_asiento"),
+                        kvp.Key, kvp.Value.NumAsiento_460AS));
 
                 button4.Enabled = cambiosPendientes.Count > 0;
             }
@@ -132,18 +134,23 @@ namespace _460ASGUI
             try
             {
                 if (cambiosPendientes.Count == 0)
-                    throw new Exception("Debe seleccionar al menos un cambio de asiento.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_seleccionar_cambio_asiento"));
 
-                decimal precioPorCambio = radioButton1.Checked ? 50 : 100;
-                PrecioTotal = cambiosPendientes.Count * precioPorCambio;
-
+                decimal total = 0;
                 ListaCambios.Clear();
+
                 foreach (var kvp in cambiosPendientes)
                 {
                     var asientoViejo = asientosActuales.First(a => a.NumAsiento_460AS == kvp.Key);
                     var asientoNuevo = kvp.Value;
+
+                    decimal precio = asientoNuevo.Tipo_460AS == TipoAsiento_460AS.VIP ? 100 : 50;
+                    total += precio;
+
                     ListaCambios.Add((asientoViejo, asientoNuevo));
                 }
+
+                PrecioTotal = total;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -161,12 +168,16 @@ namespace _460ASGUI
 
         public void ActualizarIdioma()
         {
-            //label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_asientos");
-            //label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_tipo");
-            //label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_asientos_asignados");
-            //button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_agregar_asiento");
-            //button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_confirmar_asiento");
-            //button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_salir");
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_asientos");
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_tipo");
+            label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_asientos_asignados");
+            label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_asientos_cliente");
+            label5.Text = IdiomaManager_460AS.Instancia.Traducir("label_asiento_normal");
+            label6.Text = IdiomaManager_460AS.Instancia.Traducir("label_asiento_vip");
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_cambiar_asiento");
+            button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_confirmar_asientos");
+            button3.Text = IdiomaManager_460AS.Instancia.Traducir("boton_salir");
+            button4.Text = IdiomaManager_460AS.Instancia.Traducir("boton_limpiar");
         }
 
         private void button4_Click(object sender, EventArgs e)

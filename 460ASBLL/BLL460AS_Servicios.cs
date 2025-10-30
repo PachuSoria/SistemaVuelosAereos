@@ -17,58 +17,6 @@ namespace _460ASBLL
             dalServicios = new DAL460AS_Servicios();
         }
 
-        //public void GuardarServicio_460AS(ServiciosDecorator_460AS servicio)
-        //{
-        //    if (servicio == null)
-        //        throw new Exception("El servicio no puede ser nulo.");
-        //    if (string.IsNullOrWhiteSpace(servicio.CodServicio_460AS))
-        //        servicio.CodServicio_460AS = Guid.NewGuid().ToString();
-
-        //    var servicioPlano = new Servicio_460AS
-        //    {
-        //        CodServicio_460AS = servicio.CodServicio_460AS,
-        //        CodReserva_460AS = (servicio.Reserva_460AS as Reserva_460AS)?.CodReserva_460AS,
-        //        TipoServicio_460AS = servicio.TipoServicio_460AS,
-        //        Descripcion_460AS = servicio.Descripcion_460AS,
-        //        Precio_460AS = servicio.Precio_460AS
-        //    };
-        //    dalServicios.GuardarServicio_460AS(servicioPlano);
-
-        //    switch (servicio)
-        //    {
-        //        case ComidaEspecial_460AS comida:
-        //            comida.CodServicio_460AS = servicioPlano.CodServicio_460AS; 
-        //            dalServicios.GuardarComidaEspecial_460AS(comida);
-        //            break;
-
-        //        case ValijaExtra_460AS valija:
-        //            valija.CodServicio_460AS = servicioPlano.CodServicio_460AS;
-        //            dalServicios.GuardarValijaExtra_460AS(valija);
-        //            break;
-
-        //        case SeguroViaje_460AS seguro:
-        //            seguro.CodServicio_460AS = servicioPlano.CodServicio_460AS;
-        //            dalServicios.GuardarSeguroViaje_460AS(seguro);
-        //            break;
-
-        //        case CambioAsiento_460AS cambio:
-        //            cambio.CodServicio_460AS = servicioPlano.CodServicio_460AS;
-        //            dalServicios.GuardarServicio_460AS(cambio);
-        //            BLL460AS_Asiento bllAsiento = new BLL460AS_Asiento();
-        //            if (cambio.ListaCambios != null && cambio.ListaCambios.Any())
-        //            {
-        //                foreach (var det in cambio.ListaCambios)
-        //                {
-        //                    bllAsiento.ActualizarCambioAsiento_460AS(
-        //                        det.AsientoViejo_460AS,
-        //                        det.AsientoNuevo_460AS
-        //                    );
-        //                }
-        //            }
-        //            break;
-        //    }
-        //}
-
         public void GuardarServicio_460AS(ServiciosDecorator_460AS servicio)
         {
             if (servicio == null)
@@ -105,27 +53,8 @@ namespace _460ASBLL
                     dalServicios.GuardarSeguroViaje_460AS(seguro);
                     break;
 
-                //case CambioAsiento_460AS cambio:
-                //    cambio.CodServicio_460AS = servicioPlano.CodServicio_460AS;
-                //    dalServicios.GuardarServicio_460AS(cambio);
-
-                //    BLL460AS_Asiento bllAsiento = new BLL460AS_Asiento();
-                //    if (cambio.ListaCambios != null && cambio.ListaCambios.Any())
-                //    {
-                //        foreach (var det in cambio.ListaCambios)
-                //        {
-                //            bllAsiento.ActualizarCambioAsiento_460AS(
-                //                det.AsientoViejo_460AS,
-                //                det.AsientoNuevo_460AS
-                //            );
-                //        }
-                //    }
-                //    break;
-
                 case CambioAsiento_460AS cambio:
 
-                    // 👇 Guardar la cabecera ya se hizo (servicioPlano)
-                    // Solo guardar los asientos involucrados
                     if (cambio.ListaCambios != null && cambio.ListaCambios.Any())
                     {
                         DAL460AS_Servicios dal = new DAL460AS_Servicios();
@@ -133,13 +62,11 @@ namespace _460ASBLL
 
                         foreach (var det in cambio.ListaCambios)
                         {
-                            // Insertar detalle de cambio
                             dal.GuardarDetalleCambioAsiento_460AS(
                                 cambio.CodServicio_460AS,
                                 det.AsientoNuevo_460AS.NumAsiento_460AS
                             );
 
-                            // Actualizar estado en la tabla de asientos
                             bllAsiento.ActualizarCambioAsiento_460AS(
                                 det.AsientoViejo_460AS,
                                 det.AsientoNuevo_460AS

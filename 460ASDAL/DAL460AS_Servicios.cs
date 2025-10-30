@@ -16,27 +16,6 @@ namespace _460ASDAL
             cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
         }
 
-        //public void GuardarServicio_460AS(Servicio_460AS servicio)
-        //{
-        //    using (SqlConnection conexion = new SqlConnection(cx))
-        //    {
-        //        conexion.Open();
-        //        string insertServicio = @"INSERT INTO SERVICIOS_460AS 
-        //    (CodServicio_460AS, CodReserva_460AS, TipoServicio_460AS, Descripcion_460AS, Precio_460AS)
-        //    VALUES (@CodServicio_460AS, @CodReserva_460AS, @TipoServicio_460AS, @Descripcion_460AS, @Precio_460AS)";
-
-        //        using (SqlCommand comando = new SqlCommand(insertServicio, conexion))
-        //        {
-        //            comando.Parameters.AddWithValue("@CodServicio_460AS", servicio.CodServicio_460AS);
-        //            comando.Parameters.AddWithValue("@CodReserva_460AS", servicio.CodReserva_460AS);
-        //            comando.Parameters.AddWithValue("@TipoServicio_460AS", servicio.TipoServicio_460AS);
-        //            comando.Parameters.AddWithValue("@Descripcion_460AS", servicio.Descripcion_460AS);
-        //            comando.Parameters.AddWithValue("@Precio_460AS", servicio.Precio_460AS);
-        //            comando.ExecuteNonQuery();
-        //        }
-        //    }
-        //}
-
         public void GuardarServicio_460AS(object servicioObj)
         {
             using (SqlConnection conexion = new SqlConnection(cx))
@@ -51,7 +30,6 @@ namespace _460ASDAL
                     checkCmd.Parameters.AddWithValue("@CodServicio_460AS", servicioBase.CodServicio_460AS);
                     int existe = (int)checkCmd.ExecuteScalar();
 
-                    // ✅ Si ya existe, no volver a insertar
                     if (existe > 0)
                         return;
                 }
@@ -168,22 +146,6 @@ namespace _460ASDAL
                 }
             }
         }
-
-        //public void GuardarCambioAsiento_460AS(CambioAsiento_460AS cambio)
-        //{
-        //    using (SqlConnection conexion = new SqlConnection(cx))
-        //    {
-        //        string consulta = "INSERT INTO CAMBIO_ASIENTO_460AS (CodServicio_460AS, NumAsiento_460AS) " +
-        //                          "VALUES (@CodServicio_460AS, @NumAsiento_460AS)";
-        //        using (SqlCommand cmd = new SqlCommand(consulta, conexion))
-        //        {
-        //            cmd.Parameters.AddWithValue("@CodServicio_460AS", cambio.CodServicio_460AS);
-        //            cmd.Parameters.AddWithValue("@NumAsiento_460AS", cambio.NumAsiento_460AS);
-        //            conexion.Open();
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //    }
-        //}
 
         public void GuardarDetalleCambioAsiento_460AS(string codServicio, string numAsientoNuevo)
         {

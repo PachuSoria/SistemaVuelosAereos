@@ -55,7 +55,12 @@ namespace _460ASGUI
 
         public void ActualizarIdioma()
         {
-
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_cantidad");
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_peso");
+            label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_precio");
+            label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_valijas");
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_agregar");
+            button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_registrar");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -63,7 +68,7 @@ namespace _460ASGUI
             try
             {
                 if (comboBox1.SelectedItem == null || comboBox2.SelectedItem == null)
-                    throw new Exception("Debe seleccionar cantidad y peso.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_cant_peso"));
 
                 int cantidad = int.Parse(comboBox1.SelectedItem.ToString()!);
                 string pesoTxt = comboBox2.SelectedItem.ToString()!;
@@ -75,7 +80,7 @@ namespace _460ASGUI
                 int totalValijasActuales = valijasAgregadas.Sum(v => v.Cantidad);
 
                 if (totalValijasActuales + cantidad > 4)
-                    throw new Exception("Solo puede agregar hasta 4 valijas en total por reserva.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_max_valijas"));
                 valijasAgregadas.Add((cantidad, pesoTxt, precio));
 
                 listBox1.Items.Add($"{cantidad} x {pesoTxt}  →  {precio:0.00} USD");
@@ -94,8 +99,12 @@ namespace _460ASGUI
         {
             if (valijasAgregadas.Count == 0)
             {
-                MessageBox.Show("Debe agregar al menos una valija.", "Atención",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    IdiomaManager_460AS.Instancia.Traducir("msg_agregar_valija"),
+                    "⚠️",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 return;
             }
 
@@ -107,8 +116,12 @@ namespace _460ASGUI
             });
             CantidadTotal = totalValijas;
             PesoTotal = totalPeso;
-            MessageBox.Show($"Se registraron {totalValijas} valija(s) – Total: {TotalValijas:0.00} USD",
-                            "Servicio agregado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(
+               string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_valijas_registradas"), totalValijas, TotalValijas.ToString("0.00")),
+               IdiomaManager_460AS.Instancia.Traducir("msg_servicio_agregado"),
+               MessageBoxButtons.OK,
+               MessageBoxIcon.Information
+           );
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

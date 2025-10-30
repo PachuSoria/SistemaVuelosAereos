@@ -45,6 +45,7 @@
             gestionarVuelosToolStripMenuItem = new ToolStripMenuItem();
             reservasToolStripMenuItem = new ToolStripMenuItem();
             registrarReservaToolStripMenuItem = new ToolStripMenuItem();
+            serviciosAdicionalesToolStripMenuItem = new ToolStripMenuItem();
             reportesToolStripMenuItem = new ToolStripMenuItem();
             verComprobantesToolStripMenuItem = new ToolStripMenuItem();
             idiomaToolStripMenuItem = new ToolStripMenuItem();
@@ -54,7 +55,7 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripStatusLabel2 = new ToolStripStatusLabel();
-            serviciosAdicionalesToolStripMenuItem = new ToolStripMenuItem();
+            auditoriaDeCambiosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -141,7 +142,7 @@
             // 
             // maestroToolStripMenuItem
             // 
-            maestroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { gestionarAsientosToolStripMenuItem, gestionarClientesToolStripMenuItem, gestionarVuelosToolStripMenuItem });
+            maestroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { auditoriaDeCambiosToolStripMenuItem, gestionarAsientosToolStripMenuItem, gestionarClientesToolStripMenuItem, gestionarVuelosToolStripMenuItem });
             maestroToolStripMenuItem.Name = "maestroToolStripMenuItem";
             maestroToolStripMenuItem.Size = new Size(62, 20);
             maestroToolStripMenuItem.Text = "Maestro";
@@ -149,21 +150,21 @@
             // gestionarAsientosToolStripMenuItem
             // 
             gestionarAsientosToolStripMenuItem.Name = "gestionarAsientosToolStripMenuItem";
-            gestionarAsientosToolStripMenuItem.Size = new Size(180, 22);
+            gestionarAsientosToolStripMenuItem.Size = new Size(187, 22);
             gestionarAsientosToolStripMenuItem.Text = "Gestionar asientos";
             gestionarAsientosToolStripMenuItem.Click += gestionarAsientosToolStripMenuItem_Click;
             // 
             // gestionarClientesToolStripMenuItem
             // 
             gestionarClientesToolStripMenuItem.Name = "gestionarClientesToolStripMenuItem";
-            gestionarClientesToolStripMenuItem.Size = new Size(180, 22);
+            gestionarClientesToolStripMenuItem.Size = new Size(187, 22);
             gestionarClientesToolStripMenuItem.Text = "Gestionar clientes";
             gestionarClientesToolStripMenuItem.Click += gestionarClientesToolStripMenuItem_Click;
             // 
             // gestionarVuelosToolStripMenuItem
             // 
             gestionarVuelosToolStripMenuItem.Name = "gestionarVuelosToolStripMenuItem";
-            gestionarVuelosToolStripMenuItem.Size = new Size(180, 22);
+            gestionarVuelosToolStripMenuItem.Size = new Size(187, 22);
             gestionarVuelosToolStripMenuItem.Text = "Gestionar vuelos";
             gestionarVuelosToolStripMenuItem.Click += gestionarVuelosToolStripMenuItem_Click;
             // 
@@ -180,6 +181,13 @@
             registrarReservaToolStripMenuItem.Size = new Size(182, 22);
             registrarReservaToolStripMenuItem.Text = "Registrar reserva";
             registrarReservaToolStripMenuItem.Click += registrarReservaToolStripMenuItem_Click;
+            // 
+            // serviciosAdicionalesToolStripMenuItem
+            // 
+            serviciosAdicionalesToolStripMenuItem.Name = "serviciosAdicionalesToolStripMenuItem";
+            serviciosAdicionalesToolStripMenuItem.Size = new Size(182, 22);
+            serviciosAdicionalesToolStripMenuItem.Text = "Servicios adicionales";
+            serviciosAdicionalesToolStripMenuItem.Click += serviciosAdicionalesToolStripMenuItem_Click;
             // 
             // reportesToolStripMenuItem
             // 
@@ -241,12 +249,12 @@
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             toolStripStatusLabel2.Size = new Size(0, 17);
             // 
-            // serviciosAdicionalesToolStripMenuItem
+            // auditoriaDeCambiosToolStripMenuItem
             // 
-            serviciosAdicionalesToolStripMenuItem.Name = "serviciosAdicionalesToolStripMenuItem";
-            serviciosAdicionalesToolStripMenuItem.Size = new Size(182, 22);
-            serviciosAdicionalesToolStripMenuItem.Text = "Servicios adicionales";
-            serviciosAdicionalesToolStripMenuItem.Click += serviciosAdicionalesToolStripMenuItem_Click;
+            auditoriaDeCambiosToolStripMenuItem.Name = "auditoriaDeCambiosToolStripMenuItem";
+            auditoriaDeCambiosToolStripMenuItem.Size = new Size(187, 22);
+            auditoriaDeCambiosToolStripMenuItem.Text = "Auditoria de cambios";
+            auditoriaDeCambiosToolStripMenuItem.Click += auditoriaDeCambiosToolStripMenuItem_Click;
             // 
             // MenuPrincipal_460AS
             // 
@@ -298,5 +306,6 @@
         private ToolStripMenuItem backupYRestoreToolStripMenuItem;
         private ToolStripMenuItem auditarEventosToolStripMenuItem;
         private ToolStripMenuItem serviciosAdicionalesToolStripMenuItem;
+        private ToolStripMenuItem auditoriaDeCambiosToolStripMenuItem;
     }
 }

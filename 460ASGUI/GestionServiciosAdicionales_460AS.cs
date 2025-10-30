@@ -306,11 +306,32 @@ namespace _460ASGUI
                 if (dataGridView1.SelectedRows.Count == 0) return;
 
                 string codReserva = dataGridView1.SelectedRows[0].Cells["Codigo"].Value.ToString();
+                reservaSeleccionada = bllReserva.ObtenerReservasCliente_460AS(clienteActual.DNI_460AS)
+                                                .FirstOrDefault(r => r.CodReserva_460AS == codReserva);
 
-                reservaSeleccionada = bllReserva.ObtenerReservasCliente_460AS(clienteActual.DNI_460AS) .FirstOrDefault(r => r.CodReserva_460AS == codReserva);
+                if (reservaSeleccionada == null)
+                    throw new Exception("No se pudo obtener la reserva seleccionada.");
 
-                if (reservaSeleccionada == null) throw new Exception("No se pudo obtener la reserva seleccionada.");
+                var pagos = bllPago.ObtenerPagosPorReserva_460AS(reservaSeleccionada.CodReserva_460AS);
 
+                var serviciosPagados = pagos
+                    .SelectMany(p => p.ServiciosPagados)
+                    .Select(s => s.TipoServicio_460AS)
+                    .Distinct()
+                    .ToList();
+
+                var todosLosServicios = new List<string>
+                {
+                    "Comida especial",
+                    "Valija extra",
+                    "Seguro de viaje",
+                    "Cambio de asiento"
+                };
+                var serviciosDisponibles = todosLosServicios
+                    .Where(s => s == "Cambio de asiento" || !serviciosPagados.Contains(s))
+                    .ToList();
+
+                comboBox1.DataSource = serviciosDisponibles;
                 comboBox1.Enabled = true;
                 button2.Enabled = true;
             }

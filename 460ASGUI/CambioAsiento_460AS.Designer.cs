@@ -41,6 +41,8 @@
             label4 = new Label();
             comboBox1 = new ComboBox();
             button4 = new Button();
+            label5 = new Label();
+            label6 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -172,11 +174,31 @@
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(716, 291);
+            label5.Name = "label5";
+            label5.Size = new Size(149, 15);
+            label5.TabIndex = 13;
+            label5.Text = "Asiento normal --> 50 USD";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(716, 318);
+            label6.Name = "label6";
+            label6.Size = new Size(134, 15);
+            label6.TabIndex = 14;
+            label6.Text = "Asiento VIP --> 100 USD";
+            // 
             // CambioAsiento_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1127, 484);
+            ClientSize = new Size(901, 452);
+            Controls.Add(label6);
+            Controls.Add(label5);
             Controls.Add(button4);
             Controls.Add(comboBox1);
             Controls.Add(label4);
@@ -212,5 +234,7 @@
         private Label label4;
         private ComboBox comboBox1;
         private Button button4;
+        private Label label5;
+        private Label label6;
     }
 }
