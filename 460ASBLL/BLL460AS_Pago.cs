@@ -41,6 +41,21 @@ namespace _460ASBLL
 
             return dalPago.ObtenerPagosPorReserva_460AS(codReserva);
         }
+
+        public List<Pago_460AS> ObtenerTodosLosPagos_460AS()
+        {
+            return dalPago.ObtenerTodosLosPagos_460AS();
+        }
+
+        public List<Pago_460AS> ObtenerPagosServicios_460AS()
+        {
+            return dalPago.ObtenerPagosServicios_460AS();
+        }
+
+        public List<string> ObtenerNombresServiciosDePago_460AS(string codPago)
+        {
+            return dalPago.ObtenerNombresServiciosDePago(codPago);
+        }
     }
 }
 

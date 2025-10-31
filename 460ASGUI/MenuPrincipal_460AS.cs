@@ -70,6 +70,9 @@ namespace _460ASGUI
                     reportesToolStripMenuItem.Visible = true;
                     backupYRestoreToolStripMenuItem.Visible = true;
                     auditarEventosToolStripMenuItem.Visible = true;
+                    serviciosAdicionalesToolStripMenuItem.Visible = true;
+                    auditoriaDeCambiosToolStripMenuItem.Visible = true;
+                    registrarReservaToolStripMenuItem.Visible = true;
                 }
                 else
                 {
@@ -79,6 +82,8 @@ namespace _460ASGUI
                     reportesToolStripMenuItem.Visible = false;
                     backupYRestoreToolStripMenuItem.Visible = false;
                     auditarEventosToolStripMenuItem.Visible = false;
+                    serviciosAdicionalesToolStripMenuItem.Visible = false;
+                    auditoriaDeCambiosToolStripMenuItem.Visible = false;
 
                     ValidarMenuPorPerfil_460AS();
                 }
@@ -172,6 +177,16 @@ namespace _460ASGUI
             else
             {
                 backupYRestoreToolStripMenuItem.Visible = false;
+            }
+            if (permisos.Any(p => p.Nombre_460AS == "Registrar Servicios"))
+            {
+                reservasToolStripMenuItem.Visible = true;
+                registrarReservaToolStripMenuItem.Visible = false;
+                serviciosAdicionalesToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                serviciosAdicionalesToolStripMenuItem.Visible = false;
             }
         }
 
@@ -283,6 +298,8 @@ namespace _460ASGUI
             backupYRestoreToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_backup");
             auditarEventosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_auditoria");
             serviciosAdicionalesToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_servicios");
+            auditoriaDeCambiosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_cambios");
+            comprobantesServiciosToolStripMenuItem.Text = IdiomaManager_460AS.Instancia.Traducir("menu_comprobantes2");
             if (!SessionManager_460AS.Instancia.IsLogged_460AS())
             {
                 toolStripStatusLabel1.Text = IdiomaManager_460AS.Instancia.Traducir("Sesion_no_iniciada");
@@ -417,6 +434,13 @@ namespace _460ASGUI
             AuditoriaCambios_460AS auditoriaCambios_460AS = new AuditoriaCambios_460AS();
             auditoriaCambios_460AS.MdiParent = this;
             auditoriaCambios_460AS.Show();
+        }
+
+        private void comprobantesServiciosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionPagoServicios_460AS gestionPagoServicios_460AS = new GestionPagoServicios_460AS();
+            gestionPagoServicios_460AS.MdiParent = this;
+            gestionPagoServicios_460AS.Show();
         }
     }
 }

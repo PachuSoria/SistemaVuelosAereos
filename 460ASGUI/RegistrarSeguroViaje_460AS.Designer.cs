@@ -232,6 +232,7 @@
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(233, 23);
             dateTimePicker1.TabIndex = 18;
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // label16
             // 

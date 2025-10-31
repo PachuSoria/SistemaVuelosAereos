@@ -109,6 +109,19 @@ namespace _460ASGUI
                 string nombre = textBox2.Text;
                 if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_apellido_vacio"));
                 string apellido = textBox3.Text;
+                var clienteExistentePorDNI = bllCliente_460AS.ObtenerClientes_460AS().FirstOrDefault(c => c.DNI_460AS == dni);
+                if (clienteExistentePorDNI != null &&
+                    (!clienteExistentePorDNI.Nombre_460AS.Equals(nombre, StringComparison.OrdinalIgnoreCase) ||
+                     !clienteExistentePorDNI.Apellido_460AS.Equals(apellido, StringComparison.OrdinalIgnoreCase)))
+                {
+                    MessageBox.Show(
+                        IdiomaManager_460AS.Instancia.Traducir("msg_datos_cliente_incorrectos"),
+                        IdiomaManager_460AS.Instancia.Traducir("msg_operacion"),
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
                 var cliente = bllCliente_460AS.ObtenerClientes_460AS().FirstOrDefault(c => c.DNI_460AS == dni &&
                          c.Nombre_460AS.Equals(nombre, StringComparison.OrdinalIgnoreCase) &&
                          c.Apellido_460AS.Equals(apellido, StringComparison.OrdinalIgnoreCase));

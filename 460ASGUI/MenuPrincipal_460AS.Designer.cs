@@ -40,6 +40,7 @@
             gestionarPerfilesToolStripMenuItem = new ToolStripMenuItem();
             gestionarUsuariosToolStripMenuItem = new ToolStripMenuItem();
             maestroToolStripMenuItem = new ToolStripMenuItem();
+            auditoriaDeCambiosToolStripMenuItem = new ToolStripMenuItem();
             gestionarAsientosToolStripMenuItem = new ToolStripMenuItem();
             gestionarClientesToolStripMenuItem = new ToolStripMenuItem();
             gestionarVuelosToolStripMenuItem = new ToolStripMenuItem();
@@ -55,7 +56,7 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripStatusLabel2 = new ToolStripStatusLabel();
-            auditoriaDeCambiosToolStripMenuItem = new ToolStripMenuItem();
+            comprobantesServiciosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -147,6 +148,13 @@
             maestroToolStripMenuItem.Size = new Size(62, 20);
             maestroToolStripMenuItem.Text = "Maestro";
             // 
+            // auditoriaDeCambiosToolStripMenuItem
+            // 
+            auditoriaDeCambiosToolStripMenuItem.Name = "auditoriaDeCambiosToolStripMenuItem";
+            auditoriaDeCambiosToolStripMenuItem.Size = new Size(187, 22);
+            auditoriaDeCambiosToolStripMenuItem.Text = "Auditoria de cambios";
+            auditoriaDeCambiosToolStripMenuItem.Click += auditoriaDeCambiosToolStripMenuItem_Click;
+            // 
             // gestionarAsientosToolStripMenuItem
             // 
             gestionarAsientosToolStripMenuItem.Name = "gestionarAsientosToolStripMenuItem";
@@ -191,7 +199,7 @@
             // 
             // reportesToolStripMenuItem
             // 
-            reportesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verComprobantesToolStripMenuItem });
+            reportesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verComprobantesToolStripMenuItem, comprobantesServiciosToolStripMenuItem });
             reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
             reportesToolStripMenuItem.Size = new Size(65, 20);
             reportesToolStripMenuItem.Text = "Reportes";
@@ -199,8 +207,8 @@
             // verComprobantesToolStripMenuItem
             // 
             verComprobantesToolStripMenuItem.Name = "verComprobantesToolStripMenuItem";
-            verComprobantesToolStripMenuItem.Size = new Size(170, 22);
-            verComprobantesToolStripMenuItem.Text = "Ver comprobantes";
+            verComprobantesToolStripMenuItem.Size = new Size(201, 22);
+            verComprobantesToolStripMenuItem.Text = "Comprobantes reservas";
             verComprobantesToolStripMenuItem.Click += verComprobantesToolStripMenuItem_Click;
             // 
             // idiomaToolStripMenuItem
@@ -249,12 +257,12 @@
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             toolStripStatusLabel2.Size = new Size(0, 17);
             // 
-            // auditoriaDeCambiosToolStripMenuItem
+            // comprobantesServiciosToolStripMenuItem
             // 
-            auditoriaDeCambiosToolStripMenuItem.Name = "auditoriaDeCambiosToolStripMenuItem";
-            auditoriaDeCambiosToolStripMenuItem.Size = new Size(187, 22);
-            auditoriaDeCambiosToolStripMenuItem.Text = "Auditoria de cambios";
-            auditoriaDeCambiosToolStripMenuItem.Click += auditoriaDeCambiosToolStripMenuItem_Click;
+            comprobantesServiciosToolStripMenuItem.Name = "comprobantesServiciosToolStripMenuItem";
+            comprobantesServiciosToolStripMenuItem.Size = new Size(201, 22);
+            comprobantesServiciosToolStripMenuItem.Text = "Comprobantes servicios";
+            comprobantesServiciosToolStripMenuItem.Click += comprobantesServiciosToolStripMenuItem_Click;
             // 
             // MenuPrincipal_460AS
             // 
@@ -307,5 +315,6 @@
         private ToolStripMenuItem auditarEventosToolStripMenuItem;
         private ToolStripMenuItem serviciosAdicionalesToolStripMenuItem;
         private ToolStripMenuItem auditoriaDeCambiosToolStripMenuItem;
+        private ToolStripMenuItem comprobantesServiciosToolStripMenuItem;
     }
 }

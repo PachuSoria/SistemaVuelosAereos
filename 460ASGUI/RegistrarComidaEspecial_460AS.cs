@@ -53,8 +53,8 @@ namespace _460ASGUI
                 );
                 return;
             }
-            string texto = checkedListBox1.CheckedItems[0].ToString();
-            TipoSeleccionado = texto.Split('–')[0].Trim();
+            var seleccionadas = checkedListBox1.CheckedItems.Cast<string>().ToList();
+            TipoSeleccionado = string.Join(", ", seleccionadas.Select(i => i.Split('–')[0].Trim()));
             MessageBox.Show(
                 string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_registro_comida"),
                               checkedListBox1.CheckedItems.Count, TotalComidas),

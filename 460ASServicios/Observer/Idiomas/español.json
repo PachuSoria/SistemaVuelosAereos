@@ -18,13 +18,14 @@
   "menu_registrar_reserva": "Registrar reserva",
   "menu_español": "Español",
   "menu_ingles": "Ingles",
-  "menu_comprobantes": "Ver comprobantes",
+  "menu_comprobantes": "Comprobantes reservas",
   "menu_familias": "Gestionar familias",
   "menu_perfiles": "Gestionar perfiles",
   "menu_auditoria": "Auditar eventos",
   "menu_backup": "Backup y Restore",
   "menu_servicios": "Servicios adicionales",
   "menu_cambios": "Auditoria de cambios",
+  "menu_comprobantes2": "Comprobantes servicios",
 
   //LABELS
   "label_usuario": "Nombre de usuario",
@@ -107,6 +108,13 @@
   "label_peso": "Peso",
   "label_valijas": "Valijas agregadas",
   "label_cambios": "Cambios en Clientes",
+  "label_reservas": "Reservas del Cliente",
+  "label_servicios": "Servicios adicionales",
+  "label_reserva": "Reserva",
+  "label_vuelo": "Vuelo",
+  "label_servicios_agregados": "Servicios agregados",
+  "label_total_pagar": "Total a pagar",
+  "label_pagos_servicios": "Servicios pagados",
 
   //BOTONES
   "boton_ingresar": "Ingresar",
@@ -145,6 +153,8 @@
   "boton_confirmar_asientos": "Confirmar asientos",
   "boton_agregar": "Agregar",
   "boton_activar2": "Activar",
+  "boton_servicio": "Registrar servicio",
+  "boton_cobrar": "Cobrar",
 
   //RADIOBUTTONS
   "radiobutton_activos": "Activos",
@@ -347,7 +357,12 @@
   "msg_operacion": "Operacion no permitida",
   "msg_activar_cliente": "¿Desea activar la versión del cliente {0} {1} del {2}?",
   "msg_confirmacion": "Confirmar restauración",
-  "msg_version" :  "Version activada correctamente",
+  "msg_version": "Version activada correctamente",
+  "msg_datos_cliente_incorrectos": "Los datos ingresados no coinciden con el cliente registrado",
+  "msg_dni_requerido": "Debe ingresar el DNI del cliente",
+  "msg_selec_servicio": "Debe seleccionar un servicio",
+  "msg_servicios_invalidos": "No hay servicios con monto valido para cobrar",
+  "msg_reserva_error": "No se pudo obtener la reserva seleccionada",
 
   //MODOS
   "modo_consulta": "Modo Consulta",
@@ -442,5 +457,20 @@
   "listbox_gluten": "Sin gluten",
   "listbox_premium": "Premium",
   "Activo": "Activo",
-  "FechaCambio" :  "Fecha cambio"
+  "FechaCambio": "Fecha cambio",
+  "combo_asiento": "Cambio de asiento",
+  "combo_comida": "Comida especial",
+  "combo_seguro": "Seguro de viaje",
+  "combo_valija": "Valija extra",
+  "col_codigo": "Codigo",
+  "col_vuelo": "Vuelo",
+  "col_fecha": "Fecha de vuelo",
+  "col_total": "Total",
+  "col_pago": "Codigo pago",
+  "col_monto": "Monto",
+  "col_tipoPago": "Tipo pago",
+  "col_fechaPago": "Fecha pago",
+  "col_servicios": "Servicios",
+  "col_dni": "DNI cliente",
+  "col_reserva" :  "Reserva"
 }

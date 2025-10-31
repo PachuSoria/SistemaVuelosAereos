@@ -52,7 +52,12 @@ namespace _460ASGUI
                         fechaSalidaVuelo.ToString("dd/MM/yyyy")
                     ));
 
-                PrecioSeleccionado = preciosSeguros[seguroSeleccionado];
+                decimal precioBase = preciosSeguros[seguroSeleccionado];
+                int dias = (int)Math.Ceiling((FechaVencimiento - fechaSalidaVuelo).TotalDays);
+                if (dias <= 0) dias = 1;
+
+                int periodos = (int)Math.Ceiling(dias / 15.0);
+                PrecioSeleccionado = precioBase * periodos;
 
                 MessageBox.Show(
                        string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_seguro_reg"), seguroSeleccionado) + "\n" +
@@ -88,9 +93,19 @@ namespace _460ASGUI
                 seguroSeleccionado = string.Empty;
 
             if (!string.IsNullOrEmpty(seguroSeleccionado))
-                textBox1.Text = $"{preciosSeguros[seguroSeleccionado]:0.00} USD";
+            {
+                decimal precioBase = preciosSeguros[seguroSeleccionado];
+                int dias = (int)Math.Ceiling((dateTimePicker1.Value - fechaSalidaVuelo).TotalDays);
+                if (dias <= 0) dias = 1;
+                int periodos = (int)Math.Ceiling(dias / 15.0);
+                decimal precioFinal = precioBase * periodos;
+
+                textBox1.Text = $"{precioFinal:0.00} USD";
+            }
             else
+            {
                 textBox1.Clear();
+            }
         }
 
         public void ActualizarIdioma()
@@ -113,6 +128,23 @@ namespace _460ASGUI
             button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_salir");
             radioButton2.Text = IdiomaManager_460AS.Instancia.Traducir("radiobutton_int");
             radioButton3.Text = IdiomaManager_460AS.Instancia.Traducir("radiobutton_bas");
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(seguroSeleccionado))
+            {
+                textBox1.Clear();
+                return;
+            }
+
+            decimal precioBase = preciosSeguros[seguroSeleccionado];
+            int dias = (int)Math.Ceiling((dateTimePicker1.Value - fechaSalidaVuelo).TotalDays);
+            if (dias <= 0) dias = 1;
+            int periodos = (int)Math.Ceiling(dias / 15.0);
+            decimal precioFinal = precioBase * periodos;
+
+            textBox1.Text = $"{precioFinal:0.00} USD";
         }
     }
 }

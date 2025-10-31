@@ -24,15 +24,11 @@ namespace _460ASGUI
             InitializeComponent();
             comboBox1.DisplayMember = "Value";
             comboBox1.ValueMember = "Key";
-
-            var metodosPago = new List<KeyValuePair<string, string>>
+            comboBox1.DataSource = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("TarjetaCredito", "Tarjeta de crédito"),
-                new KeyValuePair<string, string>("TarjetaDebito", "Tarjeta de débito")
+                new KeyValuePair<string, string>("TarjetaCredito", IdiomaManager_460AS.Instancia.Traducir("combo_credito")),
+                new KeyValuePair<string, string>("TarjetaDebito", IdiomaManager_460AS.Instancia.Traducir("combo_debito"))
             };
-
-            comboBox1.DataSource = metodosPago;
-            comboBox1.SelectedIndex = 0;
             _montoTotal = montoTotal; 
             textBox5.Text = $"{_montoTotal:0.00} USD";
 
@@ -46,19 +42,19 @@ namespace _460ASGUI
 
         public void ActualizarIdioma()
         {
-            //label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_pago");
-            //label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_tarjeta");
-            //label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_nombre_titular");
-            //label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_apellido_titular");
-            //label6.Text = IdiomaManager_460AS.Instancia.Traducir("label_monto");
-            //label7.Text = IdiomaManager_460AS.Instancia.Traducir("label_fecha_vencimiento");
-            //button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_confirmar_pago");
-            //comboBox1.Items.Clear();
-            //comboBox1.DisplayMember = "Value";
-            //comboBox1.ValueMember = "Key";
-            //comboBox1.Items.Add(new KeyValuePair<string, string>("TarjetaCredito", IdiomaManager_460AS.Instancia.Traducir("Credito")));
-            //comboBox1.Items.Add(new KeyValuePair<string, string>("TarjetaDebito", IdiomaManager_460AS.Instancia.Traducir("Debito")));
-            //if (comboBox1.Items.Count > 0) comboBox1.SelectedIndex = 0;
+            label1.Text = IdiomaManager_460AS.Instancia.Traducir("label_metodo_pago");
+            label2.Text = IdiomaManager_460AS.Instancia.Traducir("label_num_tarjeta");
+            label3.Text = IdiomaManager_460AS.Instancia.Traducir("label_nombre_titular");
+            label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_apellido_titular");
+            label5.Text = IdiomaManager_460AS.Instancia.Traducir("label_cvv");
+            label6.Text = IdiomaManager_460AS.Instancia.Traducir("label_vencimiento");
+            label7.Text = IdiomaManager_460AS.Instancia.Traducir("label_total");
+            button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_confirmar_pago");
+            comboBox1.DataSource = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("TarjetaCredito", IdiomaManager_460AS.Instancia.Traducir("combo_credito")),
+                new KeyValuePair<string, string>("TarjetaDebito", IdiomaManager_460AS.Instancia.Traducir("combo_debito"))
+            };
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -66,31 +62,38 @@ namespace _460ASGUI
             try
             {
                 if (string.IsNullOrWhiteSpace(comboBox1.Text))
-                    throw new Exception("Debe seleccionar un método de pago.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_selec_metodo_pago"));
 
                 if (string.IsNullOrWhiteSpace(textBox1.Text))
-                    throw new Exception("Debe ingresar el número de tarjeta.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ingrese_num_tarjeta"));
 
                 if (!Regex.IsMatch(textBox1.Text, @"^[0-9]{10}$"))
-                    throw new Exception("El número de tarjeta debe tener 10 dígitos.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_tarjeta_diez_digitos"));
 
                 if (string.IsNullOrWhiteSpace(textBox2.Text))
-                    throw new Exception("Debe ingresar el nombre del titular.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ingrese_nombre_titular"));
 
                 if (string.IsNullOrWhiteSpace(textBox3.Text))
-                    throw new Exception("Debe ingresar el apellido del titular.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ingrese_apellido_titular"));
 
                 if (textBox4.Text.Length != 3)
-                    throw new Exception("El CVV debe tener 3 dígitos.");
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_cvv_tres_digitos"));
 
                 var kv = (KeyValuePair<string, string>)comboBox1.SelectedItem;
-                TipoPagoSeleccionado = kv.Key; // ⚙️ solo la clave, ej: "TarjetaCredito"
+                TipoPagoSeleccionado = kv.Key;
 
                 MessageBox.Show(
-                    $"Pago realizado correctamente.\n" +
-                    $"Monto: {_montoTotal:0.00} USD\n" +
-                    $"Tipo de pago: {kv.Value}",
-                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string.Format(
+                    "{0}\n{1}: {2:0.00} USD\n{3}: {4}",
+                    IdiomaManager_460AS.Instancia.Traducir("msg_pago_exito"),
+                    IdiomaManager_460AS.Instancia.Traducir("label_total"),
+                    _montoTotal,
+                    IdiomaManager_460AS.Instancia.Traducir("label_metodo_pago"),
+                    kv.Value
+                ),
+                IdiomaManager_460AS.Instancia.Traducir("msg_titulo_exito"),
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
 
                 DialogResult = DialogResult.OK;
                 Close();

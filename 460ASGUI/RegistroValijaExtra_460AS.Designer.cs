@@ -38,6 +38,12 @@
             button2 = new Button();
             listBox1 = new ListBox();
             label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            groupBox1 = new GroupBox();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // textBox1
@@ -133,11 +139,61 @@
             label4.TabIndex = 11;
             label4.Text = "Valijas agregadas";
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(6, 23);
+            label5.Name = "label5";
+            label5.Size = new Size(96, 15);
+            label5.TabIndex = 12;
+            label5.Text = "10 kg --> 10 USD";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(6, 38);
+            label6.Name = "label6";
+            label6.Size = new Size(96, 15);
+            label6.TabIndex = 13;
+            label6.Text = "15 kg --> 15 USD";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(6, 53);
+            label7.Name = "label7";
+            label7.Size = new Size(96, 15);
+            label7.TabIndex = 14;
+            label7.Text = "25 kg --> 25 USD";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(6, 68);
+            label8.Name = "label8";
+            label8.Size = new Size(96, 15);
+            label8.TabIndex = 15;
+            label8.Text = "32 kg --> 40 USD";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(label8);
+            groupBox1.Controls.Add(label5);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Controls.Add(label6);
+            groupBox1.Location = new Point(406, 74);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(132, 100);
+            groupBox1.TabIndex = 16;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Precios";
+            // 
             // RegistroValijaExtra_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(414, 242);
+            ClientSize = new Size(551, 252);
+            Controls.Add(groupBox1);
             Controls.Add(label4);
             Controls.Add(listBox1);
             Controls.Add(button2);
@@ -150,6 +206,8 @@
             Controls.Add(textBox1);
             Name = "RegistroValijaExtra_460AS";
             Text = "RegistroValijaExtra_460AS";
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -166,5 +224,10 @@
         private Button button2;
         private ListBox listBox1;
         private Label label4;
+        private Label label5;
+        private Label label6;
+        private Label label7;
+        private Label label8;
+        private GroupBox groupBox1;
     }
 }

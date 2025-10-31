@@ -160,7 +160,6 @@
             // 
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Cambio de asiento", "Comida especial", "Seguro de viaje", "Valija extra" });
             comboBox1.Location = new Point(439, 328);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(158, 23);
