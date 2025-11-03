@@ -27,6 +27,9 @@ namespace _460ASGUI
             bllAsiento_460AS = new BLL460AS_Asiento();
             this.reservaActual = reserva;
             textBox5.Text = $"${reservaActual.PrecioTotal_460AS} USD";
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.DisplayMember = "Value";
+            comboBox1.ValueMember = "Key";
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
             ActualizarIdioma();
             dateTimePicker1.Format = DateTimePickerFormat.Short;

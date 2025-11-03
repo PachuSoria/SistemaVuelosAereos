@@ -51,7 +51,6 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(136, 23);
             textBox1.TabIndex = 0;
-            textBox1.Text = "1234567899";
             // 
             // comboBox1
             // 
@@ -86,7 +85,6 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(136, 23);
             textBox2.TabIndex = 4;
-            textBox2.Text = "a";
             // 
             // textBox3
             // 
@@ -94,7 +92,6 @@
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(136, 23);
             textBox3.TabIndex = 5;
-            textBox3.Text = "b";
             // 
             // textBox4
             // 
@@ -102,7 +99,6 @@
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(136, 23);
             textBox4.TabIndex = 6;
-            textBox4.Text = "333";
             // 
             // label3
             // 
@@ -194,7 +190,7 @@
             Controls.Add(comboBox1);
             Controls.Add(textBox1);
             Name = "CobroServicios_460AS";
-            Text = "CobroReserva_460AS";
+            Text = "CobroServicios_460AS";
             ResumeLayout(false);
             PerformLayout();
         }

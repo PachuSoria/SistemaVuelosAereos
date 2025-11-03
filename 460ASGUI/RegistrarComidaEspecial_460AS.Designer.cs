@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegistrarComidaEspecial_460AS));
             button1 = new Button();
             textBox1 = new TextBox();
             label1 = new Label();
@@ -75,7 +74,7 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Image = Properties.Resources.Comida_vegetariana;
             pictureBox1.Location = new Point(49, 23);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(262, 156);
@@ -85,7 +84,7 @@
             // 
             // pictureBox2
             // 
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Image = Properties.Resources.Comida_sin_gluten;
             pictureBox2.Location = new Point(49, 237);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(262, 156);
@@ -95,7 +94,7 @@
             // 
             // pictureBox3
             // 
-            pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
+            pictureBox3.Image = Properties.Resources.Comida_premium;
             pictureBox3.Location = new Point(49, 452);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(262, 156);

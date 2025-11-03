@@ -61,11 +61,12 @@ namespace _460ASGUI.Properties {
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.IO.UnmanagedMemoryStream similar a System.IO.MemoryStream.
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ana_mini_pekka {
+        internal static System.Drawing.Bitmap Assist_Premium {
             get {
-                return ResourceManager.GetStream("ana-mini-pekka", resourceCulture);
+                object obj = ResourceManager.GetObject("Assist Premium", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -80,47 +81,52 @@ namespace _460ASGUI.Properties {
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.IO.UnmanagedMemoryStream similar a System.IO.MemoryStream.
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream clash_royale_prince_charge {
+        internal static System.Drawing.Bitmap AXA_Basico {
             get {
-                return ResourceManager.GetStream("clash-royale-prince-charge", resourceCulture);
+                object obj = ResourceManager.GetObject("AXA Basico", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.IO.UnmanagedMemoryStream similar a System.IO.MemoryStream.
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream clash_royale_startup_sound {
+        internal static System.Drawing.Bitmap Comida_premium {
             get {
-                return ResourceManager.GetStream("clash-royale-startup-sound", resourceCulture);
+                object obj = ResourceManager.GetObject("Comida premium", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.IO.UnmanagedMemoryStream similar a System.IO.MemoryStream.
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream goblins_clash_royale {
+        internal static System.Drawing.Bitmap Comida_sin_gluten {
             get {
-                return ResourceManager.GetStream("goblins-clash-royale", resourceCulture);
+                object obj = ResourceManager.GetObject("Comida sin gluten", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.IO.UnmanagedMemoryStream similar a System.IO.MemoryStream.
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream golden_knight_clash_royale {
+        internal static System.Drawing.Bitmap Comida_vegetariana {
             get {
-                return ResourceManager.GetStream("golden-knight-clash-royale", resourceCulture);
+                object obj = ResourceManager.GetObject("Comida vegetariana", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.IO.UnmanagedMemoryStream similar a System.IO.MemoryStream.
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream graveyard_clash_royale {
+        internal static System.Drawing.Bitmap Universal_Intermedio {
             get {
-                return ResourceManager.GetStream("graveyard-clash-royale", resourceCulture);
+                object obj = ResourceManager.GetObject("Universal Intermedio", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

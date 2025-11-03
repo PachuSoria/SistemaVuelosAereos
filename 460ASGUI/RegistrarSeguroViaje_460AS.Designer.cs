@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegistrarSeguroViaje_460AS));
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             pictureBox3 = new PictureBox();
@@ -63,7 +62,7 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Image = Properties.Resources.Assist_Premium;
             pictureBox1.Location = new Point(40, 41);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(233, 123);
@@ -73,7 +72,7 @@
             // 
             // pictureBox2
             // 
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Image = Properties.Resources.Universal_Intermedio;
             pictureBox2.Location = new Point(387, 41);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(233, 123);
@@ -83,7 +82,7 @@
             // 
             // pictureBox3
             // 
-            pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
+            pictureBox3.Image = Properties.Resources.AXA_Basico;
             pictureBox3.Location = new Point(725, 41);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(233, 123);
