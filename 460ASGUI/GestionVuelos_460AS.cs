@@ -26,10 +26,10 @@ namespace _460ASGUI
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             bllVuelo_460AS = new BLL460AS_Vuelo();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect; dataGridView1.MultiSelect = false;
-            label9.Text = "Modo Consulta";
             CargarVuelos();
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
             ActualizarIdioma();
+            label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_consulta");
         }
 
         private enum FormEstado
@@ -44,7 +44,7 @@ namespace _460ASGUI
         {
             try
             {
-                label9.Text = "Modo Agregar";
+                label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_añadir");
                 estadoActual = FormEstado.Agregar;
                 textBox1.Enabled = true;
                 textBox2.Enabled = true;
@@ -67,7 +67,7 @@ namespace _460ASGUI
         {
             try
             {
-                label9.Text = "Modo Modificar";
+                label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_modificar");
                 estadoActual = FormEstado.Modificar;
                 textBox2.Enabled = true;
                 textBox4.Enabled = true;
@@ -88,7 +88,7 @@ namespace _460ASGUI
         {
             try
             {
-                label9.Text = "Modo Eliminar";
+                label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_eliminar");
                 estadoActual = FormEstado.Eliminar;
                 button1.Enabled = false;
                 button2.Enabled = false;
@@ -165,7 +165,7 @@ namespace _460ASGUI
         {
             try
             {
-                label9.Text = "Modo Consulta";
+                label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_consulta");
                 estadoActual = FormEstado.Consulta;
                 textBox1.Clear(); textBox2.Clear(); textBox4.Clear();
                 textBox1.Enabled = false;
@@ -243,16 +243,16 @@ namespace _460ASGUI
             switch (estadoActual)
             {
                 case FormEstado.Agregar:
-                    IdiomaManager_460AS.Instancia.Traducir("modo_añadir");
+                    label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_añadir");
                     break;
                 case FormEstado.Consulta:
-                    IdiomaManager_460AS.Instancia.Traducir("modo_consulta");
+                    label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_consulta");
                     break;
                 case FormEstado.Eliminar:
-                    IdiomaManager_460AS.Instancia.Traducir("modo_eliminar");
+                    label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_eliminar");
                     break;
                 case FormEstado.Modificar:
-                    IdiomaManager_460AS.Instancia.Traducir("modo_modificar");
+                    label9.Text = IdiomaManager_460AS.Instancia.Traducir("modo_modificar");
                     break;
             }
             comboBox1.Items.Clear();

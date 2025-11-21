@@ -59,24 +59,24 @@ namespace _460ASGUI
         {
             if (dataGridView1.Columns.Count > 0)
             {
-                dataGridView1.Columns["DNI_460AS"].HeaderText = "DNI";
-                dataGridView1.Columns["Nombre_460AS"].HeaderText = "Nombre";
-                dataGridView1.Columns["Apellido_460AS"].HeaderText = "Apellido";
-                dataGridView1.Columns["FechaNacimiento_460AS"].HeaderText = "Fecha nacimiento";
-                dataGridView1.Columns["Telefono_460AS"].HeaderText = "Teléfono";
-                dataGridView1.Columns["NroPasaporte_460AS"].HeaderText = "Pasaporte";
-                dataGridView1.Columns["FechaCambio_460AS"].HeaderText = "Fecha cambio";
-                dataGridView1.Columns["Activo_460AS"].HeaderText = "Activo";
+                dataGridView1.Columns[0].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_dni");
+                dataGridView1.Columns[1].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_nombre");
+                dataGridView1.Columns[2].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_apellido");
+                dataGridView1.Columns[3].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_nacimiento");
+                dataGridView1.Columns[4].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_telefono");
+                dataGridView1.Columns[5].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_pasaporte");
+                dataGridView1.Columns[6].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_fechaCambio");
+                dataGridView1.Columns[7].HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_activo");
 
-                if (dataGridView1.Columns["Activo_460AS"] is DataGridViewCheckBoxColumn)
+                if (dataGridView1.Columns[7] is DataGridViewCheckBoxColumn)
                 {
-                    int index = dataGridView1.Columns["Activo_460AS"].Index;
+                    int index = dataGridView1.Columns[7].Index;
                     dataGridView1.Columns.RemoveAt(index);
 
                     DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn
                     {
                         Name = "Activo_460AS",
-                        HeaderText = "Activo",
+                        HeaderText = IdiomaManager_460AS.Instancia.Traducir("label_activo"),
                         DataPropertyName = "Activo_460AS"
                     };
                     dataGridView1.Columns.Insert(index, col);
@@ -244,6 +244,7 @@ namespace _460ASGUI
             label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_apellido");
             label7.Text = IdiomaManager_460AS.Instancia.Traducir("label_fechaIni");
             label8.Text = IdiomaManager_460AS.Instancia.Traducir("label_fechaFin");
+            AjustarColumnas();
         }
     }
 }

@@ -121,6 +121,26 @@ namespace _460ASGUI.Properties {
         }
         
         /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] Manual_AviaGo {
+            get {
+                object obj = ResourceManager.GetObject("Manual AviaGo", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] Manual_AviaGo_Ingles {
+            get {
+                object obj = ResourceManager.GetObject("Manual AviaGo Ingles", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Universal_Intermedio {

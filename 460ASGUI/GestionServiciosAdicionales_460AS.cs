@@ -135,7 +135,19 @@ namespace _460ASGUI
 
                 if (clienteExistente == null)
                     throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_cliente_no_encontrado"));
+                BLL460AS_Reserva bllReserva = new BLL460AS_Reserva();
+                var reservasCliente = bllReserva.ObtenerReservasCliente_460AS(dni);
 
+                if (reservasCliente == null || reservasCliente.Count == 0)
+                {
+                    MessageBox.Show(
+                        IdiomaManager_460AS.Instancia.Traducir("msg_cliente_sin_reservas"),
+                        IdiomaManager_460AS.Instancia.Traducir("msg_operacion"),
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                    return;
+                }
                 clienteActual = clienteExistente;
                 textBox2.Text = clienteActual.Nombre_460AS;
                 textBox3.Text = clienteActual.Apellido_460AS;

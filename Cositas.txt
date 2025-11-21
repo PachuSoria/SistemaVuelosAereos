@@ -1,3 +1,0 @@
--En Evento_460AS cambiar el usuario de string a Usuario_460AS
--Cuando cambio de idioma me salta como evento de modificacion de usuario
--Agregar la parte de eventos en todos los diagramas de todos los modulos 

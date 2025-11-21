@@ -49,6 +49,7 @@
             serviciosAdicionalesToolStripMenuItem = new ToolStripMenuItem();
             reportesToolStripMenuItem = new ToolStripMenuItem();
             verComprobantesToolStripMenuItem = new ToolStripMenuItem();
+            comprobantesServiciosToolStripMenuItem = new ToolStripMenuItem();
             idiomaToolStripMenuItem = new ToolStripMenuItem();
             españolToolStripMenuItem = new ToolStripMenuItem();
             inglesToolStripMenuItem = new ToolStripMenuItem();
@@ -56,7 +57,6 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripStatusLabel2 = new ToolStripStatusLabel();
-            comprobantesServiciosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -211,6 +211,13 @@
             verComprobantesToolStripMenuItem.Text = "Comprobantes reservas";
             verComprobantesToolStripMenuItem.Click += verComprobantesToolStripMenuItem_Click;
             // 
+            // comprobantesServiciosToolStripMenuItem
+            // 
+            comprobantesServiciosToolStripMenuItem.Name = "comprobantesServiciosToolStripMenuItem";
+            comprobantesServiciosToolStripMenuItem.Size = new Size(201, 22);
+            comprobantesServiciosToolStripMenuItem.Text = "Comprobantes servicios";
+            comprobantesServiciosToolStripMenuItem.Click += comprobantesServiciosToolStripMenuItem_Click;
+            // 
             // idiomaToolStripMenuItem
             // 
             idiomaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { españolToolStripMenuItem, inglesToolStripMenuItem });
@@ -237,6 +244,7 @@
             ayudaToolStripMenuItem.Name = "ayudaToolStripMenuItem";
             ayudaToolStripMenuItem.Size = new Size(53, 20);
             ayudaToolStripMenuItem.Text = "Ayuda";
+            ayudaToolStripMenuItem.Click += ayudaToolStripMenuItem_Click;
             // 
             // statusStrip1
             // 
@@ -256,13 +264,6 @@
             // 
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             toolStripStatusLabel2.Size = new Size(0, 17);
-            // 
-            // comprobantesServiciosToolStripMenuItem
-            // 
-            comprobantesServiciosToolStripMenuItem.Name = "comprobantesServiciosToolStripMenuItem";
-            comprobantesServiciosToolStripMenuItem.Size = new Size(201, 22);
-            comprobantesServiciosToolStripMenuItem.Text = "Comprobantes servicios";
-            comprobantesServiciosToolStripMenuItem.Click += comprobantesServiciosToolStripMenuItem_Click;
             // 
             // MenuPrincipal_460AS
             // 

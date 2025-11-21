@@ -115,6 +115,8 @@
   "label_servicios_agregados": "Servicios agregados",
   "label_total_pagar": "Total a pagar",
   "label_pagos_servicios": "Servicios pagados",
+  "label_fechaCambio": "Fecha cambio",
+  "label_activo" :  "Activo",
 
   //BOTONES
   "boton_ingresar": "Ingresar",
@@ -363,6 +365,7 @@
   "msg_selec_servicio": "Debe seleccionar un servicio",
   "msg_servicios_invalidos": "No hay servicios con monto valido para cobrar",
   "msg_reserva_error": "No se pudo obtener la reserva seleccionada",
+  "msg_cliente_sin_reservas": "El cliente no tiene reservas registradas",
 
   //MODOS
   "modo_consulta": "Modo Consulta",
@@ -454,7 +457,7 @@
   "group_resumen": "Resumen",
   "listbox_asiento": "Asiento {0} → {1}",
   "listbox_vegetariana": "Vegetariana",
-  "listbox_gluten": "Sin gluten",
+  "listbox_sin_gluten": "Sin gluten",
   "listbox_premium": "Premium",
   "Activo": "Activo",
   "FechaCambio": "Fecha cambio",
@@ -472,5 +475,5 @@
   "col_fechaPago": "Fecha pago",
   "col_servicios": "Servicios",
   "col_dni": "DNI cliente",
-  "col_reserva" :  "Reserva"
+  "col_reserva": "Reserva"
 }

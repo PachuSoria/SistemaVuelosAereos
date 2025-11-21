@@ -442,5 +442,33 @@ namespace _460ASGUI
             gestionPagoServicios_460AS.MdiParent = this;
             gestionPagoServicios_460AS.Show();
         }
+
+        private void ayudaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string idiomaActual = IdiomaManager_460AS.Instancia.IdiomaActual.ToLower();
+                string nombreManual = idiomaActual.Contains("ingl")
+                    ? "Manual_AviaGo_Ingles.pdf"   
+                    : "Manual_AviaGo.pdf";          
+                string rutaTemporal = Path.Combine(Path.GetTempPath(), nombreManual);
+
+                if (nombreManual == "Manual_AviaGo_Ingles.pdf")
+                    File.WriteAllBytes(rutaTemporal, Properties.Resources.Manual_AviaGo_Ingles);
+                else
+                    File.WriteAllBytes(rutaTemporal, Properties.Resources.Manual_AviaGo);
+                var psi = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = rutaTemporal,
+                    UseShellExecute = true
+                };
+                System.Diagnostics.Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo abrir el manual de ayuda.\n" + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

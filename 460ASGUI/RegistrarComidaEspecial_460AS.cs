@@ -28,8 +28,14 @@ namespace _460ASGUI
         private void CargarComidas()
         {
             checkedListBox1.Items.Clear();
+
             foreach (var kvp in preciosComida)
-                checkedListBox1.Items.Add($"{kvp.Key} – {kvp.Value:0.00} USD");
+            {
+                string display = $"{IdiomaManager_460AS.Instancia.Traducir("listbox_" + kvp.Key.Replace(" ", "_").ToLower())} – {kvp.Value:0.00} USD";
+                checkedListBox1.Items.Add(display);
+                checkedListBox1.Tag = preciosComida; 
+            }
+
             checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
         }
 
@@ -79,8 +85,16 @@ namespace _460ASGUI
             foreach (var item in checkedListBox1.CheckedItems)
             {
                 string texto = item.ToString()!;
-                string nombre = texto.Split('–')[0].Trim();
-                TotalComidas += preciosComida[nombre];
+                foreach (var kvp in preciosComida)
+                {
+                    string traducido = IdiomaManager_460AS.Instancia.Traducir("listbox_" + kvp.Key.Replace(" ", "_").ToLower());
+                    if (texto.StartsWith(traducido, StringComparison.OrdinalIgnoreCase) ||
+                        texto.StartsWith(kvp.Key, StringComparison.OrdinalIgnoreCase))
+                    {
+                        TotalComidas += kvp.Value;
+                        break;
+                    }
+                }
             }
 
             textBox1.Text = $"{TotalComidas:0.00} USD";
@@ -128,8 +142,9 @@ namespace _460ASGUI
             button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_salir");
             checkedListBox1.Items.Clear();
             checkedListBox1.Items.Add($"{IdiomaManager_460AS.Instancia.Traducir("listbox_vegetariana")} – {preciosComida["Vegetariana"]:0.00} USD");
-            checkedListBox1.Items.Add($"{IdiomaManager_460AS.Instancia.Traducir("listbox_gluten")} – {preciosComida["Sin gluten"]:0.00} USD");
+            checkedListBox1.Items.Add($"{IdiomaManager_460AS.Instancia.Traducir("listbox_sin_gluten")} – {preciosComida["Sin gluten"]:0.00} USD");
             checkedListBox1.Items.Add($"{IdiomaManager_460AS.Instancia.Traducir("listbox_premium")} – {preciosComida["Premium"]:0.00} USD");
+            CargarComidas();
         }
     }
 }

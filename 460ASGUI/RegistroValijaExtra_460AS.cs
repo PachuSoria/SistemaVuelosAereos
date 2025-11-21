@@ -61,6 +61,7 @@ namespace _460ASGUI
             label4.Text = IdiomaManager_460AS.Instancia.Traducir("label_valijas");
             button1.Text = IdiomaManager_460AS.Instancia.Traducir("boton_agregar");
             button2.Text = IdiomaManager_460AS.Instancia.Traducir("boton_registrar");
+            groupBox1.Text = IdiomaManager_460AS.Instancia.Traducir("label_precio");
         }
 
         private void button1_Click(object sender, EventArgs e)

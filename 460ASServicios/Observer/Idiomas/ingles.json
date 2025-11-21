@@ -115,6 +115,8 @@
   "label_servicios_agregados": "Added services",
   "label_total_pagar": "Total to pay",
   "label_pagos_servicios": "Payed services",
+  "label_fechaCambio": "Change date",
+  "label_activo" :  "Activate",
 
   //BOTONES
   "boton_ingresar": "Login",
@@ -363,6 +365,7 @@
   "msg_selec_servicio": "You must select a service.",
   "msg_servicios_invalidos": "There are no services with a valid amount to charge.",
   "msg_reserva_error": "The selected booking could not be retrieved.",
+  "msg_cliente_sin_reservas": "This client has no existing reservations.",
 
   //MODOS
   "modo_consulta": "Consult Mode",
@@ -454,7 +457,7 @@
   "group_resumen": "Summary",
   "listbox_asiento": "Seat {0} → {1}",
   "listbox_vegetariana": "Vegetarian",
-  "listbox_gluten": "Gluten-free",
+  "listbox_sin_gluten": "Gluten-free",
   "listbox_premium": "Premium",
   "Activo": "Active",
   "FechaCambio": "Change date",
@@ -472,5 +475,5 @@
   "col_fechaPago": "Payment date",
   "col_servicios": "Services",
   "col_dni": "Client ID",
-  "col_reserva" :  "Reservation"
+  "col_reserva": "Reservation"
 }
