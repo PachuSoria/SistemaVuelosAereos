@@ -1,9 +1,13 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using _460ASBE;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
+using _460ASServicios;
 
 namespace _460ASDAL
 {
@@ -15,75 +19,125 @@ namespace _460ASDAL
             cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
         }
 
-        public bool ExisteRegistro_460AS(string nombreTabla)
+        public string CalcularDVH_460AS(DV_460AS dv)
         {
-            using (SqlConnection conexion = new SqlConnection(cx))
+            BigInteger sumaTotal = 0;
+            using (SqlConnection con = new SqlConnection(cx))
             {
-                conexion.Open();
-                string query = "SELECT COUNT(*) FROM DV_460AS WHERE Tabla_460AS = @Tabla";
-                using (SqlCommand cmd = new SqlCommand(query, conexion))
+                string consulta = $"SELECT * FROM {dv.NombreTabla_460AS}";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
                 {
-                    cmd.Parameters.AddWithValue("@Tabla", nombreTabla);
-                    int cantidad = Convert.ToInt32(cmd.ExecuteScalar());
-                    return cantidad > 0;
+                    object[] datos = new object[rdr.FieldCount];
+                    rdr.GetValues(datos);
+                    BigInteger sumaParcial = 0;
+                    foreach (object o in datos)
+                    {
+                        string hex = Hashing_460AS.EncriptarSHA256_460AS(o.ToString());
+                        BigInteger num = BigInteger.Parse("00" + hex, NumberStyles.HexNumber);
+                        sumaParcial += num;
+                    }
+                    string hex2 = Hashing_460AS.EncriptarSHA256_460AS(sumaParcial.ToString());
+                    sumaParcial = BigInteger.Parse("00" + hex2, NumberStyles.HexNumber);
+                    sumaTotal += sumaParcial;
                 }
             }
+            return sumaTotal.ToString("X");
         }
 
-        public void InsertarDV_460AS(string nombreTabla, long dvv)
+        public string CalcularDVV_460AS(DV_460AS dv)
         {
-            using (SqlConnection conexion = new SqlConnection(cx))
+            BigInteger sumaTotal = 0;
+            using (SqlConnection con = new SqlConnection(cx))
             {
-                conexion.Open();
-                string insert = @"INSERT INTO DV_460AS (Tabla_460AS, DVV_460AS, FechaUltimaActualizacion_460AS)
-                                  VALUES (@Tabla, @DVV, GETDATE())";
-                using (SqlCommand cmd = new SqlCommand(insert, conexion))
+                string consulta = $"SELECT * FROM {dv.NombreTabla_460AS}";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                List<object[]> registros = new List<object[]>();
+                while (rdr.Read())
                 {
-                    cmd.Parameters.AddWithValue("@Tabla", nombreTabla);
-                    cmd.Parameters.AddWithValue("@DVV", dvv);
+                    object[] fila = new object[rdr.FieldCount];
+                    rdr.GetValues(fila);
+                    registros.Add(fila);
+                }
+                rdr.Close();
+                if (registros.Count > 0)
+                {
+                    for (int col = 0; col < registros[0].Length; col++)
+                    {
+                        BigInteger sumaColumna = 0;
+
+                        foreach (var fila in registros)
+                        {
+                            string texto = fila[col]?.ToString() ?? "";
+                            string hex = Hashing_460AS.EncriptarSHA256_460AS(texto);
+
+                            try
+                            {
+                                BigInteger valor = BigInteger.Parse("00" + hex, NumberStyles.HexNumber);
+                                sumaColumna += valor;
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        string hexCol = Hashing_460AS.EncriptarSHA256_460AS(sumaColumna.ToString());
+                        sumaColumna = BigInteger.Parse("00" + hexCol, NumberStyles.HexNumber);
+
+                        sumaTotal += sumaColumna;
+                    }
+                }
+            }
+            return sumaTotal.ToString("X");
+        }
+
+        public void GuardarDV_460AS(DV_460AS dv)
+        {
+            using (SqlConnection con = new SqlConnection(cx))
+            {
+                string consulta = "SELECT COUNT(*) FROM DigitoVerificador_327LG WHERE NombreTabla_327LG = @nombre";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@nombre", dv.NombreTabla_460AS);
+                con.Open();
+                int existe = (int)cmd.ExecuteScalar();
+                if (existe > 0)
+                {
+                    string queryUpdate = @"UPDATE DV_460AS SET DVH_460AS = @horizontal, DVV_460AS = @vertical WHERE NombreTabla_460AS = @nombre";
+
+                    cmd = new SqlCommand(queryUpdate, con);
+                    cmd.Parameters.AddWithValue("@horizontal", dv.DVH_460AS);
+                    cmd.Parameters.AddWithValue("@vertical", dv.DVV_460AS);
+                    cmd.Parameters.AddWithValue("@nombre", dv.NombreTabla_460AS);
+
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        public void ActualizarDV_460AS(string nombreTabla, long dvv)
+        public List<DV_460AS> ObtenerTodos_460AS()
         {
-            using (SqlConnection conexion = new SqlConnection(cx))
+            List<DV_460AS> lista = new List<DV_460AS>();
+
+            using (SqlConnection con = new SqlConnection(cx))
             {
-                conexion.Open();
-                string update = @"UPDATE DV_460AS 
-                                  SET DVV_460AS = @DVV, FechaUltimaActualizacion_460AS = GETDATE()
-                                  WHERE Tabla_460AS = @Tabla";
-                using (SqlCommand cmd = new SqlCommand(update, conexion))
+                SqlCommand cmd = new SqlCommand("SELECT * FROM DV_460AS", con);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    cmd.Parameters.AddWithValue("@Tabla", nombreTabla);
-                    cmd.Parameters.AddWithValue("@DVV", dvv);
-                    cmd.ExecuteNonQuery();
+                    DV_460AS dv = new DV_460AS(reader["NombreTabla_460AS"].ToString(), reader["DVH_460AS"].ToString()
+                        , reader["DVV_460AS"].ToString());
+
+                    lista.Add(dv);
                 }
             }
-        }
-
-        public void GuardarDV_460AS(string nombreTabla, long dvv)
-        {
-            if (ExisteRegistro_460AS(nombreTabla))
-                ActualizarDV_460AS(nombreTabla, dvv);
-            else
-                InsertarDV_460AS(nombreTabla, dvv);
-        }
-
-        public long ObtenerDVV_460AS(string nombreTabla)
-        {
-            using (SqlConnection conexion = new SqlConnection(cx))
-            {
-                conexion.Open();
-                string query = "SELECT DVV_460AS FROM DV_460AS WHERE Tabla_460AS = @Tabla";
-                using (SqlCommand cmd = new SqlCommand(query, conexion))
-                {
-                    cmd.Parameters.AddWithValue("@Tabla", nombreTabla);
-                    object result = cmd.ExecuteScalar();
-                    return result != null ? Convert.ToInt64(result) : 0;
-                }
-            }
+            return lista;
         }
     }
 }

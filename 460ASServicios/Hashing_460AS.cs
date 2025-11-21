@@ -23,5 +23,10 @@ namespace _460ASServicios
                 return sb.ToString();
             }
         }
+
+        public static string EncriptarSHA256_460AS(string t)
+        {
+            return HashearPasswordSHA256_460AS(t);
+        }
     }
 }
