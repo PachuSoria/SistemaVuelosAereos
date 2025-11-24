@@ -9,12 +9,11 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Cliente
+    public class DAL460AS_Cliente : DAL_Abstract
     {
-        private string cx;
         public DAL460AS_Cliente()
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
+            
         }
 
         public void GuardarCliente_460AS(Cliente_460AS cliente)

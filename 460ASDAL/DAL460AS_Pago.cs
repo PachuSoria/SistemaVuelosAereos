@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Pago
+    public class DAL460AS_Pago : DAL_Abstract
     {
-        private string cx;
         public DAL460AS_Pago()
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
+            
         }
 
         public void GuardarPago_460AS(Pago_460AS pago)

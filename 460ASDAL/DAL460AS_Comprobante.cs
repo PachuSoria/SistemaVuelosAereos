@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Comprobante
+    public class DAL460AS_Comprobante : DAL_Abstract
     {
-        private string cx;
         public DAL460AS_Comprobante()
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
+           
         }
 
         public void GuardarComprobante(Comprobante_460AS comprobante)

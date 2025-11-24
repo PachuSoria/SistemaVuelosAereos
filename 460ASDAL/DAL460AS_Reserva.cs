@@ -9,14 +9,8 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Reserva
+    public class DAL460AS_Reserva : DAL_Abstract
     {
-        private string cx;
-        public DAL460AS_Reserva()
-        {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
-        }
-
         public void AgregarReserva_460AS(Reserva_460AS reserva)
         {
             using (SqlConnection conexion = new SqlConnection(cx))

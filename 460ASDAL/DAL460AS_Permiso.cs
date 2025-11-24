@@ -8,20 +8,18 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Permiso
+    public class DAL460AS_Permiso : DAL_Abstract
     {
-        private string cx_460AS;
-
         public DAL460AS_Permiso()
         {
-            cx_460AS = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
+            
         }
 
         public List<Permiso_460AS> ObtenerTodos_460AS()
         {
             List<Permiso_460AS> lista_460AS = new List<Permiso_460AS>();
 
-            using SqlConnection con_460AS = new SqlConnection(cx_460AS);
+            using SqlConnection con_460AS = new SqlConnection(cx);
             SqlCommand cmd_460AS = new SqlCommand("SELECT CodPermiso_460AS, Nombre_460AS, Descripcion_460AS FROM PERMISO_460AS", con_460AS);
             con_460AS.Open();
 

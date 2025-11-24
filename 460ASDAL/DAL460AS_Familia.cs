@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Familia
+    public class DAL460AS_Familia : DAL_Abstract
     {
-        private string cx;
-
         public DAL460AS_Familia()
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True;MultipleActiveResultSets=True";
+            
         }
 
         public void GuardarFamilia_460AS(Familia_460AS familia)

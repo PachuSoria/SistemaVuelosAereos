@@ -10,14 +10,8 @@ using _460ASServicios.Composite;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Usuario
+    public class DAL460AS_Usuario : DAL_Abstract
     {
-        private string cx;
-        public DAL460AS_Usuario()
-        {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
-        }
-
         public void GuardarUsuario_460AS(Usuario_460AS usuario)
         {
             string consulta = "INSERT INTO USUARIO_460AS (DNI_460AS, Nombre_460AS, Apellido_460AS, Login_460AS, Password_460AS, CodPerfil_460AS, Telefono_460AS, Bloqueado_460AS, Activo_460AS, Contador_460AS, UltimoIntento_460AS, Idioma_460AS)" +

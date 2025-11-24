@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_BackUpRestore
+    public class DAL460AS_BackUpRestore : DAL_Abstract
     {
-        private string cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
         public void RealizarBackup_460S(string backUpPath)
         {
             string archivo = $"BCK_{DateTime.Now:ddMMyy_HHmm}.bak";

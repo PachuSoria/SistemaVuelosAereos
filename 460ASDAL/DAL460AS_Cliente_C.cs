@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Cliente_C
+    public class DAL460AS_Cliente_C : DAL_Abstract
     {
-        private string cx;
         public DAL460AS_Cliente_C()
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
+            
         }
 
         public List<Cliente_C_460AS> ObtenerTodos_460AS()
