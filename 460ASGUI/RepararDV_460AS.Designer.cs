@@ -1,6 +1,6 @@
 ﻿namespace _460ASGUI
 {
-    partial class DV_460AS
+    partial class RepararDV_460AS
     {
         /// <summary>
         /// Required designer variable.
@@ -28,68 +28,84 @@
         /// </summary>
         private void InitializeComponent()
         {
+            label1 = new Label();
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
-            label1 = new Label();
+            label2 = new Label();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.Location = new Point(107, 79);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 0;
-            button1.Text = "Recalcular";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(107, 127);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 1;
-            button2.Text = "Restaurar";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(107, 176);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 2;
-            button3.Text = "Salir";
-            button3.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(85, 36);
+            label1.Location = new Point(76, 9);
             label1.Name = "label1";
             label1.Size = new Size(128, 15);
-            label1.TabIndex = 3;
+            label1.TabIndex = 0;
             label1.Text = "Inconsistencia en la BD";
             // 
-            // DV_460AS
+            // button1
+            // 
+            button1.Location = new Point(90, 83);
+            button1.Name = "button1";
+            button1.Size = new Size(91, 23);
+            button1.TabIndex = 1;
+            button1.Text = "Recalcular DV";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(90, 137);
+            button2.Name = "button2";
+            button2.Size = new Size(84, 23);
+            button2.TabIndex = 2;
+            button2.Text = "Restaurar BD";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(90, 192);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 3;
+            button3.Text = "Salir";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(76, 40);
+            label2.Name = "label2";
+            label2.Size = new Size(98, 15);
+            label2.TabIndex = 4;
+            label2.Text = "Tablas afectadas: ";
+            // 
+            // RepararDV_460AS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(314, 245);
-            Controls.Add(label1);
+            ClientSize = new Size(284, 261);
+            Controls.Add(label2);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
-            Name = "DV_460AS";
-            Text = "DV_460AS";
+            Controls.Add(label1);
+            Name = "RepararDV_460AS";
+            Text = "RepararDV_460AS";
+            Load += RepararDV_460AS_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
+        private Label label1;
         private Button button1;
         private Button button2;
         private Button button3;
-        private Label label1;
+        private Label label2;
     }
 }

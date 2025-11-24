@@ -99,7 +99,7 @@ namespace _460ASDAL
         {
             using (SqlConnection con = new SqlConnection(cx))
             {
-                string consulta = "SELECT COUNT(*) FROM DigitoVerificador_327LG WHERE NombreTabla_327LG = @nombre";
+                string consulta = "SELECT COUNT(*) FROM DV_460AS WHERE NombreTabla_460AS = @nombre";
                 SqlCommand cmd = new SqlCommand(consulta, con);
                 cmd.Parameters.AddWithValue("@nombre", dv.NombreTabla_460AS);
                 con.Open();

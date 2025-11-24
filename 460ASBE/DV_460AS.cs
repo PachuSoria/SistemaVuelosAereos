@@ -8,10 +8,16 @@ namespace _460ASBE
 {
     public class DV_460AS
     {
+        private string v;
+
         public string NombreTabla_460AS { get; set; }
         public string DVH_460AS { get; set; }
         public string DVV_460AS {  get; set; }
         public DV_460AS() { }
+        public DV_460AS(string nombreTabla)
+        {
+            NombreTabla_460AS = nombreTabla;
+        }
         public DV_460AS(string nombreTabla, string dvh, string dvv) 
         {
             NombreTabla_460AS = nombreTabla;

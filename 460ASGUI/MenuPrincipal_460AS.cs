@@ -20,11 +20,13 @@ namespace _460ASGUI
     public partial class MenuPrincipal_460AS : Form, IIdiomaObserver_460AS
     {
         BLL460AS_Usuario bllUsuario_460AS;
+        BLL460AS_DV dvBLL;
         private MenuPrincipal_460AS _menu;
         public MenuPrincipal_460AS()
         {
             InitializeComponent();
             bllUsuario_460AS = new BLL460AS_Usuario();
+            dvBLL = new BLL460AS_DV();
             //var rol = new Perfil_460AS("SUPERADMIN", "SuperAdmin");
             //bllUsuario_460AS.GuardarUsuario_460AS(new Usuario_460AS("12345678", "Agustin", "Soria", "123Agustin",
             //    "123Soria", rol, 42419672, false, true, 0, DateTime.Now, "Español"));
@@ -56,6 +58,55 @@ namespace _460ASGUI
 
             if (SessionManager_460AS.Instancia.IsLogged_460AS())
             {
+                var errores = dvBLL.CompararDV_460AS();
+
+                if (errores.Count > 0)
+                {
+                    var usuario = SessionManager_460AS.Instancia.Usuario;
+
+                    if (usuario.Rol_460AS != null && usuario.Rol_460AS.Codigo_460AS == "SUPERADMIN")
+                    {
+                        using (var frm = new RepararDV_460AS())
+                        {
+                            var result = frm.ShowDialog();
+
+                            if (result == DialogResult.Cancel)
+                            {
+                                bllUsuario_460AS.Logout_460AS();
+                                IdiomaManager_460AS.Instancia.CargarIdioma("español");
+                                ValidarMenuPrincipal_460AS();
+                                ActualizarIdioma();
+                                CerrarForm();
+                                return;
+                            }
+                        }
+
+                        errores = dvBLL.CompararDV_460AS();
+
+                        if (errores.Count > 0)
+                        {
+                            bllUsuario_460AS.Logout_460AS();
+                            IdiomaManager_460AS.Instancia.CargarIdioma("español");
+                            ValidarMenuPrincipal_460AS();
+                            ActualizarIdioma();
+                            CerrarForm();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            IdiomaManager_460AS.Instancia.Traducir("msg_sistema_no_disponible")
+                        );
+
+                        bllUsuario_460AS.Logout_460AS();
+                        IdiomaManager_460AS.Instancia.CargarIdioma("español");
+                        ValidarMenuPrincipal_460AS();
+                        ActualizarIdioma();
+                        CerrarForm();
+                        return;
+                    }
+                }
                 ActualizarEstadoSesion();
                 cambiarContraseñaToolStripMenuItem.Enabled = true;
                 cerrarSesiónToolStripMenuItem.Enabled = true;

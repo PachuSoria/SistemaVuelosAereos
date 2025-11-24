@@ -116,7 +116,9 @@
   "label_total_pagar": "Total to pay",
   "label_pagos_servicios": "Payed services",
   "label_fechaCambio": "Change date",
-  "label_activo" :  "Activate",
+  "label_activo": "Activate",
+  "label_inconsistencia": "Database inconsistency",
+  "label_tablas": "Affected tables: ",
 
   //BOTONES
   "boton_ingresar": "Login",
@@ -157,6 +159,8 @@
   "boton_activar2": "Activate",
   "boton_servicio": "Register service",
   "boton_cobrar": "Pay",
+  "boton_recalcular": "Recalculate DV",
+  "boton_restaurar_bd": "Restore Database",
 
   //RADIOBUTTONS
   "radiobutton_activos": "Active",
@@ -366,6 +370,11 @@
   "msg_servicios_invalidos": "There are no services with a valid amount to charge.",
   "msg_reserva_error": "The selected booking could not be retrieved.",
   "msg_cliente_sin_reservas": "This client has no existing reservations.",
+  "msg_dv_recalculados": "Verification digits were recalculated successfully",
+  "msg_seleccionar_archivo": "You must select a .bak file to restore",
+  "msg_restaurado": "The database was restored successfully",
+  "msg_inconsistencias": "Inconsistencies were detected in the database",
+  "msg_sistema_no_disponible": "The system is currently unavailable. Please contact the administrator",
 
   //MODOS
   "modo_consulta": "Consult Mode",

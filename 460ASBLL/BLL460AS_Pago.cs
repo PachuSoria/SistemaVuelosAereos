@@ -11,10 +11,12 @@ namespace _460ASBLL
     public class BLL460AS_Pago
     {
         private readonly DAL460AS_Pago dalPago;
+        private BLL460AS_DV _dvBLL;
 
         public BLL460AS_Pago()
         {
             dalPago = new DAL460AS_Pago();
+            _dvBLL = new BLL460AS_DV();
         }
 
         public void GuardarPago_460AS(Pago_460AS pago)
@@ -32,6 +34,7 @@ namespace _460ASBLL
             pago.FechaPago_460AS = DateTime.Now;
 
             dalPago.GuardarPago_460AS(pago);
+            _dvBLL.GuardarDV_460AS(new DV_460AS("Pago_460AS"));
         }
 
         public List<Pago_460AS> ObtenerPagosPorReserva_460AS(string codReserva)

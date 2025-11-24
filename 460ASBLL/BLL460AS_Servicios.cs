@@ -12,9 +12,11 @@ namespace _460ASBLL
     public class BLL460AS_Servicios
     {
         private DAL460AS_Servicios dalServicios;
+        private BLL460AS_DV dvBLL;
         public BLL460AS_Servicios()
         {
             dalServicios = new DAL460AS_Servicios();
+            dvBLL = new BLL460AS_DV();
         }
 
         public void GuardarServicio_460AS(ServiciosDecorator_460AS servicio)
@@ -75,6 +77,7 @@ namespace _460ASBLL
                     }
                     break;
             }
+            dvBLL.GuardarDV_460AS(new DV_460AS("Servicio_460AS"));
         }
         public List<Servicio_460AS> ObtenerServiciosPorReserva_460AS(string codReserva)
         {

@@ -13,11 +13,13 @@ namespace _460ASBLL
     {
         private DAL460AS_Cliente _clienteDAL;
         private BLL460AS_Evento _eventoBLL;
+        private BLL460AS_DV _dvBLL;
 
         public BLL460AS_Cliente() 
         {
             _clienteDAL = new DAL460AS_Cliente();
             _eventoBLL = new BLL460AS_Evento();
+            _dvBLL = new BLL460AS_DV();
         }
 
         public void GuardarCliente_460AS(Cliente_460AS cliente)
@@ -27,6 +29,7 @@ namespace _460ASBLL
             _clienteDAL.GuardarCliente_460AS(cliente);
             var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Clientes", $"Alta de cliente: {cliente.DNI_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
+            _dvBLL.GuardarDV_460AS(new DV_460AS("Cliente_460AS"));
         }
 
         public List<Cliente_460AS> ObtenerClientes_460AS()
@@ -40,6 +43,7 @@ namespace _460ASBLL
             var ultimo = _eventoBLL.ObtenerUltimo_460AS();
             var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 2, "Clientes",$"Modificacion de cliente: {cliente.DNI_460AS}");
             _eventoBLL.GuardarEvento_460AS(ev);
+            _dvBLL.GuardarDV_460AS(new DV_460AS("Cliente_460AS"));
         }
 
         public void EliminarCliente(string dni)
@@ -48,6 +52,7 @@ namespace _460ASBLL
             var ultimo = _eventoBLL.ObtenerUltimo_460AS();
             var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 3, "Clientes", $"Baja de cliente: {dni}");
             _eventoBLL.GuardarEvento_460AS(ev);
+            _dvBLL.GuardarDV_460AS(new DV_460AS("Cliente_460AS"));
         }
 
         public Cliente_460AS ObtenerClientePorDNI_460AS(string dni)

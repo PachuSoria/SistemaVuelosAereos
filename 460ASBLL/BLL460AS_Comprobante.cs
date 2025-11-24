@@ -14,10 +14,12 @@ namespace _460ASBLL
     {
         private DAL460AS_Comprobante _comprobanteDAL;
         private BLL460AS_Evento _eventoBLL;
+        private BLL460AS_DV _dvBLL;
         public BLL460AS_Comprobante()
         {
             _comprobanteDAL = new DAL460AS_Comprobante();
             _eventoBLL = new BLL460AS_Evento();
+            _dvBLL = new BLL460AS_DV();
         }
 
         public List<Comprobante_460AS> ObtenerComprobantes_460AS()
@@ -32,6 +34,7 @@ namespace _460ASBLL
             Evento_460AS ultimo = eventoBLL.ObtenerUltimo_460AS();
             var ev = Evento_460AS.GenerarEvento_460AS(ultimo, 4, "Comprobantes", $"Generacion de comprobante: {comprobante.CodComprobante_460AS}");
             eventoBLL.GuardarEvento_460AS(ev);
+            _dvBLL.GuardarDV_460AS(new DV_460AS("Comprobante_460AS"));
         }
 
         private string GenerarCodigoComprobante_460AS()
