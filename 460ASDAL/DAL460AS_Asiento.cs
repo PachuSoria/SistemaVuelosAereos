@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Asiento
+    public class DAL460AS_Asiento : DAL_Abstract
     {
-        private string cx;
         public DAL460AS_Asiento() 
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
+            
         }
 
         public IList<Asiento_460AS> ObtenerAsientos_460AS()

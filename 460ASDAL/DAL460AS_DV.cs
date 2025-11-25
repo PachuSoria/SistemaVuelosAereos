@@ -11,12 +11,11 @@ using _460ASServicios;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_DV
+    public class DAL460AS_DV : DAL_Abstract
     {
-        private string cx;
         public DAL460AS_DV()
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
+            
         }
 
         public string CalcularDVH_460AS(DV_460AS dv)

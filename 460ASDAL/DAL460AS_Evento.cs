@@ -9,10 +9,8 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Evento
+    public class DAL460AS_Evento : DAL_Abstract
     {
-        private string cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
-
         public void GuardarEvento_460AS(Evento_460AS evento)
         {
             string consulta = "INSERT INTO EVENTOS_460AS (IdEvento_460AS, Usuario_460AS, Fecha_460AS, Modulo_460AS, Actividad_460AS, Criticidad_460AS) " +

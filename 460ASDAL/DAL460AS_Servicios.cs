@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace _460ASDAL
 {
-    public class DAL460AS_Servicios
+    public class DAL460AS_Servicios : DAL_Abstract
     {
-        private string cx;
         public DAL460AS_Servicios()
         {
-            cx = "Data Source=.;Initial Catalog=\"Vuelos Aereos\";Integrated Security=True;Trust Server Certificate=True";
+            
         }
 
         public void GuardarServicio_460AS(object servicioObj)
