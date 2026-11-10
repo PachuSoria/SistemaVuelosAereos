@@ -112,82 +112,37 @@ namespace _460ASGUI
 
             var permisos = bllPerfil.ObtenerTodosLosPermisosDelPerfil_460AS(perfilActual.Codigo_460AS);
 
-            if (permisos.Any(p => p.Nombre_460AS == "Gestionar Perfiles"))
-            {
-                administradorToolStripMenuItem.Visible = true;
-                gestionarUsuariosToolStripMenuItem.Visible = true;
-                gestionarPerfilesToolStripMenuItem.Visible = true;
-                gestionarFamiliasToolStripMenuItem.Visible = true;
-            }
-            else
-            {
-                administradorToolStripMenuItem.Visible = false;
-            }
+            bool tieneGestionarPerfiles = permisos.Any(p => p.Nombre_460AS == "Gestionar Perfiles");
+            bool tieneAuditarEventos = permisos.Any(p => p.Nombre_460AS == "Auditar Eventos");
+            bool tieneGuardarRestaurar = permisos.Any(p => p.Nombre_460AS == "Guardar y Restaurar");
+
+            administradorToolStripMenuItem.Visible = tieneGestionarPerfiles || tieneAuditarEventos || tieneGuardarRestaurar;
+            gestionarUsuariosToolStripMenuItem.Visible = tieneGestionarPerfiles;
+            gestionarPerfilesToolStripMenuItem.Visible = tieneGestionarPerfiles;
+            gestionarFamiliasToolStripMenuItem.Visible = tieneGestionarPerfiles;
+            auditarEventosToolStripMenuItem.Visible = tieneAuditarEventos;
+            backupYRestoreToolStripMenuItem.Visible = tieneGuardarRestaurar;
 
             bool tieneGestionarVuelos = permisos.Any(p => p.Nombre_460AS == "Gestionar Vuelos");
             bool tieneGestionarClientes = permisos.Any(p => p.Nombre_460AS == "Gestionar Clientes");
 
-            if (tieneGestionarVuelos || tieneGestionarClientes)
-            {
-                maestroToolStripMenuItem.Visible = true;
-                gestionarVuelosToolStripMenuItem.Visible = tieneGestionarVuelos;
-                gestionarAsientosToolStripMenuItem.Visible = tieneGestionarVuelos;
-                gestionarClientesToolStripMenuItem.Visible = tieneGestionarClientes;
-            }
-            else
-            {
-                maestroToolStripMenuItem.Visible = false;
-            }
+            maestroToolStripMenuItem.Visible = tieneGestionarVuelos || tieneGestionarClientes;
+            gestionarVuelosToolStripMenuItem.Visible = tieneGestionarVuelos;
+            gestionarAsientosToolStripMenuItem.Visible = tieneGestionarVuelos;
+            gestionarClientesToolStripMenuItem.Visible = tieneGestionarClientes;
+            auditoriaDeCambiosToolStripMenuItem.Visible = tieneGestionarClientes;
 
-            if (permisos.Any(p => p.Nombre_460AS == "Registrar Reserva"))
-            {
-                reservasToolStripMenuItem.Visible = true;
-                registrarReservaToolStripMenuItem.Visible = true;
-            }
-            else
-            {
-                reservasToolStripMenuItem.Visible = false;
-            }
+            bool tieneRegistrarReserva = permisos.Any(p => p.Nombre_460AS == "Registrar Reserva");
+            bool tieneRegistrarServicios = permisos.Any(p => p.Nombre_460AS == "Registrar Servicios");
 
-            if (permisos.Any(p => p.Nombre_460AS == "Gestionar Reportes"))
-            {
-                reportesToolStripMenuItem.Visible = true;
-                verComprobantesToolStripMenuItem.Visible = true;
-            }
-            else
-            {
-                reportesToolStripMenuItem.Visible = false;
-            }
+            reservasToolStripMenuItem.Visible = tieneRegistrarReserva || tieneRegistrarServicios;
+            registrarReservaToolStripMenuItem.Visible = tieneRegistrarReserva;
+            serviciosAdicionalesToolStripMenuItem.Visible = tieneRegistrarServicios;
 
-            if (permisos.Any(p => p.Nombre_460AS == "Auditar Eventos"))
-            {
-                administradorToolStripMenuItem.Visible = true;
-                auditarEventosToolStripMenuItem.Visible = true;
-            }
-            else
-            {
-                auditarEventosToolStripMenuItem.Visible = false;
-            }
-
-            if (permisos.Any(p => p.Nombre_460AS == "Guardar y Restaurar"))
-            {
-                administradorToolStripMenuItem.Visible = true;
-                backupYRestoreToolStripMenuItem.Visible = true;
-            }
-            else
-            {
-                backupYRestoreToolStripMenuItem.Visible = false;
-            }
-            if (permisos.Any(p => p.Nombre_460AS == "Registrar Servicios"))
-            {
-                reservasToolStripMenuItem.Visible = true;
-                registrarReservaToolStripMenuItem.Visible = false;
-                serviciosAdicionalesToolStripMenuItem.Visible = true;
-            }
-            else
-            {
-                serviciosAdicionalesToolStripMenuItem.Visible = false;
-            }
+            bool tieneGestionarReportes = permisos.Any(p => p.Nombre_460AS == "Gestionar Reportes");
+            reportesToolStripMenuItem.Visible = tieneGestionarReportes;
+            verComprobantesToolStripMenuItem.Visible = tieneGestionarReportes;
+            comprobantesServiciosToolStripMenuItem.Visible = tieneGestionarReportes;
         }
 
         private void AbrirForm<T>() where T : Form, new()

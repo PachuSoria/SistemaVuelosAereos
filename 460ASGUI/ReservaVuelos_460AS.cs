@@ -89,7 +89,6 @@ namespace _460ASGUI
                 CobroReserva_460AS formCobro = new CobroReserva_460AS(reserva);
                 if (formCobro.ShowDialog() == DialogResult.OK)
                 {
-                    bllReserva_460AS.AgregarReserva_460AS(reserva);
                     this.Close();
                 }
             }
@@ -153,7 +152,10 @@ namespace _460ASGUI
                     else return;
                 }
                 clienteActual = cliente;
-                panel2.Enabled = false; panel1.Enabled = true;
+                panel2.Enabled = false;
+                panel1.Enabled = true;
+                comboBox1.SelectedIndex = 0;
+                CargarVuelos();
             }
             catch (Exception ex)
             {

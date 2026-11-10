@@ -375,9 +375,9 @@ namespace _460ASGUI
             textBox1.Text = fila.Cells[0].Value?.ToString();
             textBox2.Text = fila.Cells[1].Value?.ToString();
             textBox3.Text = fila.Cells[2].Value?.ToString();
-            textBox4.Text = fila.Cells[6].Value?.ToString();
+            textBox4.Text = fila.Cells[5].Value?.ToString();
 
-            string rol = fila.Cells[5].Value?.ToString();
+            string rol = fila.Cells[4].Value?.ToString();
             if (!string.IsNullOrEmpty(rol) && comboBox1.Items.Contains(rol))
                 comboBox1.SelectedItem = rol;
             else

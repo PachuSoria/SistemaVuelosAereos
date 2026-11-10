@@ -164,7 +164,7 @@
             label7.Name = "label7";
             label7.Size = new Size(96, 15);
             label7.TabIndex = 14;
-            label7.Text = "25 kg --> 25 USD";
+            label7.Text = "23 kg --> 25 USD";
             // 
             // label8
             // 

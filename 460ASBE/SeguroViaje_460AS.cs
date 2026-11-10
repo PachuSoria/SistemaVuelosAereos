@@ -23,12 +23,13 @@ namespace _460ASBE
 
         public override decimal CalcularPrecio()
         {
-            return Precio_460AS;
+            return (_reserva != null ? _reserva.CalcularPrecio() : 0m) + Precio_460AS;
         }
 
         public override string GetDescripcion()
         {
-            return $"Seguro de viaje {Cobertura_460AS} ({Precio_460AS:0.00} USD, vence {Vencimiento_460AS:dd/MM/yyyy})";
+            string baseDesc = _reserva != null ? _reserva.GetDescripcion() + " + " : string.Empty;
+            return $"{baseDesc}Seguro de viaje {Cobertura_460AS} ({Precio_460AS:0.00} USD, vence {Vencimiento_460AS:dd/MM/yyyy})";
         }
     }
 }

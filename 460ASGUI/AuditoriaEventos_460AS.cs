@@ -21,7 +21,6 @@ namespace _460ASGUI
         public AuditoriaEventos_460AS()
         {
             InitializeComponent();
-            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             _bllEvento = new BLL460AS_Evento();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect; dataGridView1.MultiSelect = false; dataGridView1.ReadOnly = true;
             IdiomaManager_460AS.Instancia.RegistrarObserver(this);
@@ -224,7 +223,6 @@ namespace _460ASGUI
             dataGridView1.DataSource = _bllEvento.ObtenerEventosUltimosTresDias_460AS();
             dateTimePicker1.Value = DateTime.Today.AddDays(-3);
             dateTimePicker2.Value = DateTime.Today;
-            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
         }
 
         public void ActualizarIdioma()
@@ -253,9 +251,11 @@ namespace _460ASGUI
                 "Alta de cliente",
                 "Alta de usuario",
                 "Alta de vuelo",
+                "Backup realizado",
                 "Baja de cliente",
                 "Bloqueo automatico por intentos fallidos",
                 "Cambio de contraseña",
+                "Cambio de versión de cliente",
                 "Creación de familia",
                 "Creación de perfil",
                 "Desactivacion de usuario",
@@ -272,7 +272,8 @@ namespace _460ASGUI
                 "Modificacion de usuario",
                 "Modificación de cliente",
                 "Modificación de vuelo",
-                "Registro de reserva"
+                "Registro de reserva",
+                "Restore realizado"
             };
 
             var actividadesOrdenadas = actividades
@@ -297,13 +298,15 @@ namespace _460ASGUI
                                              "Logout", "Cambio de contraseña", "Activación de usuario", "Desactivacion de usuario",
                                              "Desbloqueo de usuario", "Alta de usuario", "Modificacion de usuario" } },
 
-            { "Clientes", new List<string> { "Alta de cliente", "Modificación de cliente", "Baja de cliente" } },
+            { "Clientes", new List<string> { "Alta de cliente", "Modificación de cliente", "Baja de cliente", "Cambio de versión de cliente" } },
 
             { "Vuelos", new List<string> { "Alta de vuelo", "Modificación de vuelo", "Eliminación de vuelo" } },
 
             { "Reservas", new List<string> { "Registro de reserva", "Generación de comprobante" } },
 
-            { "Perfiles/Familias", new List<string> { "Creación de familia", "Creación de perfil", "Eliminación de familia", "Eliminación de perfil" } }
+            { "Perfiles/Familias", new List<string> { "Creación de familia", "Creación de perfil", "Eliminación de familia", "Eliminación de perfil" } },
+
+            { "BackupRestore", new List<string> { "Backup realizado", "Restore realizado" } }
         };
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -313,6 +316,12 @@ namespace _460ASGUI
             if (comboBox1.SelectedItem == null) return;
 
             string modulo = comboBox1.SelectedItem.ToString();
+
+            if (EsTodos(modulo))
+            {
+                CargarComboActividades();
+                return;
+            }
 
             if (eventosPorModulo.ContainsKey(modulo))
             {

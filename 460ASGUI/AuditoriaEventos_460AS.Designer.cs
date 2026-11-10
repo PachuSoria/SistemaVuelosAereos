@@ -69,7 +69,7 @@
             // 
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Clientes", "Perfiles/Familias", "Reservas", "Usuarios", "Vuelos" });
+            comboBox1.Items.AddRange(new object[] { "Todos", "BackupRestore", "Clientes", "Perfiles/Familias", "Reservas", "Usuarios", "Vuelos" });
             comboBox1.Location = new Point(261, 371);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(121, 23);
@@ -89,7 +89,7 @@
             // 
             comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox3.FormattingEnabled = true;
-            comboBox3.Items.AddRange(new object[] { "Todos", "1", "2", "3", "4", "5" });
+            comboBox3.Items.AddRange(new object[] { "Todos", "1", "2", "3", "4" });
             comboBox3.Location = new Point(750, 371);
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new Size(121, 23);

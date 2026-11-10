@@ -132,7 +132,7 @@ namespace _460ASGUI
                     if (textBox1.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_dni_vacio"));
                     string dni = textBox1.Text;
                     if (!Regex.IsMatch(dni, @"^[0-9]{8}$")) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_dni_invalido"));
-                    if (bllCliente_460AS.ObtenerClientes_460AS().Any(x => x.DNI_460AS == dni)) throw new Exception("El DNI esta repetido");
+                    if (bllCliente_460AS.ObtenerClientes_460AS().Any(x => x.DNI_460AS == dni)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_dni_repetido"));
                     if (textBox2.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_nombre_vacio"));
                     string nombre = textBox2.Text;
                     if (textBox3.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ex_apellido_vacio"));
@@ -171,6 +171,13 @@ namespace _460ASGUI
                     if (fechaNacimiento.Date > DateTime.Today.AddYears(-edad)) edad--;
                     if (edad < 18) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_mas18"));
                     c.FechaNacimiento_460AS = fechaNacimiento;
+                    if (textBox5.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_vacio"));
+                    string nroPasaporte = textBox5.Text.Trim();
+                    if (!Regex.IsMatch(nroPasaporte, @"^[0-9]{10}$")) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_invalido"));
+                    string pasaporteEncriptado = Cifrado_460AS.EncriptarPasaporteAES_460AS(nroPasaporte);
+                    if (bllCliente_460AS.ObtenerClientes_460AS().Any(x => x.DNI_460AS != dni && x.NroPasaporte_460AS == pasaporteEncriptado))
+                        throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_repetido"));
+                    c.NroPasaporte_460AS = nroPasaporte;
                     bllCliente_460AS.ActualizarCliente_460AS(c);
                 }
                 else if (estadoActual == FormEstado.Eliminar)
@@ -404,7 +411,13 @@ namespace _460ASGUI
                 dateTimePicker1.Value = fecha;
 
             textBox4.Text = fila.Cells[4].Value?.ToString();
-            textBox5.Text = fila.Cells[5].Value?.ToString();
+            string dniSeleccionado = fila.Cells[0].Value?.ToString();
+            var clienteOrig = (mostrandoDesdeXML && clientesDeserializados != null)
+                ? clientesDeserializados.FirstOrDefault(c => c.DNI_460AS == dniSeleccionado)
+                : bllCliente_460AS.ObtenerClientes_460AS().FirstOrDefault(c => c.DNI_460AS == dniSeleccionado);
+            textBox5.Text = clienteOrig != null
+                ? Cifrado_460AS.DesencriptarPasaporteAES_460AS(clienteOrig.NroPasaporte_460AS)
+                : fila.Cells[5].Value?.ToString();
         }
 
         private void ConfigurarSeleccionDataGrid()

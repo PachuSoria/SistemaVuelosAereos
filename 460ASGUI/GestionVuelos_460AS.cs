@@ -139,6 +139,7 @@ namespace _460ASGUI
                     decimal precio;
                     if (!decimal.TryParse(textBox4.Text, out precio)) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_precio_invalido1"));
                     if (precio <= 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_precio_invalido2"));
+                    v.PrecioVuelo_460AS = precio;
                     v.FechaSalida_460AS = dateTimePicker1.Value;
                     if (v.FechaSalida_460AS < DateTime.Now) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_salida_invalida"));
                     v.FechaLlegada_460AS = dateTimePicker2.Value;

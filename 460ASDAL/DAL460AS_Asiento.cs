@@ -32,7 +32,9 @@ namespace _460ASDAL
                     string codVuelo_460AS = reader["CodVuelo_460AS"].ToString();
                     string tipo_460AS = reader["Tipo_460AS"].ToString();
                     TipoAsiento_460AS tipo = (TipoAsiento_460AS)Enum.Parse(typeof(TipoAsiento_460AS), tipo_460AS);
-                    Reserva_460AS reserva_460AS = null;
+                    Reserva_460AS reserva_460AS = reader["CodReserva_460AS"] == DBNull.Value
+                        ? null
+                        : new Reserva_460AS { CodReserva_460AS = reader["CodReserva_460AS"].ToString() };
 
                     Asiento_460AS asiento = new Asiento_460AS(numAsiento_460AS, codVuelo_460AS, disponible_460AS, tipo, reserva_460AS);
                     listaAsientos.Add(asiento);
@@ -89,8 +91,10 @@ namespace _460ASDAL
                     comando.Parameters.AddWithValue("@CodVuelo_460AS", asiento.CodVuelo_460AS);
                     comando.Parameters.AddWithValue("@Disponible_460AS", asiento.Disponible_460AS);
                     comando.Parameters.AddWithValue("@Tipo_460AS", asiento.Tipo_460AS.ToString());
-                    if (asiento.Reserva_460AS == null) comando.Parameters.AddWithValue("@CodReserva_460AS", DBNull.Value);
-                    else comando.Parameters.AddWithValue("@CodReserva_460AS", asiento.Reserva_460AS);
+                    if (asiento.Reserva_460AS == null || string.IsNullOrWhiteSpace(asiento.Reserva_460AS.CodReserva_460AS))
+                        comando.Parameters.AddWithValue("@CodReserva_460AS", DBNull.Value);
+                    else
+                        comando.Parameters.AddWithValue("@CodReserva_460AS", asiento.Reserva_460AS.CodReserva_460AS);
 
                     comando.ExecuteNonQuery();
                 }
@@ -111,8 +115,10 @@ namespace _460ASDAL
                     comando.Parameters.AddWithValue("@Tipo_460AS", asiento.Tipo_460AS.ToString());
                     comando.Parameters.AddWithValue("@NumAsiento_460AS", asiento.NumAsiento_460AS);
                     comando.Parameters.AddWithValue("@CodVuelo_460AS", asiento.CodVuelo_460AS);
-                    if (asiento.Reserva_460AS == null) comando.Parameters.AddWithValue("@CodReserva_460AS", DBNull.Value);
-                    else comando.Parameters.AddWithValue("@CodReserva_460AS", asiento.Reserva_460AS);
+                    if (asiento.Reserva_460AS == null || string.IsNullOrWhiteSpace(asiento.Reserva_460AS.CodReserva_460AS))
+                        comando.Parameters.AddWithValue("@CodReserva_460AS", DBNull.Value);
+                    else
+                        comando.Parameters.AddWithValue("@CodReserva_460AS", asiento.Reserva_460AS.CodReserva_460AS);
 
                     comando.ExecuteNonQuery();
                 }

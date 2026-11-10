@@ -24,12 +24,13 @@ namespace _460ASBE
 
         public override decimal CalcularPrecio()
         {
-            return Precio_460AS;
+            return (_reserva != null ? _reserva.CalcularPrecio() : 0m) + Precio_460AS;
         }
 
         public override string GetDescripcion()
         {
-            return $"Cambio de asiento ({NumAsiento_460AS} – {Precio_460AS:0.00} USD)";
+            string baseDesc = _reserva != null ? _reserva.GetDescripcion() + " + " : string.Empty;
+            return $"{baseDesc}Cambio de asiento ({NumAsiento_460AS} – {Precio_460AS:0.00} USD)";
         }
     }
 }
