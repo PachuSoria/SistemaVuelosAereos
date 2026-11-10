@@ -200,20 +200,18 @@ namespace _460ASGUI
                             serviciosAgregados.Add((servicio, formCambio.PrecioTotal, string.Empty));
 
                             string codServicioComun = Guid.NewGuid().ToString();
+                            string asientosNuevos = string.Join(", ", formCambio.CambiosPendientes.Values.Select(a => a.NumAsiento_460AS));
 
-                            foreach (var cambio in formCambio.CambiosPendientes.Values)
+                            serviciosParaGuardar.Add(new CambioAsientoServicio(reservaSeleccionada)
                             {
-                                serviciosParaGuardar.Add(new CambioAsientoServicio(reservaSeleccionada)
-                                {
-                                    CodServicio_460AS = codServicioComun,
-                                    NumAsiento_460AS = cambio.NumAsiento_460AS,
-                                    TipoServicio_460AS = servicio,
-                                    Descripcion_460AS = $"Cambio a asientos {string.Join(", ", formCambio.CambiosPendientes.Values.Select(a => a.NumAsiento_460AS))}",
-                                    Precio_460AS = formCambio.PrecioTotal / formCambio.CambiosPendientes.Count,
-                                    ListaCambios = formCambio.ListaCambios,
-                                    Reserva_460AS = reservaSeleccionada
-                                });
-                            }
+                                CodServicio_460AS = codServicioComun,
+                                NumAsiento_460AS = asientosNuevos,
+                                TipoServicio_460AS = servicio,
+                                Descripcion_460AS = $"Cambio a asientos {asientosNuevos}",
+                                Precio_460AS = formCambio.PrecioTotal,
+                                ListaCambios = formCambio.ListaCambios,
+                                Reserva_460AS = reservaSeleccionada
+                            });
                             ActualizarResumen();
                         }
                         break;
@@ -315,7 +313,6 @@ namespace _460ASGUI
             }
             else
             {
-                panel1.Visible = false;
                 button3.Enabled = false;
                 label7.Text = string.Empty;
             }
@@ -385,7 +382,6 @@ namespace _460ASGUI
                     serviciosAgregados.Clear();
                     serviciosParaGuardar.Clear();
                     label7.Text = string.Empty;
-                    panel1.Visible = false;
                     Close();
                 }
             }

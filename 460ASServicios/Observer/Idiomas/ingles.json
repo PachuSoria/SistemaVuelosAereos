@@ -277,7 +277,7 @@
   "msg_perfil_sin_permisos_al_eliminar_permisos": "Cannot remove the permissions from family '{0}' because profile '{1}' would be left without permissions.",
   "msg_nombre_familia_vacio": "Family name cannot be empty.",
   "msg_codigo_familia_vacio": "Family code cannot be empty.",
-  "msg_perfil_no_existe": "The profile '{codigo}' does not exist.",
+  "msg_perfil_no_existe": "The profile '{0}' does not exist.",
   "msg_perfil_en_uso": "Cannot delete the profile because it is assigned to one or more users.",
   "msg_perfil_tiene_familias_o_permisos": "Cannot delete the profile because it has assigned families or permissions.",
   "msg_perfil_codigo_repetido": "A profile with code '{0}' already exists.",

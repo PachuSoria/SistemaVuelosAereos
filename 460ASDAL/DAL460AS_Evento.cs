@@ -64,7 +64,7 @@ namespace _460ASDAL
         {
             using (SqlConnection con = new SqlConnection(cx))
             {
-                string consulta = @"SELECT TOP 1 * FROM EVENTOS_460AS ORDER BY Fecha_460AS DESC";
+                string consulta = @"SELECT TOP 1 * FROM EVENTOS_460AS ORDER BY Fecha_460AS DESC, IdEvento_460AS DESC";
                 SqlCommand cmd = new SqlCommand(consulta, con);
                 con.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())

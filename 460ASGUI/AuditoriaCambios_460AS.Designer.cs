@@ -89,6 +89,7 @@
             // 
             dateTimePicker1.Location = new Point(217, 378);
             dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.ShowCheckBox = true;
             dateTimePicker1.Size = new Size(228, 23);
             dateTimePicker1.TabIndex = 6;
             // 
@@ -132,6 +133,7 @@
             // 
             dateTimePicker2.Location = new Point(217, 435);
             dateTimePicker2.Name = "dateTimePicker2";
+            dateTimePicker2.ShowCheckBox = true;
             dateTimePicker2.Size = new Size(228, 23);
             dateTimePicker2.TabIndex = 15;
             // 

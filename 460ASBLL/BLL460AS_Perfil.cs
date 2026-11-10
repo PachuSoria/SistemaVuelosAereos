@@ -14,15 +14,15 @@ namespace _460ASBLL
     {
         private DAL460AS_Perfil dalPerfil_460AS;
         private DAL460AS_Familia dalFamilia_460AS;
+        private DAL460AS_Usuario dalUsuario_460AS;
         private BLL460AS_Evento _eventoBLL;
 
         public BLL460AS_Perfil()
         {
             dalPerfil_460AS = new DAL460AS_Perfil();
             dalFamilia_460AS = new DAL460AS_Familia();
+            dalUsuario_460AS = new DAL460AS_Usuario();
             _eventoBLL = new BLL460AS_Evento();
-            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
-            ActualizarIdioma();
         }
 
         public bool FamiliaAsignadaAPerfil_460AS(string codFamilia)
@@ -46,15 +46,8 @@ namespace _460ASBLL
 
         public bool PerfilEnUso_460AS(string codPerfil_460AS)
         {
-            var familias = dalPerfil_460AS.ObtenerFamiliasDePerfil_460AS(codPerfil_460AS);
-            if (familias.Count > 0)
-                return true;
-
-            var permisos = dalPerfil_460AS.ObtenerPermisosDePerfil_460AS(codPerfil_460AS);
-            if (permisos.Count > 0)
-                return true;
-
-            return false;
+            var usuarios = dalUsuario_460AS.ObtenerUsuarios_460AS();
+            return usuarios.Any(u => u.Rol_460AS != null && u.Rol_460AS.Codigo_460AS == codPerfil_460AS);
         }
 
         public void GuardarPerfil_460AS(Perfil_460AS perfil)
@@ -93,18 +86,18 @@ namespace _460ASBLL
         {
             var perfiles = dalPerfil_460AS.ObtenerTodos_460AS();
             if (perfiles.Any(p => p.Codigo_460AS == codigo))
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_perfil_codigo_repetido").Replace("{codigo}", codigo));
+                throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_perfil_codigo_repetido"), codigo));
         }
 
         public void AgregarFamiliaAPerfil_460AS(string codPerfil_460AS, string codFamilia_460AS)
         {
             var perfil = ObtenerTodas_460AS().FirstOrDefault(p => p.Codigo_460AS == codPerfil_460AS);
             if (perfil == null)
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_perfil_no_existe").Replace("{codigo}", codPerfil_460AS));
+                throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_perfil_no_existe"), codPerfil_460AS));
 
             var familiaNueva = new BLL460AS_Familia().ObtenerFamiliaPorCodigo_460AS(codFamilia_460AS);
             if (familiaNueva == null)
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_existe").Replace("{codigo}", codFamilia_460AS));
+                throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_existe"), codFamilia_460AS));
 
             var familiasAsignadas = ObtenerFamiliasDePerfil_460AS(codPerfil_460AS);
 
@@ -137,19 +130,19 @@ namespace _460ASBLL
             foreach (var permFam in permisosFamiliaNueva)
             {
                 if (permisosPerfil.Any(p => p.Codigo_460AS == permFam.Codigo_460AS))
-                    throw new Exception(
-                        IdiomaManager_460AS.Instancia.Traducir("msg_permiso_directo_asignado_perfil")
-                        .Replace("{permiso}", permFam.Nombre_460AS)
-                    );
+                    throw new Exception(string.Format(
+                        IdiomaManager_460AS.Instancia.Traducir("msg_permiso_directo_asignado_perfil"),
+                        permFam.Nombre_460AS
+                    ));
             }
 
             foreach (var permFam in permisosFamiliaNueva)
             {
                 if (permisosHeredadosFamilias.Any(p => p.Codigo_460AS == permFam.Codigo_460AS))
-                    throw new Exception(
-                        IdiomaManager_460AS.Instancia.Traducir("msg_permiso_heredado_perfil")
-                        .Replace("{permiso}", permFam.Nombre_460AS)
-                    );
+                    throw new Exception(string.Format(
+                        IdiomaManager_460AS.Instancia.Traducir("msg_permiso_heredado_perfil"),
+                        permFam.Nombre_460AS
+                    ));
             }
 
             dalPerfil_460AS.AgregarFamiliaAPerfil_460AS(codPerfil_460AS, codFamilia_460AS);
@@ -180,10 +173,10 @@ namespace _460ASBLL
             {
                 var permisosDeFam = new BLL460AS_Familia().ObtenerPermisosHeredados_460AS(fam.Codigo_460AS);
                 if (permisosDeFam.Any(p => p.Codigo_460AS == codPermiso_460AS))
-                    throw new Exception(
-                        IdiomaManager_460AS.Instancia.Traducir("msg_permiso_heredado_desde_familia")
-                        .Replace("{familia}", fam.Nombre_460AS)
-                    );
+                    throw new Exception(string.Format(
+                        IdiomaManager_460AS.Instancia.Traducir("msg_permiso_heredado_desde_familia"),
+                        fam.Nombre_460AS
+                    ));
             }
 
             dalPerfil_460AS.AgregarPermisoAPerfil_460AS(codPerfil_460AS, codPermiso_460AS);

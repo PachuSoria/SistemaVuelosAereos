@@ -1,5 +1,6 @@
 ﻿using _460ASBE;
 using _460ASBLL;
+using _460ASServicios;
 using _460ASServicios.Observer;
 using System;
 using System.Collections.Generic;
@@ -56,12 +57,15 @@ namespace _460ASGUI
                 if (textBox5.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_vacio"));
                 string nroPasaporte = textBox5.Text;
                 if (!Regex.IsMatch(nroPasaporte, @"^[0-9]{10}$")) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_invalido"));
+                if (bllCliente_460AS.ObtenerClientes_460AS().Any(c => c.NroPasaporte_460AS == Cifrado_460AS.EncriptarPasaporteAES_460AS(nroPasaporte)))
+                    throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_pasaporte_repetido"));
                 if (fechaNacimiento > DateTime.Now) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_nacimiento_invalido"));
                 int edad = DateTime.Now.Year - fechaNacimiento.Year;
                 if (fechaNacimiento.Date > DateTime.Now.AddYears(-edad)) edad--;
                 if (edad < 18) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_mas18"));
                 bllCliente_460AS.GuardarCliente_460AS(new Cliente_460AS(dni, nombre, apellido, fechaNacimiento, telefono, nroPasaporte));
                 MessageBox.Show(IdiomaManager_460AS.Instancia.Traducir("msg_cliente_registrado"));
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)

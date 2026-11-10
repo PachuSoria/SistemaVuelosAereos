@@ -35,8 +35,6 @@ namespace _460ASGUI
                 checkedListBox1.Items.Add(display);
                 checkedListBox1.Tag = preciosComida; 
             }
-
-            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
         }
 
         private Dictionary<string, decimal> preciosComida = new()

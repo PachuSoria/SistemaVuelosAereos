@@ -23,12 +23,12 @@ namespace _460ASBE
 
         public override decimal CalcularPrecio()
         {
-            return Precio_460AS;
+            return (_reserva != null ? _reserva.CalcularPrecio() : 0m) + Precio_460AS;
         }
         public override string GetDescripcion()
         {
-            return $"Valija extra ({Cantidad_460AS} × {PesoTotal_460AS} kg – {Precio_460AS:0.00} USD)";
-
+            string baseDesc = _reserva != null ? _reserva.GetDescripcion() + " + " : string.Empty;
+            return $"{baseDesc}Valija extra ({Cantidad_460AS} × {PesoTotal_460AS} kg – {Precio_460AS:0.00} USD)";
         }
     }
 }

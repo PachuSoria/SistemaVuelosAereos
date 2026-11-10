@@ -75,6 +75,8 @@ namespace _460ASGUI
                 if (textBox4.Text.Length == 0) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_cvv_vacio"));
                 if (textBox4.Text.Length != 3) throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_cvv_invalido"));
                 int cvv = Convert.ToInt32(textBox4.Text);
+                BLL460AS_Reserva bllReserva_460AS = new BLL460AS_Reserva();
+                bllReserva_460AS.AgregarReserva_460AS(reservaActual);
                 DateTime fechaPago = DateTime.Now;
                 string codComprobante = bllComprobante_460AS.GenerarCodigoComprobanteUnico_460AS();
                 decimal monto = reservaActual.PrecioTotal_460AS;

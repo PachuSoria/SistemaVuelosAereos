@@ -45,21 +45,6 @@ namespace _460ASDAL
                     cmd.Parameters.AddWithValue("@Precio", servicioBase.Precio_460AS);
                     cmd.ExecuteNonQuery();
                 }
-                if (servicioObj is CambioAsiento_460AS cambio && cambio.ListaCambios != null && cambio.ListaCambios.Any())
-                {
-                    foreach (var det in cambio.ListaCambios)
-                    {
-                        string insertDetalle = @"INSERT INTO CAMBIO_ASIENTO_460AS
-                    (CodServicio_460AS, NumAsiento_460AS)
-                    VALUES (@CodServicio, @NumAsiento)";
-                        using (SqlCommand cmdDet = new SqlCommand(insertDetalle, conexion))
-                        {
-                            cmdDet.Parameters.AddWithValue("@CodServicio", cambio.CodServicio_460AS);
-                            cmdDet.Parameters.AddWithValue("@NumAsiento", det.AsientoNuevo_460AS.NumAsiento_460AS);
-                            cmdDet.ExecuteNonQuery();
-                        }
-                    }
-                }
             }
         }
 

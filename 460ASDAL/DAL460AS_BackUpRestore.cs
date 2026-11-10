@@ -10,14 +10,22 @@ namespace _460ASDAL
 {
     public class DAL460AS_BackUpRestore : DAL_Abstract
     {
+        private string ObtenerNombreBaseDatos()
+        {
+            var builder = new SqlConnectionStringBuilder(cx);
+            return string.IsNullOrWhiteSpace(builder.InitialCatalog) ? "AviagoBD" : builder.InitialCatalog;
+        }
+
         public void RealizarBackup_460S(string backUpPath)
         {
+            string nombreBD = ObtenerNombreBaseDatos();
             string archivo = $"BCK_{DateTime.Now:ddMMyy_HHmm}.bak";
             string ruta = System.IO.Path.Combine(backUpPath, archivo);
-            string comando = $"BACKUP DATABASE [Vuelos Aereos] TO DISK= '{ruta}'";
+            string comando = $"BACKUP DATABASE [{nombreBD}] TO DISK = @ruta";
             using (SqlConnection con = new SqlConnection(cx))
             {
                 SqlCommand cmd = new SqlCommand(comando, con);
+                cmd.Parameters.AddWithValue("@ruta", ruta);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -26,37 +34,37 @@ namespace _460ASDAL
 
         public void RealizarRestore_460AS(string backUpFilePath)
         {
-            try
+            string nombreBD = ObtenerNombreBaseDatos();
+            using (SqlConnection con = new SqlConnection(cx))
             {
-                using (SqlConnection con = new SqlConnection(cx))
+                con.Open();
+
+                using (SqlCommand setMaster = new SqlCommand("USE master;", con))
                 {
-                    con.Open();
+                    setMaster.ExecuteNonQuery();
+                }
 
-                    using (SqlCommand setMaster = new SqlCommand("USE master;", con))
-                    {
-                        setMaster.ExecuteNonQuery();
-                    }
-
-                    using (SqlCommand setSingleUser = new SqlCommand("ALTER DATABASE [Vuelos Aereos] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;", con))
+                try
+                {
+                    using (SqlCommand setSingleUser = new SqlCommand($"ALTER DATABASE [{nombreBD}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;", con))
                     {
                         setSingleUser.ExecuteNonQuery();
                     }
 
-                    string consulta = $"RESTORE DATABASE [Vuelos Aereos] FROM DISK = '{backUpFilePath}' WITH REPLACE;";
+                    string consulta = $"RESTORE DATABASE [{nombreBD}] FROM DISK = @ruta WITH REPLACE;";
                     using (SqlCommand cmd = new SqlCommand(consulta, con))
                     {
+                        cmd.Parameters.AddWithValue("@ruta", backUpFilePath);
                         cmd.ExecuteNonQuery();
                     }
-
-                    using (SqlCommand setMultiUser = new SqlCommand("ALTER DATABASE [Vuelos Aereos] SET MULTI_USER;", con))
+                }
+                finally
+                {
+                    using (SqlCommand setMultiUser = new SqlCommand($"ALTER DATABASE [{nombreBD}] SET MULTI_USER;", con))
                     {
                         setMultiUser.ExecuteNonQuery();
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
             }
         }
     }

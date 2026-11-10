@@ -21,8 +21,6 @@ namespace _460ASBLL
             dalFamilia_460AS = new DAL460AS_Familia();
             dalPermiso_460AS = new DAL460AS_Permiso();
             _eventoBLL = new BLL460AS_Evento();
-            IdiomaManager_460AS.Instancia.RegistrarObserver(this);
-            ActualizarIdioma();
         }
 
 
@@ -44,9 +42,10 @@ namespace _460ASBLL
             var descendientesDeHija = ObtenerFamiliasHijasRecursivas_460AS(hija);
             if (descendientesDeHija.Any(f => f.Codigo_460AS == padre.Codigo_460AS))
             {
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_ciclo_invertido")
-                .Replace("{hija}", hija.Codigo_460AS)
-                .Replace("{padre}", padre.Codigo_460AS));
+                throw new Exception(string.Format(
+                    IdiomaManager_460AS.Instancia.Traducir("msg_ciclo_invertido"),
+                    hija.Codigo_460AS,
+                    padre.Codigo_460AS));
             }
         }
 
@@ -85,7 +84,7 @@ namespace _460ASBLL
         {
             var familias = dalFamilia_460AS.ObtenerTodas_460AS();
             if (familias.Any(f => f.Codigo_460AS == codigo))
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_codigo_repetido").Replace("{codigo}", codigo));
+                throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_codigo_repetido"), codigo));
         }
 
         public void GuardarFamilia_460AS(Familia_460AS familia)
@@ -107,11 +106,11 @@ namespace _460ASBLL
         {
             var familias = dalFamilia_460AS.ObtenerTodas_460AS();
             if (!familias.Any(f => f.Codigo_460AS == codFamilia))
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_existe").Replace("{codigo}", codFamilia));
+                throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_existe"), codFamilia));
 
             var permisos = dalPermiso_460AS.ObtenerTodos_460AS();
             if (!permisos.Any(p => p.Codigo_460AS == codPermiso))
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_no_existe").Replace("{codigo}", codPermiso));
+                throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_no_existe"), codPermiso));
 
             var permisosFamilia = dalFamilia_460AS.ObtenerPermisosDeFamilia_460AS(codFamilia);
             if (permisosFamilia.Any(p => p.Codigo_460AS == codPermiso))
@@ -140,11 +139,11 @@ namespace _460ASBLL
         {
             var familias = dalFamilia_460AS.ObtenerTodas_460AS();
             if (!familias.Any(f => f.Codigo_460AS == codFamilia))
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_existe").Replace("{codigo}", codFamilia));
+                throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_familia_no_existe"), codFamilia));
 
             var permisos = dalPermiso_460AS.ObtenerTodos_460AS();
             if (!permisos.Any(p => p.Codigo_460AS == codPermiso))
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_no_existe").Replace("{codigo}", codPermiso));
+                throw new Exception(string.Format(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_no_existe"), codPermiso));
 
             dalFamilia_460AS.EliminarPermisoDeFamilia_460AS(codFamilia, codPermiso);
         }
@@ -221,10 +220,12 @@ namespace _460ASBLL
 
             var familiasHijasDirectas = ObtenerFamiliasHijas_460AS(padre);
             if (familiasHijasDirectas.Any(f => f.Codigo_460AS == hija.Codigo_460AS))
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_ya_asignada_directamente")
-                    .Replace("{hija}", hija.Codigo_460AS).Replace("{padre}", padre.Codigo_460AS));
+                throw new Exception(string.Format(
+                    IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_ya_asignada_directamente"),
+                    hija.Codigo_460AS,
+                    padre.Codigo_460AS));
 
-            var permisosHija = ObtenerPermisosDeFamilia_460AS(hija.Codigo_460AS);
+            var permisosHija = ObtenerPermisosHeredados_460AS(hija.Codigo_460AS);
             if (permisosHija == null || permisosHija.Count == 0)
                 throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_familia_hija_sin_permisos"));
 
@@ -296,8 +297,10 @@ namespace _460ASBLL
 
             if (permisosDuplicados.Any())
             {
-                throw new Exception(IdiomaManager_460AS.Instancia.Traducir("msg_permiso_duplicado_al_asignar_hija")
-                    .Replace("{hija}", hija.Codigo_460AS).Replace("{padre}", padre.Codigo_460AS));
+                throw new Exception(string.Format(
+                    IdiomaManager_460AS.Instancia.Traducir("msg_permiso_duplicado_al_asignar_hija"),
+                    hija.Codigo_460AS,
+                    padre.Codigo_460AS));
             }
         }
 
